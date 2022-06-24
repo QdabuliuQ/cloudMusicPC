@@ -2,7 +2,7 @@ interface bannerInt {
   imageUrl: string,
   typeTitle: string,
   url: string,
-  [propName:string]:any
+  [propName: string]: any
 }
 
 interface sheetInt {
@@ -10,21 +10,21 @@ interface sheetInt {
   id: number,
   name: string,
   playcount: number,
-  [propName:string]:any
+  [propName: string]: any
 }
 
 interface privateInt {
   name: string,
   picUrl: string,
   id: string | number,
-  [propName:string]:any
+  [propName: string]: any
 }
 
-interface newSongsInt {
+export interface newSongsInt {
   mp3Url: string,
   name: string,
   id: string | number,
-  [propName:string]:any
+  [propName: string]: any
 }
 
 interface recommendMvInt {
@@ -40,6 +40,15 @@ interface artistsInt {
   id: string | number
 }
 
+interface programInt {
+  name: string,
+  channels: string[],
+  id: string | number,
+  coverUrl: string,
+  dj: { nickname: string, userId: string | number, [propName: string]: any },
+  [propName: string]: any
+}
+
 export class InitData {
   bannerList: bannerInt[] = []
   sheetList: sheetInt[] = []
@@ -47,4 +56,5 @@ export class InitData {
   privateList: privateInt[] = []
   newSongsList: newSongsInt[] = []
   recommendMvList: recommendMvInt[] = []
+  programsList: programInt[] = []
 }

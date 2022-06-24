@@ -1,6 +1,7 @@
 <template>
   <div class="videoItem">
-    <div class="videoImage">
+    <div :style="{height: itemHeight}" class="videoImage">
+      <div class="mask"></div>
       <div v-if="playCount" class="playCount">
         <img src="~images/recommend/playLine.png" alt="">
         {{$countFormat(playCount)}}
@@ -29,7 +30,8 @@ export default defineComponent({
     title: String,
     topLeftIcon: Boolean,
     artists: Object,
-    playCount: Number
+    playCount: Number,
+    itemHeight: String
   },
   name: "videoItem",
   setup() {
@@ -44,8 +46,20 @@ export default defineComponent({
   cursor: pointer;
   .videoImage {
     width: 100%;
+    // height: 8.5vw;
     position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    .mask {
+      z-index: 5;
+      position: absolute;
+      width: 100%;
+      height: 40px;
+      background-image: linear-gradient(rgba(0, 0, 0, 0.491), transparent);
+    }
     .playCount {
+      position: relative;
+      z-index: 6;
       display: flex;
       align-items: center;
       position: absolute;
@@ -68,6 +82,9 @@ export default defineComponent({
     .image {
       width: 100%;
       border-radius: 8px;
+      position: relative;
+      top: 50%;
+      transform: translateY(-50%);
     }
   }
   .videoTitle {

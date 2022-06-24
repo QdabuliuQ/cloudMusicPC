@@ -26,9 +26,11 @@ export default defineComponent({
 </script>
 
 <style lang="less">
+@import (css) "./assets/less/elementStyle.less";
 html,
 body {
   margin: 0;
   padding: 0;
+  color: #fff;
 }
 </style>

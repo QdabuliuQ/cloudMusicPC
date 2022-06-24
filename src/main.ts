@@ -19,4 +19,18 @@ app.config.globalProperties.$countFormat = function (num: string | number) {
   }
 }
 
+app.config.globalProperties.$formatTime = function (msTime: number) {
+  let time = msTime /1000;
+
+  let day = Math.floor(time /60 /60 /24);
+
+  let hour = Math.floor(time /60 /60) %24;
+
+  let minute = Math.floor(time /60) %60;
+
+  let second = Math.floor(time) %60;
+
+  return `${minute<10?'0'+minute:minute}: ${second<10?'0'+second:second}`
+}
+
 app.use(store).use(router).use(ElementPlus).use(eventBus).mount('#app')

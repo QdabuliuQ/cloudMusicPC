@@ -118,6 +118,7 @@ export default defineComponent({
 .bottomProgressContainer {
   height: 70px;
   position: fixed;
+  z-index: 99;
   bottom: 0;
   left: 0;
   right: 0;

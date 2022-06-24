@@ -36,3 +36,10 @@ export function getRecommendMv() {
   })
 }
 
+// 推荐电台
+export function getRecommendProgram() {
+  return $http({
+    url: '/program/recommend'
+  })
+}
+

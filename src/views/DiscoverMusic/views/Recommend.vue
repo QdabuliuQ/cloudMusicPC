@@ -33,6 +33,7 @@
         :imageUrl="item.sPicUrl"
         :title="item.name"
         :topLeftIcon="true"
+        :itemHeight="'12vw'"
       ></videoItem>
     </div>
     <splitLine :title="'最新音乐'" :icon="true"></splitLine>
@@ -56,26 +57,49 @@
         :artists="item.artists"
         :playCount="item.playCount"
         :topLeftIcon="false"
+        :itemHeight="'8.5vw'"
       ></videoItem>
+    </div>
+    <splitLine :title="'推荐电台'" :icon="true"></splitLine>
+    <div class="programContainer">
+      <programItem
+        v-for="item in programsList"
+        :key="item.id"
+        :coverUrl="item.coverUrl"
+        :name="item.name"
+        :channels="item.channels"
+        :id="item.id"
+        :dj="item.dj"
+      ></programItem>
     </div>
   </div>
 </template>
 
 <script lang='ts'>
-import { defineComponent, reactive, onMounted, toRefs, ref } from "vue";
+import {
+  defineComponent,
+  reactive,
+  onMounted,
+  toRefs,
+  ref,
+  defineAsyncComponent,
+} from "vue";
 import {
   getBanner,
   getRecommendSheet,
   getPrivateContent,
   getNewSongs,
-  getRecommendMv
+  getRecommendMv,
+  getRecommendProgram,
 } from "@/network/recommend";
 import { InitData } from "@/types/Recommend";
-import splitLine from "components/private/splitLine.vue";
-import sheetItem from "components/private/sheetItem.vue";
-import videoItem from "components/private/videoItem.vue";
-import newMusicItem from "components/private/newMusicItem.vue";
 import bus from "vue3-eventbus";
+
+const splitLine = defineAsyncComponent(()=> import("components/private/splitLine.vue"))
+const sheetItem = defineAsyncComponent(()=> import("components/private/sheetItem.vue"))
+const videoItem = defineAsyncComponent(()=> import("components/private/videoItem.vue"))
+const newMusicItem = defineAsyncComponent(()=> import("components/private/newMusicItem.vue"))
+const programItem = defineAsyncComponent(()=> import("components/private/programItem.vue"))
 
 export default defineComponent({
   name: "Recommend",
@@ -84,6 +108,7 @@ export default defineComponent({
     sheetItem,
     videoItem,
     newMusicItem,
+    programItem,
   },
   setup() {
     const data = reactive(new InitData());
@@ -101,7 +126,7 @@ export default defineComponent({
       });
 
       getRecommendSheet({
-        limit: 9
+        limit: 9,
       }).then((res: any) => {
         data.sheetList = res.data.result;
       });
@@ -117,8 +142,12 @@ export default defineComponent({
       });
 
       getRecommendMv().then((res: any) => {
-        data.recommendMvList = res.data.result
-      })
+        data.recommendMvList = res.data.result;
+      });
+
+      getRecommendProgram().then((res: any) => {
+        data.programsList = res.data.programs;
+      });
     });
     return {
       ...toRefs(data),
@@ -169,6 +198,11 @@ export default defineComponent({
     display: grid;
     grid-gap: 15px;
     grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+  .programContainer {
+    display: grid;
+    grid-gap: 20px;
+    grid-template-columns: 1fr 1fr;
   }
 }
 </style>

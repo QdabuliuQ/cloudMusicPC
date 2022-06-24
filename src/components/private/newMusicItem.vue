@@ -9,7 +9,7 @@
         <div class="musicName">{{ musicName }}</div>
         <div class="musicSinger">
           <img v-if="mvid" class="mvIcon" src="~images/recommend/mvIcon.png" alt="">
-          <span v-for="item,index in musicSinger" :key="item.id"><label v-if="index != musicSinger.length && index != 0"> / </label>{{item.name}}</span>
+          <span v-for="item,index in musicSinger" :key="item.id"><label v-if="index != musicSinger.length && index != 0">&nbsp;/&nbsp;</label>{{item.name}}</span>
         </div>
       </div>
     </div>
@@ -42,6 +42,7 @@ export default defineComponent({
     background-color: #ffffff1b;
   }
   .leftImage {
+    min-width: 55px;
     width: 55px;
     height: 55px;
     position: relative;

@@ -33,6 +33,8 @@ export default defineComponent({
 <style lang='less'>
 .sheetItem {
   width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
   cursor: pointer;
   &:hover .icon {
     opacity: 1 !important;
