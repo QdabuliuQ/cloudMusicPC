@@ -2,7 +2,8 @@
   <div id="RankingList">
     <div class="officalListContainer">
       <div class="titleContent">官方榜</div>
-      <div class="officalItem" v-for="(item, index) in officalList">
+      <loading v-if="!officalList.length"></loading>
+      <div v-else class="officalItem" v-for="(item, index) in officalList">
         <div class="leftImage">
           <img class="icon" src="~images/common/sheetPlay.png" alt="" />
           <img class="image" :src="item.coverImgUrl" alt="" />
@@ -26,13 +27,15 @@
     </div>
     <div class="globaListContainer">
       <div class="titleContent">全球榜</div>
-      <div class="globaListContent">
+      <loading v-if="!globaList.length"></loading>
+      <div v-else class="globaListContent">
         <sheetItem 
         v-for="item,index in globaList" 
         :key="item.id"
         :imageUrl="item.coverImgUrl"
         :title="item.name"
-        :sum="item.playCount">
+        :sum="item.playCount"
+        :imgHeight="'13vw'">
         </sheetItem>
       </div>
     </div>
@@ -44,11 +47,13 @@ import { defineComponent, reactive, onMounted, toRefs } from "vue";
 import { getRankingList } from "@/network/rankingList";
 import { InitData } from "@/types/RankingList";
 import sheetItem from "@/components/private/sheetItem.vue";
+import loading from "@/components/common/loading.vue"
 
 export default defineComponent({
   name: "RankingList",
   components: {
     sheetItem,
+    loading
   },
   setup() {
     const data = reactive(new InitData());

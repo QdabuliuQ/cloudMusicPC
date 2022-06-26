@@ -20,7 +20,7 @@
 
 <script lang='ts'>
 import { defineComponent, reactive, onMounted, toRefs, watch } from "vue";
-import { useRouter, onBeforeRouteUpdate } from "vue-router";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   props: ["menuListHeight"], // 声明所接收的数据

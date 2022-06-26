@@ -2,10 +2,9 @@
   <div id="NewSongs">
     <div class="toggleContainer">
       <div class="toggleContent">
-        <div :class="[activeIdex == index ? 'activeItem' : '', 'btnItem']" v-for="item,index in navList" :key="item.name">{{item.name}}</div>
+        <div :class="[activeIdex == index ? 'activeItem' : '', 'btnItem']" v-for="item,index in navList" @click="toggleItem(index)" :key="item.name">{{item.name}}</div>
       </div>
     </div>
-    
     <div class="musicContainer">
       <router-view></router-view>
     </div>
@@ -13,17 +12,31 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, reactive, onMounted, toRefs } from 'vue'
+import { defineComponent, reactive, toRefs, onMounted } from 'vue'
 import { InitData } from "@/types/NewSongs"
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: 'NewSongs',
   setup() {
     const data = reactive(new InitData())
+    const router = useRouter()
+    const toggleItem = (e: number) => {
+      data.activeIdex = e
+      if (e == 0) {
+        router.push('/NewMusicList')
+      } else {
+        router.push('/NewDisc')
+      }
+    }
+
     onMounted(() => {
+      data.activeIdex = router.currentRoute.value.meta.yIndex as number ;
     })
+
     return {
       ...toRefs(data),
+      toggleItem
     }
   }
 })

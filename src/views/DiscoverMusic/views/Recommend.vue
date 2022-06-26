@@ -16,17 +16,20 @@
       </el-carousel-item>
     </el-carousel>
     <splitLine :title="'推荐歌单'" :icon="true"></splitLine>
-    <div class="sheetContainer">
+    <loading v-if="!sheetList.length"></loading>
+    <div v-else class="sheetContainer">
       <sheetItem
         v-for="item in sheetList"
         :key="item.id"
         :imageUrl="item.picUrl"
         :title="item.name"
         :sum="item.playCount"
+        :imgHeight="'13vw'"
       ></sheetItem>
     </div>
     <splitLine :title="'独家放送'" :icon="true"></splitLine>
-    <div class="privateContainer">
+    <loading v-if="!privateList.length"></loading>
+    <div v-else class="privateContainer">
       <videoItem
         v-for="item in privateList"
         :key="item.id"
@@ -37,7 +40,8 @@
       ></videoItem>
     </div>
     <splitLine :title="'最新音乐'" :icon="true"></splitLine>
-    <div class="newSongContainer">
+    <loading v-if="!newSongsList.length"></loading>
+    <div v-else class="newSongContainer">
       <newMusicItem
         v-for="item in newSongsList"
         :key="item.id"
@@ -48,7 +52,8 @@
       ></newMusicItem>
     </div>
     <splitLine :title="'推荐MV'" :icon="true"></splitLine>
-    <div class="mvContainer">
+    <loading v-if="!recommendMvList.length"></loading>
+    <div v-else class="mvContainer">
       <videoItem
         v-for="item in recommendMvList"
         :key="item.id"
@@ -61,7 +66,8 @@
       ></videoItem>
     </div>
     <splitLine :title="'推荐电台'" :icon="true"></splitLine>
-    <div class="programContainer">
+    <loading v-if="!programsList.length"></loading>
+    <div v-else class="programContainer">
       <programItem
         v-for="item in programsList"
         :key="item.id"
@@ -94,7 +100,7 @@ import {
 } from "@/network/recommend";
 import { InitData } from "@/types/Recommend";
 import bus from "vue3-eventbus";
-
+import loading from "@/components/common/loading.vue"
 const splitLine = defineAsyncComponent(()=> import("components/private/splitLine.vue"))
 const sheetItem = defineAsyncComponent(()=> import("components/private/sheetItem.vue"))
 const videoItem = defineAsyncComponent(()=> import("components/private/videoItem.vue"))
@@ -104,6 +110,7 @@ const programItem = defineAsyncComponent(()=> import("components/private/program
 export default defineComponent({
   name: "Recommend",
   components: {
+    loading,
     splitLine,
     sheetItem,
     videoItem,

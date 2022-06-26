@@ -1,7 +1,9 @@
 <template>
   <div id="SongSheet">
     <div class="categoryContainer">
+      <loading v-if="!categoryList.length"></loading>
       <div
+        v-else
         class="categoryItem"
         v-for="(item, index) in categoryList"
         :key="item.name"
@@ -23,11 +25,14 @@
       </div>
     </div>
     <div class="categoryContent">
+      <loading v-if="!categoryData.length"></loading>
       <sheetItem
+        v-else
         v-for="(item, index) in categoryData"
         :imageUrl="item.coverImgUrl"
         :title="item.name"
         :sum="item.playCount"
+        :imgHeight="'13vw'"
       ></sheetItem>
     </div>
     <div class="paginationContainer">
@@ -47,11 +52,13 @@ import { defineComponent, reactive, onMounted, toRefs } from "vue";
 import { getSheetCaregory, getSheetList } from "@/network/songSheet";
 import { InitData } from "@/types/SongSheet";
 import sheetItem from "@/components/private/sheetItem.vue";
+import loading from "@/components/common/loading.vue"
 
 export default defineComponent({
   name: "SongSheet",
   components: {
     sheetItem,
+    loading
   },
   setup() {
     const data = reactive(new InitData());

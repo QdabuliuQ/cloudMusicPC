@@ -40,7 +40,9 @@
         </div>
       </div>
     </div>
+    <loading v-if="!singerList.length"></loading>
     <div
+      v-else
       :infinite-scroll-disabled="isDisableScroll"
       :infinite-scroll-immediate="false"
       :infinite-scroll-delay="700"
@@ -52,7 +54,7 @@
         v-for="(item, index) in singerList"
         :key="item.id"
       >
-        <img :src="item.img1v1Url" alt="" />
+        <el-avatar style="border-radius: 12px;width: 100%;height: 11vw" shape="square" :fit="'cover'" :src="item.img1v1Url" />
         <div style="margin-top: 3px">{{ item.name }}</div>
       </div>
     </div>
@@ -63,6 +65,7 @@
 import { defineComponent, reactive, onMounted, toRefs } from "vue";
 import { InitData } from "@/types/SingersList";
 import { getSingerList } from "@/network/singersList";
+import loading from "@/components/common/loading.vue"
 
 export default defineComponent({
   name: "SingersList",
@@ -136,6 +139,9 @@ export default defineComponent({
       ItemClick,
     };
   },
+  components: {
+    loading
+  }
 });
 </script>
 

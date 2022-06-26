@@ -1,4 +1,4 @@
-interface MenuListInt {
+export interface MenuListInt {
   title: string,
   path: string,
 }

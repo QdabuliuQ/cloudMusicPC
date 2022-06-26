@@ -2,15 +2,19 @@
   <div class="sheetItem">
     <div class="sheetImage">
       <div class="mask"></div>
-      <div class="count">
+      <div v-if="sum" class="count">
         <img src="~images/recommend/playLine.png" alt="">
         {{$countFormat(sum)}}
       </div>
       <img class="icon" src="~images/common/sheetPlay.png" alt="" />
-      <img :src="imageUrl" alt="" />
+      <el-avatar :style="{height: imgHeight}" shape="square" :fit="'cover'" :src="imageUrl" />
+      <!-- <img :src="imageUrl" alt="" /> -->
     </div>
     <div class="sheetTitle">
       {{ title }}
+    </div>
+    <div v-if="artist" class="sheetArt">
+      {{artist}}
     </div>
   </div>
 </template>
@@ -18,7 +22,7 @@
 <script lang='ts'>
 import { defineComponent, reactive, onMounted, toRefs } from "vue";
 export default defineComponent({
-  props: ["imageUrl", "title", "sum"],
+  props: ["imageUrl", "title", "sum", "artist", "artId", "imgHeight"],
   name: "sheetItem",
   setup() {
     const data = reactive({});
@@ -36,12 +40,20 @@ export default defineComponent({
   border-radius: 8px;
   overflow: hidden;
   cursor: pointer;
+  margin-bottom: 5px;
   &:hover .icon {
     opacity: 1 !important;
   }
   .sheetImage {
     width: 100%;
     position: relative;
+    .el-avatar {
+      width: 100% !important;
+      height: 11vw;
+    }
+    .el-avatar--square {
+      border-radius: 10px;
+    }
     .mask {
       position: absolute;
       width: 100%;
@@ -85,6 +97,14 @@ export default defineComponent({
     -webkit-box-orient: vertical;
     word-break: break-all;
     font-size: 14px;
+  }
+  .sheetArt {
+    font-size: 12px;
+    color: @fontColor;
+    margin-top: 4px;
+    &:hover {
+      color: #Fff;
+    }
   }
 }
 </style>

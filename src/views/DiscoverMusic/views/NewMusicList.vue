@@ -9,10 +9,11 @@
         >{{ item.name }}</span
       >
     </div>
-    <table class="listTable">
+    <loading v-if="!newSongList.length"></loading>
+    <table v-else class="listTable">
       <tbody>
         <tr v-for="(item, index) in newSongList" :key="item.id">
-          <td class="musicIndex" style="width: 3%">{{ index<10?'0'+index:index }}</td>
+          <td class="musicIndex" style="width: 3%">{{ index+1<10?'0'+(index+1):index+1 }}</td>
           <td style="width: 50%" class="musicInfo">
             <div class="image">
               <img :src="item.album.blurPicUrl" alt="" />
@@ -43,9 +44,13 @@
 import { defineComponent, reactive, onMounted, toRefs } from "vue";
 import { InitData } from "@/types/NewMusicList";
 import { getNewSongs } from "@/network/newMusicList";
+import loading from "@/components/common/loading.vue"
 
 export default defineComponent({
   name: "NewMusicList",
+  components: {
+    loading
+  },
   setup() {
     const data = reactive(new InitData());
     // 切换数据
@@ -120,9 +125,12 @@ export default defineComponent({
       align-items: center;
       .image {
         width: 4vw;
+        min-height: 4vw;
+        background: @loadColor;
         margin-right: 10px;
         display: flex;
         align-items: center;
+        border-radius: 8px;
         img {
           width: 100%;
           border-radius: 8px;

@@ -1,22 +1,34 @@
 <template>
   <div class="videoItem">
-    <div :style="{height: itemHeight}" class="videoImage">
+    <div :style="{ height: itemHeight }" class="videoImage">
       <div class="mask"></div>
       <div v-if="playCount" class="playCount">
-        <img src="~images/recommend/playLine.png" alt="">
-        {{$countFormat(playCount)}}
+        <img src="~images/recommend/playLine.png" alt="" />
+        {{ $countFormat(playCount) }}
       </div>
-      <img v-if="topLeftIcon" class="icon" src="~images/common/sheetPlay.png" alt="" />
-      <img class="image" :src="imageUrl" alt="" />
+      <img
+        v-if="topLeftIcon"
+        class="icon"
+        src="~images/common/sheetPlay.png"
+        alt=""
+      />
+      <div v-if="duration" class="duration">
+        {{$formatTime(duration)}}
+      </div>
+      <img style="height: 100%" class="image" :src="imageUrl" alt="" />
     </div>
     <div class="videoTitle">
       {{ title }}
     </div>
     <div v-if="artists" class="videoArtists">
+      <!-- <label v-if="index != artists.length && index != 0"> / </label
+        > -->
       <span v-for="(item, index) in artists" :key="item.id"
-        ><label v-if="index != artists.length && index != 0"> / </label
-        >{{ item.name }}</span
+        >{{ item.name }}&nbsp;&nbsp;&nbsp;&nbsp;</span
       >
+    </div>
+    <div class="videoCreator" v-if="creator">
+      {{creator}}
     </div>
   </div>
 </template>
@@ -31,7 +43,10 @@ export default defineComponent({
     topLeftIcon: Boolean,
     artists: Object,
     playCount: Number,
-    itemHeight: String
+    itemHeight: String,
+    creator: String,
+    artId: String,
+    duration: Number
   },
   name: "videoItem",
   setup() {
@@ -46,13 +61,21 @@ export default defineComponent({
   cursor: pointer;
   .videoImage {
     width: 100%;
-    // height: 8.5vw;
     position: relative;
     overflow: hidden;
     border-radius: 8px;
+    .duration {
+      z-index: 5;
+      position: absolute;
+      font-size: 12px;
+      color: #Fff;
+      right: 10px;
+      bottom: 8px;
+    }
     .mask {
       z-index: 5;
       position: absolute;
+      top: 0;
       width: 100%;
       height: 40px;
       background-image: linear-gradient(rgba(0, 0, 0, 0.491), transparent);
@@ -88,7 +111,7 @@ export default defineComponent({
     }
   }
   .videoTitle {
-    margin-top: 2px;
+    margin-top: 4px;
     color: #fff;
     text-overflow: -o-ellipsis-lastline;
     overflow: hidden;
@@ -111,6 +134,15 @@ export default defineComponent({
         color: #fff;
       }
     }
+  }
+  .videoCreator {
+    font-size: 12px;
+    margin-top: 4px;
+    color: rgb(155, 155, 155);
+    cursor: pointer;
+      &:hover {
+        color: #fff;
+      }
   }
 }
 </style>

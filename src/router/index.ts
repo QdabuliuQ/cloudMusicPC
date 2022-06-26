@@ -7,8 +7,13 @@ const RankingList = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/D
 const SingersList = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/DiscoverMusic/views/SingersList.vue')
 const NewSongs = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/DiscoverMusic/views/NewSongs.vue')
 const NewMusicList = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/DiscoverMusic/views/NewMusicList.vue')
+const NewDisc = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/DiscoverMusic/views/NewDisc.vue')
 
 const Video = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Video/Video.vue')
+const VideoList = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Video/views/VideoList.vue')
+const MvList = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Video/views/MvList.vue')
+const MvAllList = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Video/views/MvAllList.vue')
+
 
 const routes: Array<RouteRecordRaw> = [
   { path: '/', redirect: '/HomePage' },
@@ -74,7 +79,8 @@ const routes: Array<RouteRecordRaw> = [
             component: NewSongs,
             children: [
               { path: '/NewSongs', redirect: '/NewMusicList' },
-              { path: '/NewMusicList', name: 'NewMusicList', component: NewMusicList }
+              { path: '/NewMusicList', meta: { yIndex: 0 }, name: 'NewMusicList', component: NewMusicList },
+              { path: '/NewDisc', meta: { yIndex: 1 }, name: 'NewDisc', component: NewDisc }
             ]
           },
         ]
@@ -86,6 +92,19 @@ const routes: Array<RouteRecordRaw> = [
           index: 1
         },
         component: Video,
+        children: [
+          {path: '/Video', redirect: '/VideoList'},
+          {path: '/VideoList', meta: {vIndex: 0}, name: 'VideoList', component: VideoList},
+          {path: '/MvList', meta: {vIndex: 1}, name: 'MvList', component: MvList},
+        ]
+      },
+      {
+        path: '/MvAllList',
+        name: 'MvAllList',
+        meta: {
+          index: 1
+        },
+        component: MvAllList,
       },
     ]
   }

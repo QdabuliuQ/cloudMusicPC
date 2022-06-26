@@ -34,7 +34,9 @@ export default defineComponent({
       router.push(path);
     };
 
-    onMounted(() => {});
+    onMounted(() => {
+      data.activeIndex = router.currentRoute.value.meta.xIndex as number ;
+    });
     return {
       ...toRefs(data),
       toPage,
