@@ -1,4 +1,4 @@
-import $http from './http'
+import $http from '../http'
 
 // 歌单分类
 export function getSheetCaregory() {

@@ -97,8 +97,8 @@ import {
   getNewSongs,
   getRecommendMv,
   getRecommendProgram,
-} from "@/network/recommend";
-import { InitData } from "@/types/Recommend";
+} from "@/network/DiscoverMusic/recommend";
+import { InitData } from "@/types/DiscoverMusic/Recommend";
 import bus from "vue3-eventbus";
 import loading from "@/components/common/loading.vue"
 const splitLine = defineAsyncComponent(()=> import("components/private/splitLine.vue"))

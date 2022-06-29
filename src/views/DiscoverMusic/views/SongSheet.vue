@@ -49,8 +49,8 @@
 
 <script lang='ts'>
 import { defineComponent, reactive, onMounted, toRefs } from "vue";
-import { getSheetCaregory, getSheetList } from "@/network/songSheet";
-import { InitData } from "@/types/SongSheet";
+import { getSheetCaregory, getSheetList } from "@/network/DiscoverMusic/songSheet";
+import { InitData } from "@/types/DiscoverMusic/SongSheet";
 import sheetItem from "@/components/private/sheetItem.vue";
 import loading from "@/components/common/loading.vue"
 

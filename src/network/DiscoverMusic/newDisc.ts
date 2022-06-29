@@ -1,4 +1,4 @@
-import $http from "./http";
+import $http from "../http";
 
 
 // 新碟上架

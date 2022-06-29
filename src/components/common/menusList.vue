@@ -42,6 +42,7 @@ export default defineComponent({
       menuList: [
         { title: "发现音乐", path: "/DiscoverMusic" },
         { title: "视频", path: "/Video" },
+        { title: "主播电台", path: "/Audio" },
         { title: "关注", path: "/Follow" },
         { title: "私人FM", path: "/PrivateFM" },
       ],

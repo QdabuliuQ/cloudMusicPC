@@ -21,7 +21,7 @@
 
 <script lang='ts'>
 import { defineComponent, reactive, onMounted, toRefs } from "vue";
-import { InitData } from "@/types/DiscoverMusic";
+import { InitData } from "@/types/DiscoverMusic/DiscoverMusic";
 import { useRouter } from "vue-router";
 
 export default defineComponent({

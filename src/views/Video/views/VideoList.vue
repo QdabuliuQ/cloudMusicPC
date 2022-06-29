@@ -38,13 +38,14 @@
       class="videoContainer"
     >
       <videoItem
+        @click="toPlayVideo(item)"
         v-for="item in videoList"
         :key="item.data.vid"
         :imageUrl="item.data.coverUrl"
         :playCount="item.data.playTime"
         :title="item.data.title"
         :creator="item.data.creator ? item.data.creator.nickname : null"
-        :itemHeight="'10vw'"
+        :itemHeight="'9.5vw'"
         :duration="item.data.durationms"
       ></videoItem>
     </div>
@@ -61,9 +62,10 @@ import {
   getCurrentInstance,
 } from "vue";
 import { getVideoCate, getVideoList } from "@/network/Video/videoList";
-import { InitData } from "@/types/Video/VideoList";
+import { InitData, videoListInt } from "@/types/Video/VideoList";
 import videoItem from "@/components/private/videoItem.vue";
 import loading from "@/components/common/loading.vue"
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "VideoList",
@@ -75,6 +77,8 @@ export default defineComponent({
     const { ctx } = getCurrentInstance() as any;
     const data = reactive(new InitData());
     const popoverRef = ref(null);
+    const router = useRouter()
+
     // 切换类型
     const toggleItem = (e: number) => {
       data.activeCate = e;
@@ -101,8 +105,12 @@ export default defineComponent({
     // 滚动加载更多
     const loadVideoData = () => {
       getVideoData();
-      // getVideoData();
     };
+    // 跳转页面播放视频
+    const toPlayVideo = (item: videoListInt) => {
+      router.push(`/VideoPlay?type=video&id=${item.data.vid}`)
+    }
+
     onMounted(() => {
       getVideoCate().then((res) => {
         data.cateList = res.data.data;
@@ -117,6 +125,7 @@ export default defineComponent({
       toggleItem,
       popoverRef,
       loadVideoData,
+      toPlayVideo,
     };
   },
 });

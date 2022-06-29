@@ -63,8 +63,8 @@
 
 <script lang='ts'>
 import { defineComponent, reactive, onMounted, toRefs } from "vue";
-import { InitData } from "@/types/SingersList";
-import { getSingerList } from "@/network/singersList";
+import { InitData } from "@/types/DiscoverMusic/SingersList";
+import { getSingerList } from "@/network/DiscoverMusic/singersList";
 import loading from "@/components/common/loading.vue"
 
 export default defineComponent({

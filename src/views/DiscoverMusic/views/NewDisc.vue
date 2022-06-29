@@ -24,8 +24,8 @@
 
 <script lang='ts'>
 import { defineComponent, reactive, onMounted, toRefs } from "vue";
-import { getNewDisc } from "@/network/newDisc";
-import { InitData } from "@/types/NewDisc";
+import { getNewDisc } from "@/network/DiscoverMusic/newDisc";
+import { InitData } from "@/types/DiscoverMusic/NewDisc";
 import sheetItem from "@/components/private/sheetItem.vue";
 import loading from "@/components/common/loading.vue"
 

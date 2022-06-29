@@ -1,6 +1,5 @@
 <template>
   <div id="HomePage">
-    <musicNavBar></musicNavBar>
     <div class="centerContainer">
       <el-scrollbar :height="menuListHeight">
         <menusList :menuListHeight='menuListHeight'></menusList>
@@ -9,20 +8,21 @@
         <router-view></router-view>
       </div>
     </div>
+    <musicNav></musicNav>
   </div>
 </template>
 
 <script lang='ts'>
 import { defineComponent, reactive, onMounted, toRefs } from "vue";
-import musicNavBar from "components/common/musicNavBar.vue";
 import menusList from "components/common/menusList.vue";
 import bus from 'vue3-eventbus'
+import musicNav from "components/common/musicNav.vue";
 
 export default defineComponent({
   name: "HomePage",
   components: {
-    musicNavBar,
     menusList,
+    musicNav,
   },
   setup() {
     const data = reactive({
@@ -61,6 +61,7 @@ export default defineComponent({
 #HomePage {
   .centerContainer {
     margin-top: 55px;
+    margin-bottom: 70px;
     display: flex;
     .el-scrollbar {
       width: 210px;

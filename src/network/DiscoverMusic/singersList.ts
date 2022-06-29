@@ -1,4 +1,4 @@
-import $http from "./http";
+import $http from "../http";
 
 // 获取分类歌手
 export function getSingerList(data: {

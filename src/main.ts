@@ -20,17 +20,23 @@ app.config.globalProperties.$countFormat = function (num: string | number) {
 }
 
 app.config.globalProperties.$formatTime = function (msTime: number) {
-  let time = msTime /1000;
+  let time = msTime / 1000
+  let day = Math.floor(time / 60 / 60 / 24);
+  let hour = Math.floor(time / 60 / 60) % 24;
+  let minute = Math.floor(time / 60) % 60;
+  let second = Math.floor(time) % 60;
+  return `${minute < 10 ? '0' + minute : minute}: ${second < 10 ? '0' + second : second}`
+}
 
-  let day = Math.floor(time /60 /60 /24);
-
-  let hour = Math.floor(time /60 /60) %24;
-
-  let minute = Math.floor(time /60) %60;
-
-  let second = Math.floor(time) %60;
-
-  return `${minute<10?'0'+minute:minute}: ${second<10?'0'+second:second}`
+app.config.globalProperties.$getTime = function (timer: number) {
+  var time = new Date(timer);
+  var year = time.getFullYear();//年
+  var mon = time.getMonth() + 1;//0 
+  var day = time.getDate();//24
+  var hour = time.getHours();//时
+  var min = time.getMinutes();//分
+  var sec = time.getSeconds();//秒
+  return `${year}-${mon < 10 ? '0' + mon : mon}-${day < 10 ? '0' + day : day} ${hour < 10 ? '0' + hour : hour}:${min < 10 ? '0' + min : min}:${sec < 10 ? '0' + sec : sec}`
 }
 
 app.use(store).use(router).use(ElementPlus).use(eventBus).mount('#app')

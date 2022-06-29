@@ -42,8 +42,8 @@
 
 <script lang='ts'>
 import { defineComponent, reactive, onMounted, toRefs } from "vue";
-import { InitData } from "@/types/NewMusicList";
-import { getNewSongs } from "@/network/newMusicList";
+import { InitData } from "@/types/DiscoverMusic/NewMusicList";
+import { getNewSongs } from "@/network/DiscoverMusic/newMusicList";
 import loading from "@/components/common/loading.vue"
 
 export default defineComponent({

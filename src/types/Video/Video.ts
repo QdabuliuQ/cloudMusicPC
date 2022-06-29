@@ -1,4 +1,4 @@
-import { MenuListInt } from "../DiscoverMusic";
+import { MenuListInt } from "../DiscoverMusic/DiscoverMusic";
 
 export class InitData {
   menuList: MenuListInt[] = [

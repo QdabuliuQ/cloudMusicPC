@@ -1,4 +1,4 @@
-import $http from "./http";
+import $http from "../http";
 
 // 新歌速递
 export function getNewSongs(data: {type: string | number}) {

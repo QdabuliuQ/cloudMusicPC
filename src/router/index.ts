@@ -14,6 +14,10 @@ const VideoList = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Vid
 const MvList = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Video/views/MvList.vue')
 const MvAllList = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Video/views/MvAllList.vue')
 
+const Audio = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Audio/Audio.vue')
+const AudioList = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Audio/views/AudioList.vue')
+
+const VideoPlay = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/VideoPlay/VideoPlay.vue')
 
 const routes: Array<RouteRecordRaw> = [
   { path: '/', redirect: '/HomePage' },
@@ -106,7 +110,29 @@ const routes: Array<RouteRecordRaw> = [
         },
         component: MvAllList,
       },
+      {
+        path: '/Audio',
+        name: 'Audio',
+        meta: {
+          index: 2
+        },
+        component: Audio
+      },
+      {
+        path: '/AudioList',
+        name: 'AudioList',
+        meta: {
+          index: 2
+        },
+        component: AudioList
+      },
+      
     ]
+  },
+  {
+    path: '/VideoPlay',
+    name: 'VideoPlay',
+    component: VideoPlay
   }
 ]
 

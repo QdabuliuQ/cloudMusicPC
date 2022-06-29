@@ -13,7 +13,7 @@
 
 <script lang='ts'>
 import { defineComponent, reactive, toRefs, onMounted } from 'vue'
-import { InitData } from "@/types/NewSongs"
+import { InitData } from "@/types/DiscoverMusic/NewSongs"
 import { useRouter } from "vue-router";
 
 export default defineComponent({

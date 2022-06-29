@@ -3,14 +3,15 @@ interface cateTypeInt {
   id: number | string
 }
 
-interface videoListInt {
+export interface videoListInt {
   data: {
     title: string,
     id: string | number,
     coverUrl: string,
     durationms: number,
     playTime: number,
-    creator: { nickname: string, userId: number | string }
+    vid: string,
+    creator: { nickname: string, userId: number | string, userName?: string }
   }
 }
 

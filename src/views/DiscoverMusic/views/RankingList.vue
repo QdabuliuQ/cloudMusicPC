@@ -44,8 +44,8 @@
 
 <script lang='ts'>
 import { defineComponent, reactive, onMounted, toRefs } from "vue";
-import { getRankingList } from "@/network/rankingList";
-import { InitData } from "@/types/RankingList";
+import { getRankingList } from "@/network/DiscoverMusic/rankingList";
+import { InitData } from "@/types/DiscoverMusic/RankingList";
 import sheetItem from "@/components/private/sheetItem.vue";
 import loading from "@/components/common/loading.vue"
 
