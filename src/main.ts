@@ -28,7 +28,7 @@ app.config.globalProperties.$formatTime = function (msTime: number) {
   return `${minute < 10 ? '0' + minute : minute}: ${second < 10 ? '0' + second : second}`
 }
 
-app.config.globalProperties.$getTime = function (timer: number) {
+app.config.globalProperties.$getTime = function (timer: number, h?:boolean) {
   var time = new Date(timer);
   var year = time.getFullYear();//年
   var mon = time.getMonth() + 1;//0 
@@ -36,7 +36,11 @@ app.config.globalProperties.$getTime = function (timer: number) {
   var hour = time.getHours();//时
   var min = time.getMinutes();//分
   var sec = time.getSeconds();//秒
-  return `${year}-${mon < 10 ? '0' + mon : mon}-${day < 10 ? '0' + day : day} ${hour < 10 ? '0' + hour : hour}:${min < 10 ? '0' + min : min}:${sec < 10 ? '0' + sec : sec}`
+  if (h) {
+    return `${year}-${mon < 10 ? '0' + mon : mon}-${day < 10 ? '0' + day : day}`
+  } else {
+    return `${year}-${mon < 10 ? '0' + mon : mon}-${day < 10 ? '0' + day : day} ${hour < 10 ? '0' + hour : hour}:${min < 10 ? '0' + min : min}:${sec < 10 ? '0' + sec : sec}`
+  }
 }
 
 app.use(store).use(router).use(ElementPlus).use(eventBus).mount('#app')

@@ -63,11 +63,16 @@ export default defineComponent({
   .itemInfo {
     width: 94%;
     font-size: 13px;
+    .listItem {
+      span {
+        cursor: pointer;
+      }
+    }
     .topInfo {
       display: flex;
       align-items: center;
       .infoName {
-        color: #75aeff;
+        color: @nameColor;
         cursor: pointer;
         line-height: 21px;
         word-break:break-all;
@@ -84,7 +89,7 @@ export default defineComponent({
       border-radius: 8px;
       color: @fontColor;
       span {
-        color: #75aeff;
+        color: @nameColor;
       }
     }
     .bottomInfo {

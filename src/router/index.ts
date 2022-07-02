@@ -16,8 +16,17 @@ const MvAllList = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Vid
 
 const Audio = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Audio/Audio.vue')
 const AudioList = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Audio/views/AudioList.vue')
+const AudioDetail = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Audio/views/AudioDetail.vue')
+const AudioSongs = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Audio/views/AudioSongs.vue')
+const AudioCollect = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Audio/views/AudioCollect.vue')
 
 const VideoPlay = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/VideoPlay/VideoPlay.vue')
+
+const SheetDetail = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/SheetDetail/SheetDetail.vue')
+const SheetSongs = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/SheetDetail/views/SheetSongs.vue')
+const SheetComment = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/SheetDetail/views/SheetComment.vue')
+const SheetCollect = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/SheetDetail/views/SheetCollect.vue')
+
 
 const routes: Array<RouteRecordRaw> = [
   { path: '/', redirect: '/HomePage' },
@@ -126,14 +135,37 @@ const routes: Array<RouteRecordRaw> = [
         },
         component: AudioList
       },
-      
+      {
+        path: '/AudioDetail',
+        name: 'AudioDetail',
+        meta: {
+          index: 2
+        },
+        component: AudioDetail,
+        children: [
+          { path: '/AudioDetail', redirect: '/AudioSongs' },
+          { path: '/AudioSongs', meta: {kIndex: 0}, name: 'AudioSongs', component: AudioSongs },
+          { path: '/AudioCollect', meta: {kIndex: 1}, name: 'AudioCollect', component: AudioCollect }
+        ]
+      },
+      {
+        path: '/SheetDetail',
+        name: 'SheetDetail',
+        component: SheetDetail,
+        children: [
+          { path: '/SheetDetail', redirect: '/SheetSongs' },
+          { path: '/SheetSongs', meta: {sheetIndex: 0}, name: 'SheetSongs', component: SheetSongs },
+          { path: '/SheetComment', meta: {sheetIndex: 1}, name: 'SheetComment', component: SheetComment },
+          { path: '/SheetCollect', meta: {sheetIndex: 2}, name: 'SheetCollect', component: SheetCollect },
+        ]
+      }
     ]
   },
   {
     path: '/VideoPlay',
     name: 'VideoPlay',
     component: VideoPlay
-  }
+  },
 ]
 
 const router = createRouter({

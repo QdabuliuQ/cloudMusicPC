@@ -2,8 +2,8 @@
   <div id="VideoPlay">
     <div class="leftVideoContainer">
       <pageNav :title="'视频详情'" :icon="true"></pageNav>
-      <div class="playContainer">
-        <mediaPlay :src="url"></mediaPlay>
+      <div ref="playContainer" class="playContainer">
+        <mediaPlay :miniModel="miniModel" :src="url"></mediaPlay>
       </div>
       <div v-if="videoInfo.creator.avatarUrl != ''" class="creatorInfo">
         <div class="leftInfo">
@@ -106,8 +106,8 @@
     <div class="rightVideList">
       <pageNav :title="'相关视频'" :icon="false"></pageNav>
       <div class="videoList">
-        <videoItem 
-          v-for="item in relateVideoList" 
+        <videoItem
+          v-for="item in relateVideoList"
           :key="item.vid"
           :coverUrl="item.coverUrl"
           :durationms="item.durationms"
@@ -149,6 +149,7 @@ export default defineComponent({
     const data = reactive(new InitData());
     const router = useRouter();
     const title = ref();
+    const playContainer = ref();
     // 评论页码切换
     const pageChange = (e: number) => {
       data.offset = e;
@@ -176,11 +177,11 @@ export default defineComponent({
       if (t.type == "video") {
         // 视频url
         getVideoUrl({
-          id: t.id as string
+          id: t.id as string,
         }).then((res: any) => {
           console.log(res);
-          data.url = res.data.urls[0].url
-        })
+          data.url = res.data.urls[0].url;
+        });
 
         // 视频详情
         getVideoDetail({
@@ -199,12 +200,22 @@ export default defineComponent({
 
       // 视频评论
       getCommentData(false);
-      
+
+      const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+          data.miniModel = !entry.isIntersecting
+        });
+      }, {
+        root: null,
+        rootMargin: '0px 0px 30px 0px',
+      });
+      observer.observe(playContainer.value);
     });
     return {
       ...toRefs(data),
       pageChange,
       title,
+      playContainer,
     };
   },
 });
@@ -333,7 +344,7 @@ export default defineComponent({
           justify-content: flex-end;
           margin-bottom: 40px;
           .sendBtn {
-            font-size: 14px;
+            font-size: 13px;
             padding: 10px 24px;
             background-color: #393939;
             border-radius: 10px;

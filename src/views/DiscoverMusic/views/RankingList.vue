@@ -18,7 +18,9 @@
               <div class="itemIndex">{{ index2 + 1 }}</div>
               <div class="itemInfo">
                 <div>{{ music.first }}</div>
-                <div style="color: #a3a3a3">by {{ music.second }}</div>
+                <div :title="music.second" class="infoArt" style="color: #a3a3a3">
+                  by {{ music.second }}
+                </div>
               </div>
             </div>
           </div>
@@ -29,13 +31,16 @@
       <div class="titleContent">全球榜</div>
       <loading v-if="!globaList.length"></loading>
       <div v-else class="globaListContent">
-        <sheetItem 
-        v-for="item,index in globaList" 
-        :key="item.id"
-        :imageUrl="item.coverImgUrl"
-        :title="item.name"
-        :sum="item.playCount"
-        :imgHeight="'13vw'">
+        <sheetItem
+          :type="'sheet'"
+          :id="item.id"
+          v-for="(item, index) in globaList"
+          :key="item.id"
+          :imageUrl="item.coverImgUrl"
+          :title="item.name"
+          :sum="item.playCount"
+          :imgHeight="'13vw'"
+        >
         </sheetItem>
       </div>
     </div>
@@ -47,13 +52,13 @@ import { defineComponent, reactive, onMounted, toRefs } from "vue";
 import { getRankingList } from "@/network/DiscoverMusic/rankingList";
 import { InitData } from "@/types/DiscoverMusic/RankingList";
 import sheetItem from "@/components/private/sheetItem.vue";
-import loading from "@/components/common/loading.vue"
+import loading from "@/components/common/loading.vue";
 
 export default defineComponent({
   name: "RankingList",
   components: {
     sheetItem,
-    loading
+    loading,
   },
   setup() {
     const data = reactive(new InitData());
@@ -135,6 +140,13 @@ export default defineComponent({
             align-items: center;
             justify-content: space-between;
             color: #fff;
+            .infoArt {
+              text-align: right;
+              width: 50%;
+              text-overflow: ellipsis;
+              overflow: hidden;
+              white-space: nowrap;
+            }
           }
         }
       }

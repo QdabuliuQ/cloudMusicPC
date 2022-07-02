@@ -1,34 +1,45 @@
 <template>
-  <div class="sheetItem">
+  <div @click="toPage" class="sheetItem">
     <div class="sheetImage">
       <div class="mask"></div>
       <div v-if="sum" class="count">
-        <img src="~images/recommend/playLine.png" alt="">
-        {{$countFormat(sum)}}
+        <img src="~images/recommend/playLine.png" alt="" />
+        {{ $countFormat(sum) }}
       </div>
       <img class="icon" src="~images/common/sheetPlay.png" alt="" />
-      <el-avatar :style="{height: imgHeight}" shape="square" :fit="'cover'" :src="imageUrl" />
-      <!-- <img :src="imageUrl" alt="" /> -->
+      <el-avatar
+        :style="{ height: imgHeight }"
+        shape="square"
+        :fit="'cover'"
+        :src="imageUrl"
+      />
     </div>
     <div class="sheetTitle">
       {{ title }}
     </div>
     <div v-if="artist" class="sheetArt">
-      {{artist}}
+      {{ artist }}
     </div>
   </div>
 </template>
 
 <script lang='ts'>
-import { defineComponent, reactive, onMounted, toRefs } from "vue";
+import { defineComponent } from "vue";
+import { useRouter } from "vue-router";
+
 export default defineComponent({
-  props: ["imageUrl", "title", "sum", "artist", "artId", "imgHeight"],
+  props: ["imageUrl", "title", "sum", "artist", "artId", "imgHeight", "type", "id"],
   name: "sheetItem",
-  setup() {
-    const data = reactive({});
-    onMounted(() => {});
+  setup(props) {
+    const router = useRouter()
+    const toPage = () => {
+      if (props.type == 'sheet') {
+        router.push('/SheetDetail?id='+props.id)
+      }
+    }
+
     return {
-      ...toRefs(data),
+      toPage
     };
   },
 });
@@ -103,7 +114,7 @@ export default defineComponent({
     color: @fontColor;
     margin-top: 4px;
     &:hover {
-      color: #Fff;
+      color: #fff;
     }
   }
 }

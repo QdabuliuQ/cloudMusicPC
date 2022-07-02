@@ -61,4 +61,6 @@ export class InitData {
   relateVideoList: videoListInt[] = []
 
   url: string = ''
+
+  miniModel: boolean = false
 }

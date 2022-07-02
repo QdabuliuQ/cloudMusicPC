@@ -19,6 +19,9 @@
     <loading v-if="!sheetList.length"></loading>
     <div v-else class="sheetContainer">
       <sheetItem
+        :type="'sheet'"
+        :id="item.id"
+        @click="toSheetDetail(item.id)"
         v-for="item in sheetList"
         :key="item.id"
         :imageUrl="item.picUrl"
@@ -101,6 +104,7 @@ import {
 import { InitData } from "@/types/DiscoverMusic/Recommend";
 import bus from "vue3-eventbus";
 import loading from "@/components/common/loading.vue"
+import { useRouter } from "vue-router";
 const splitLine = defineAsyncComponent(()=> import("components/private/splitLine.vue"))
 const sheetItem = defineAsyncComponent(()=> import("components/private/sheetItem.vue"))
 const videoItem = defineAsyncComponent(()=> import("components/private/videoItem.vue"))
@@ -120,6 +124,11 @@ export default defineComponent({
   setup() {
     const data = reactive(new InitData());
     const bannerRef = ref();
+    const router = useRouter()
+
+    const toSheetDetail = (e: number) => {
+      router.push('/SheetDetail?id='+e)
+    }
 
     bus.on("windowResize", () => {
       data.bannerHeight = bannerRef.value[0].clientHeight;
@@ -159,6 +168,7 @@ export default defineComponent({
     return {
       ...toRefs(data),
       bannerRef,
+      toSheetDetail
     };
   },
 });

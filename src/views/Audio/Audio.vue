@@ -64,7 +64,7 @@
       >
         <splitLine :icon="true" :path="'/AudioList?cateId='+item.categoryId+'&name='+item.categoryName" :title="item.categoryName + '&nbsp;·&nbsp;电台'"></splitLine>
         <div class="audioList">
-          <div v-for="audio in item.radios" :key="audio.id" class="audioItem">
+          <div @click="toDetail(audio.id)" v-for="audio in item.radios" :key="audio.id" class="audioItem">
             <div class="image">
               <el-avatar shape="square" :size="100" :fit="'cover'" :src="audio.picUrl" />
             </div>
@@ -111,6 +111,10 @@ export default defineComponent({
       router.push('/AudioList?cateId='+e+'&name='+name)
     }
 
+    const toDetail = (e: number) => {
+      router.push('/AudioDetail?audioId='+e)
+    }
+
     bus.on("windowResize", () => {
       data.bannerHeight = bannerRef.value[0].clientHeight;
     });
@@ -142,7 +146,8 @@ export default defineComponent({
     return {
       ...toRefs(data),
       bannerRef,
-      toPage
+      toPage,
+      toDetail
     };
   },
 });

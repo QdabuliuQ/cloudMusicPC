@@ -1,9 +1,8 @@
 <template>
   <div id="SongSheet">
-    <div class="categoryContainer">
-      <loading v-if="!categoryList.length"></loading>
+    <loading v-if="!categoryList.length"></loading>
+    <div v-else class="categoryContainer">
       <div
-        v-else
         class="categoryItem"
         v-for="(item, index) in categoryList"
         :key="item.name"
@@ -24,10 +23,11 @@
         </div>
       </div>
     </div>
-    <div class="categoryContent">
-      <loading v-if="!categoryData.length"></loading>
+    <loading v-if="!categoryData.length"></loading>
+    <div v-else class="categoryContent">
       <sheetItem
-        v-else
+        :type="'sheet'"
+        :id="item.id"
         v-for="(item, index) in categoryData"
         :imageUrl="item.coverImgUrl"
         :title="item.name"

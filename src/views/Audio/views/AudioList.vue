@@ -12,7 +12,7 @@
       v-infinite-scroll="loadMoreData"
       class="audioContainer"
     >
-      <div v-for="audio in audioList" :key="audio.id" class="audioItem">
+      <div @click="toPage(audio.id)" v-for="audio in audioList" :key="audio.id" class="audioItem">
         <div class="image">
           <el-avatar
             shape="square"
@@ -47,6 +47,9 @@ export default defineComponent({
     const data = reactive(new InitData());
     const router = useRouter();
 
+    const toPage = (e: number) => {
+      router.push('/AudioDetail?audioId='+e)
+    }
     // 获取数据
     const getData = () => {
       getAudioCataData({
@@ -75,6 +78,7 @@ export default defineComponent({
     return {
       ...toRefs(data),
       loadMoreData,
+      toPage
     };
   },
 });
