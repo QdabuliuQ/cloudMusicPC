@@ -19,7 +19,8 @@
           </div>
           <div class="data">
             <div class="dataItem">
-              <img src="~images/common/unpraise.png" alt="">
+              <img v-if="!liked" src="~images/common/unpraise.png" alt="">
+              <img v-else src="~images/common/praise.png" alt="">
               {{likedCount}}
             </div>
           </div>
@@ -40,7 +41,8 @@ export default defineComponent({
     'content',
     'nickname',
     'userId',
-    'beReplied'
+    'beReplied',
+    'liked'
   ],
   setup() {
     const data = reactive({})
@@ -85,7 +87,7 @@ export default defineComponent({
       margin-top: 6px;
       padding: 10px 15px;
       font-size: 12px;
-      background-color: #393939;
+      background-color: @eventBgc;
       border-radius: 8px;
       color: @fontColor;
       span {

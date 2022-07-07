@@ -278,7 +278,7 @@ export default defineComponent({
           margin-bottom: 7px;
           font-size: 12px;
           padding: 6px 15px 8px;
-          background-color: #393939;
+          background-color: @eventBgc;
           border-radius: 10px;
           transition: 0.2s all linear;
           cursor: pointer;
@@ -326,7 +326,7 @@ export default defineComponent({
         .commentBox {
           padding: 10px 12px;
           border-radius: 8px;
-          background-color: #393939;
+          background-color: @eventBgc;
           margin-bottom: 8px;
           textarea {
             resize: none;
@@ -346,7 +346,7 @@ export default defineComponent({
           .sendBtn {
             font-size: 13px;
             padding: 10px 24px;
-            background-color: #393939;
+            background-color: @eventBgc;
             border-radius: 10px;
             transition: 0.2s all linear;
             cursor: pointer;

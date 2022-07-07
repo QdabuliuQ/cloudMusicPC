@@ -27,6 +27,9 @@ const SheetSongs = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Sh
 const SheetComment = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/SheetDetail/views/SheetComment.vue')
 const SheetCollect = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/SheetDetail/views/SheetCollect.vue')
 
+const UserFollow = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/UserInfo/UserFollow.vue')
+const UserFans = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/UserInfo/UserFans.vue')
+const UserEvents = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/UserInfo/UserEvents.vue')
 
 const routes: Array<RouteRecordRaw> = [
   { path: '/', redirect: '/HomePage' },
@@ -158,7 +161,22 @@ const routes: Array<RouteRecordRaw> = [
           { path: '/SheetComment', meta: {sheetIndex: 1}, name: 'SheetComment', component: SheetComment },
           { path: '/SheetCollect', meta: {sheetIndex: 2}, name: 'SheetCollect', component: SheetCollect },
         ]
-      }
+      },
+      {
+        path: '/UserFollow',
+        name: 'UserFollow',
+        component: UserFollow
+      },
+      {
+        path: '/UserFans',
+        name: 'UserFans',
+        component: UserFans
+      },
+      {
+        path: '/UserEvents',
+        name: 'UserEvents',
+        component: UserEvents
+      },
     ]
   },
   {

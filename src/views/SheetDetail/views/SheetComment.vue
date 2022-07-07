@@ -7,36 +7,59 @@
       <div class="sendBtn">评论</div>
     </div>
     <div class="commentContainer">
-      <div class="title">热门评论</div>
-      <loading v-if="!hotCommentList.length"></loading>
-      <commentItem
-        v-else
-        v-for="item in hotCommentList"
-        :key="item.commentId"
-        :avatarUrl="item.user.avatarUrl"
-        :time="item.time"
-        :likedCount="item.likedCount"
-        :content="item.content"
-        :nickname="item.user.nickname"
-        :userId="item.user.userId"
-        :beReplied="item.beReplied"
-      ></commentItem>
-      <div ref="newCommentTitle" style="margin-top: 40px" class="title">最新评论({{total}})</div>
-      <loading v-if="!commentList.length"></loading>
-      <commentItem
-        v-else
-        v-for="item in commentList"
-        :key="item.commentId"
-        :avatarUrl="item.user.avatarUrl"
-        :time="item.time"
-        :likedCount="item.likedCount"
-        :content="item.content"
-        :nickname="item.user.nickname"
-        :userId="item.user.userId"
-        :beReplied="item.beReplied"
-      ></commentItem>
-      <div style="margin-top: 15px;display:flex;align-items:center;justify-content:center">
-        <el-pagination @current-change="pageChange" :current-page="offset" :page-size="30" background layout="prev, pager, next" :total="total" />
+      <loading v-if="commentList.length == 0 && total != 0"></loading>
+      <div v-else>
+          <div v-if="hotCommentList.length" class="title">热门评论</div>
+          <commentItem
+            v-for="item in hotCommentList"
+            :key="item.commentId"
+            :avatarUrl="item.user.avatarUrl"
+            :time="item.time"
+            :likedCount="item.likedCount"
+            :content="item.content"
+            :nickname="item.user.nickname"
+            :userId="item.user.userId"
+            :beReplied="item.beReplied"
+          ></commentItem>
+          <div
+            v-if="commentList.length"
+            ref="newCommentTitle"
+            style="margin-top: 40px"
+            class="title"
+          >
+            最新评论({{ total }})
+          </div>
+          <commentItem
+            v-for="item in commentList"
+            :key="item.commentId"
+            :avatarUrl="item.user.avatarUrl"
+            :time="item.time"
+            :likedCount="item.likedCount"
+            :content="item.content"
+            :nickname="item.user.nickname"
+            :userId="item.user.userId"
+            :beReplied="item.beReplied"
+          ></commentItem>
+      </div>
+
+      <emptyContent v-if="total == 0"></emptyContent>
+      <div
+        v-if="total"
+        style="
+          margin-top: 15px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        "
+      >
+        <el-pagination
+          @current-change="pageChange"
+          :current-page="offset"
+          :page-size="30"
+          background
+          layout="prev, pager, next"
+          :total="total"
+        />
       </div>
     </div>
   </div>
@@ -50,40 +73,42 @@ import { useRouter } from "vue-router";
 import { InitData } from "@/types/SheetDetail/SheetComment";
 import useToPoint from "@/hooks/useToPoint";
 import loading from "@/components/common/loading.vue";
+import emptyContent from "@/components/common/emptyContent.vue";
 
 export default defineComponent({
   name: "SheetComment",
   components: {
     commentItem,
     loading,
+    emptyContent,
   },
   setup() {
     const data = reactive(new InitData());
     const router = useRouter();
-    const newCommentTitle = ref()
+    const newCommentTitle = ref();
 
     const pageChange = (e: number) => {
-      data.offset = e
-      useToPoint(newCommentTitle.value, -15)
-      getData()
-    }
+      data.offset = e;
+      useToPoint(newCommentTitle.value, -15);
+      getData();
+    };
 
     const getData = (type?: string) => {
       getSheetComment({
         id: router.currentRoute.value.query.id as string,
         limit: 30,
-        offset: (data.offset-1) * 30,
+        offset: (data.offset - 1) * 30,
       }).then((res: any) => {
-        if (type == 'all') {
-          data.total = res.data.total
+        if (type == "all") {
+          data.total = res.data.total;
           data.hotCommentList = res.data.hotComments;
         }
-        data.commentList = res.data.comments
+        data.commentList = res.data.comments;
       });
-    }
+    };
 
     onMounted(() => {
-      getData('all')
+      getData("all");
     });
     return {
       ...toRefs(data),
@@ -100,7 +125,7 @@ export default defineComponent({
   .commentBox {
     padding: 10px 12px;
     border-radius: 8px;
-    background-color: #393939;
+    background-color: @eventBgc;
     margin-bottom: 8px;
     textarea {
       resize: none;
@@ -120,7 +145,7 @@ export default defineComponent({
     .sendBtn {
       font-size: 13px;
       padding: 10px 24px;
-      background-color: #393939;
+      background-color: @eventBgc;
       border-radius: 10px;
       transition: 0.2s all linear;
       cursor: pointer;

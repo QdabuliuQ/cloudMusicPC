@@ -4,26 +4,22 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, reactive, onMounted, toRefs } from "vue";
+import { defineComponent } from "vue";
 import musicNavBar from "components/common/musicNavBar.vue";
 
 export default defineComponent({
   name: "App",
+
   components: {
-    musicNavBar
+    musicNavBar,
   },
-  setup() {
-    const data = reactive({});
-    onMounted(() => {});
-    return {
-      ...toRefs(data),
-    };
-  },
+  setup() {},
 });
 </script>
 
 <style lang="less">
 @import (css) "./assets/less/elementStyle.less";
+
 html,
 body {
   margin: 0;
