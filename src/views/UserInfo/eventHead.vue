@@ -1,6 +1,6 @@
 <template>
   <div class="eventHead">
-    <div class="leftImage">
+    <div v-if="avatarUrl" class="leftImage">
       <el-avatar :size='45' :src="avatarUrl"/>
     </div>
     <div class="rightInfo">

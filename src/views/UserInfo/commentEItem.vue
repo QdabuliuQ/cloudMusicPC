@@ -1,43 +1,26 @@
 <template>
-  <div class="songEItem">
+  <div class="commentEItem">
     <eventHead
-      :text="'分享单曲'"
+      :text="'分享评论'"
       :avatarUrl="avatarUrl"
       :nickname="nickname"
       :time="time"
       :msg="msg"
       :target="target"
     ></eventHead>
-    <div class="eventContent">
-      <div style="display: flex; align-items: center">
+    <div v-if="info.resource" class="eventContent">
+      <div style="display: flex; align-items: center; padding: 5px 0 7px; border-bottom: 1px solid rgb(83 83 83)">
+        <img class="icon" src="~images/common/char.png" alt="" />
         <div style="display: flex; align-items: center">
-          <el-avatar
-            shape="square"
-            :size="40"
-            :fit="'cover'"
-            :src="info.song.img80x80"
-          />
-        </div>
-        <div style="margin-left: 10px">
-          <div class="songName">
-            {{ info.song.name }}
-            <span
-              v-if="info.song.alias.length"
-              :key="index"
-              v-for="(item, index) in info.song.alias"
-            >
-              ({{ item }})
-            </span>
-          </div>
-          <div class="songArt">
-            <span v-for="item in info.song.artists" :key="item.id"
-              >{{ item.name }}&nbsp;&nbsp;</span
-            >
-          </div>
+          <span class="username">{{ info.resource.user.nickname }}</span
+          >:&nbsp; {{ info.resource.content }}
         </div>
       </div>
+      <div class="resourse">
+        来自单曲 {{resourceInfo.name}} -- <span v-for="item in resourceInfo.artists" :key="item.id">{{item.name}}&nbsp;&nbsp;</span>
+      </div>
     </div>
-    <eventPics :pics='pics'></eventPics>
+    <eventPics :pics="pics"></eventPics>
     <eventOperate
       v-if="!disableOpe"
       :liked="liked"
@@ -56,6 +39,7 @@ import eventOperate from "./eventOperate.vue";
 import eventPics from "./eventPics.vue";
 
 export default defineComponent({
+  name: "commentEItem",
   props: [
     "avatarUrl",
     "nickname",
@@ -68,18 +52,18 @@ export default defineComponent({
     "commentCount",
     "shareCount",
     "pics",
-    "disableOpe"
+    "disableOpe",
   ],
-  name: "songEItem",
   components: {
     eventHead,
     eventOperate,
-    eventPics
+    eventPics,
   },
   setup(props) {
     const data = reactive({
       info: null,
       msg: "",
+      resourceInfo: null
     });
 
     watch(
@@ -87,9 +71,11 @@ export default defineComponent({
       (n) => {
         if (n) {
           data.info = JSON.parse(n);
+          data.resourceInfo = JSON.parse(JSON.parse(n).resource.resourceInfo)
           data.msg = JSON.parse(n)
             .msg.replaceAll(/#[^#]*#/g, "")
             .trim();
+          console.log(data.resourceInfo);
         }
       },
       { immediate: true }
@@ -103,22 +89,21 @@ export default defineComponent({
 </script>
 
 <style lang='less'>
-.songEItem {
+.commentEItem {
   .eventContent {
-    .songName {
-      span {
-        color: @fontColor;
-      }
+    position: relative;
+    font-size: 14px !important;
+    .icon {
+      margin-right: 7px;
     }
-    .songArt {
-      margin-top: 5px;
+    .username {
+      color: @nameColor;
+      cursor: pointer;
+    }
+    .resourse {
+      padding: 10px 0;
+      font-size: 12px;
       color: @fontColor;
-      span {
-        cursor: pointer;
-        &:hover {
-          color: #fff;
-        }
-      }
     }
   }
 }

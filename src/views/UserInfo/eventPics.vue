@@ -34,8 +34,6 @@ export default defineComponent({
           data.imgWidth = (400 - 20) / 3 + 'px'
           data.grid = '1fr 1fr 1fr'
         }
-        console.log(data.width);
-        
       }
     }, {immediate: true})
 
@@ -49,6 +47,7 @@ export default defineComponent({
 <style lang='less'>
 .eventPics {
   width: 100%;
+  margin-bottom: 15px;
   .picContainer {
     display: grid;
     grid-gap: 10px;

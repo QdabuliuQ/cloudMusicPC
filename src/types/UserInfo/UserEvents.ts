@@ -11,6 +11,6 @@ interface eventInt {
 export class InitData {
   userInfo: any = null
   lasttime: number = -1
-
+  size: number = 0
   eventList: eventInt[] = []
 }

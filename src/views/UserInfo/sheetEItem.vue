@@ -31,6 +31,7 @@
     </div>
     <eventPics :pics='pics'></eventPics>
     <eventOperate
+      v-if="!disableOpe"
       :liked="liked"
       :likedCount="likedCount"
       :commentCount="commentCount"
@@ -60,7 +61,8 @@ export default defineComponent({
     "likedCount",
     "commentCount",
     "shareCount",
-    "pics"
+    "pics",
+    "disableOpe"
   ],
   components: {
     eventHead,
@@ -88,7 +90,6 @@ export default defineComponent({
           data.msg = JSON.parse(n)
             .msg.replaceAll(/#[^#]*#/g, "")
             .trim();
-          console.log(data.info);
         }
       },
       { immediate: true }

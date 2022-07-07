@@ -2,6 +2,7 @@
   <div id="UserEvents">
     <div v-if="userInfo" class="title">{{ userInfo.nickname }}的动态</div>
     <div class="eventContainer">
+      <loading v-if="!eventList.length && size != 0"></loading>
       <div v-for="item in eventList" :key="item.id" class="eventItem">
         <songEItem
           class="eventItem"
@@ -16,7 +17,7 @@
           :likedCount="item.info.likedCount"
           :commentCount="item.info.commentCount"
           :shareCount="item.info.shareCount"
-          :pics='item.pics'
+          :pics="item.pics"
         ></songEItem>
         <albumEItem
           class="eventItem"
@@ -31,7 +32,7 @@
           :likedCount="item.info.likedCount"
           :commentCount="item.info.commentCount"
           :shareCount="item.info.shareCount"
-          :pics='item.pics'
+          :pics="item.pics"
         ></albumEItem>
         <audioEItem
           class="eventItem"
@@ -46,7 +47,7 @@
           :likedCount="item.info.likedCount"
           :commentCount="item.info.commentCount"
           :shareCount="item.info.shareCount"
-          :pics='item.pics'
+          :pics="item.pics"
         ></audioEItem>
         <programEItem
           class="eventItem"
@@ -61,7 +62,7 @@
           :likedCount="item.info.likedCount"
           :commentCount="item.info.commentCount"
           :shareCount="item.info.shareCount"
-          :pics='item.pics'
+          :pics="item.pics"
         ></programEItem>
         <replyEItem
           class="eventItem"
@@ -75,7 +76,7 @@
           :likedCount="item.info.likedCount"
           :commentCount="item.info.commentCount"
           :shareCount="item.info.shareCount"
-          :pics='item.pics'
+          :pics="item.pics"
         ></replyEItem>
         <sheetEItem
           class="eventItem"
@@ -89,7 +90,7 @@
           :likedCount="item.info.likedCount"
           :commentCount="item.info.commentCount"
           :shareCount="item.info.shareCount"
-          :pics='item.pics'
+          :pics="item.pics"
         ></sheetEItem>
         <videoEItem
           class="eventItem"
@@ -103,7 +104,7 @@
           :likedCount="item.info.likedCount"
           :commentCount="item.info.commentCount"
           :shareCount="item.info.shareCount"
-          :pics='item.pics'
+          :pics="item.pics"
         ></videoEItem>
         <mvEItem
           class="eventItem"
@@ -117,25 +118,49 @@
           :likedCount="item.info.likedCount"
           :commentCount="item.info.commentCount"
           :shareCount="item.info.shareCount"
-          :pics='item.pics'
+          :pics="item.pics"
         ></mvEItem>
+        <commentEItem
+          class="eventItem"
+          v-else-if="item.type == 31"
+          :avatarUrl="item.user.avatarUrl"
+          :nickname="item.user.nickname"
+          :time="item.showTime"
+          :infoJson="item.json"
+          :liked="item.info.liked"
+          :threadId="item.info.threadId"
+          :likedCount="item.info.likedCount"
+          :commentCount="item.info.commentCount"
+          :shareCount="item.info.shareCount"
+          :pics="item.pics"
+        ></commentEItem>
       </div>
+      <emptyContent v-if="size == 0"></emptyContent>
     </div>
   </div>
 </template>
 
 <script lang='ts'>
-import { defineComponent, reactive, onMounted, toRefs } from "vue";
+import {
+  defineComponent,
+  reactive,
+  onMounted,
+  toRefs,
+  defineAsyncComponent,
+} from "vue";
 import { InitData } from "@/types/UserInfo/UserEvents";
 import { getUserEvents } from "@/network/UserInfo/UserEvents";
-import songEItem from "./songEItem.vue";
-import albumEItem from "./albumEItem.vue";
-import audioEItem from "./audioEItem.vue";
-import programEItem from "./programEItem.vue";
-import replyEItem from "./replyEItem.vue";
-import sheetEItem from "./sheetEItem.vue";
-import videoEItem from "./videoEItem.vue";
-import mvEItem from "./mvEItem.vue";
+import loading from "@/components/common/loading.vue";
+import emptyContent from "@/components/common/emptyContent.vue";
+const songEItem = defineAsyncComponent(() => import("./songEItem.vue"));
+const albumEItem = defineAsyncComponent(() => import("./albumEItem.vue"));
+const audioEItem = defineAsyncComponent(() => import("./audioEItem.vue"));
+const programEItem = defineAsyncComponent(() => import("./programEItem.vue"));
+const sheetEItem = defineAsyncComponent(() => import("./sheetEItem.vue"));
+const videoEItem = defineAsyncComponent(() => import("./videoEItem.vue"));
+const mvEItem = defineAsyncComponent(() => import("./mvEItem.vue"));
+const replyEItem = defineAsyncComponent(() => import("./replyEItem.vue"));
+const commentEItem = defineAsyncComponent(() => import("./commentEItem.vue"));
 
 export default defineComponent({
   name: "UserEvents",
@@ -147,7 +172,10 @@ export default defineComponent({
     replyEItem,
     sheetEItem,
     videoEItem,
-    mvEItem
+    mvEItem,
+    commentEItem,
+    loading,
+    emptyContent,
   },
   setup() {
     const data = reactive(new InitData());
@@ -158,6 +186,7 @@ export default defineComponent({
         limit: 30,
         lasttime: data.lasttime,
       }).then((res: any) => {
+        data.size = res.data.size;
         data.eventList = [...data.eventList, ...res.data.events];
         data.lasttime = res.data.lasttime;
       });
@@ -195,7 +224,7 @@ export default defineComponent({
     }
     .eventPics {
       margin-left: 60px;
-      margin-top: 7px;
+      margin-top: 15px;
     }
   }
 }
