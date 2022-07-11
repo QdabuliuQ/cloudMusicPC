@@ -18,10 +18,10 @@
             {{$getTime(time)}}
           </div>
           <div class="data">
-            <div class="dataItem">
-              <img v-if="!liked" src="~images/common/unpraise.png" alt="">
+            <div @click="praiseResource" :class="[isLike?'likeItem':'','dataItem']">
+              <img v-if="!isLike" src="~images/common/unpraise.png" alt="">
               <img v-else src="~images/common/praise.png" alt="">
-              {{likedCount}}
+              {{count}}
             </div>
           </div>
         </div>
@@ -31,7 +31,9 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, reactive, onMounted, toRefs } from 'vue'
+import { defineComponent, watch, reactive, toRefs } from 'vue'
+import { commentLike } from "@/network/VideoPlay/videoPlay";
+
 export default defineComponent({
   name: 'commentItem',
   props: [
@@ -42,14 +44,57 @@ export default defineComponent({
     'nickname',
     'userId',
     'beReplied',
-    'liked'
+    'liked',
+    'type',
+    'id',
+    'cid',
+    'threadId'
   ],
-  setup() {
-    const data = reactive({})
-    onMounted(() => {
+  setup(props) {
+    const data = reactive({
+      isLike: false,
+      count: 0
     })
+
+    watch(() => props.liked, (n) => {
+      data.isLike = n
+    }, {immediate: true})
+    watch(() => props.likedCount, (n) => {
+      data.count = n
+    }, {immediate: true})
+
+    const praiseResource = () => {
+      if (props.type != 6) {
+        commentLike({
+          type: props.type,
+          t: data.isLike ? 0 : 1,
+          id: props.id,
+          cid: props.cid
+        }).then((res: any) => {
+          if (res.data.code == 200) {
+            data.isLike = !data.isLike
+            data.isLike ? data.count ++ : data.count --
+          }
+        })
+      } else {
+        // 动态评论点赞
+        commentLike({
+          type: props.type,
+          t: data.isLike ? 0 : 1,
+          threadId: props.threadId,
+          cid: props.cid
+        }).then((res: any) => {
+          if (res.data.code == 200) {
+            data.isLike = !data.isLike
+            data.isLike ? data.count ++ : data.count --
+          }
+        })
+      }
+    }
+
     return {
       ...toRefs(data),
+      praiseResource
     }
   }
 })
@@ -81,6 +126,7 @@ export default defineComponent({
       }
       .infoContent {
         color: @fontColor;
+        white-space: pre;
       }
     }
     .centerInfo {
@@ -102,6 +148,9 @@ export default defineComponent({
       display: flex;
       align-items: center;
       justify-content: space-between;
+      .likeItem {
+        color: @themeColor;
+      }
       .dataItem {
         font-size: 12px;
         display: flex;

@@ -15,11 +15,9 @@
         :tags="sheetInfo.tags"
         :count="sheetInfo.trackCount"
         :playCount="sheetInfo.playCount"
+        @shareEvent="shareEvent"
       ></detailPanel>
-      <detailNav
-        :routerKey="'sheetIndex'"
-        :list="navList"
-      ></detailNav>
+      <detailNav :routerKey="'sheetIndex'" :list="navList"></detailNav>
     </div>
     <div style="margin-bottom: 30px">
       <router-view></router-view>
@@ -28,8 +26,14 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, reactive, onMounted, toRefs } from "vue";
-import { getSheetDetail } from "@/network/SheetDetail/SheetDetail";
+import {
+  getCurrentInstance,
+  defineComponent,
+  reactive,
+  onMounted,
+  toRefs,
+} from "vue";
+import { getSheetDetail } from "@/network/SheetDetail/sheetDetail";
 import { useRouter } from "vue-router";
 import { InitData } from "@/types/SheetDetail/SheetDetail";
 import detailPanel from "@/components/common/detailPanel.vue";
@@ -43,12 +47,22 @@ export default defineComponent({
   },
   setup() {
     const data = reactive(new InitData());
+    const _this: any = getCurrentInstance();
+
+    const shareEvent = () => {
+      _this.proxy.$toShare(
+        router.currentRoute.value.query.id,
+        "playlist",
+        data.sheetInfo.name,
+        data.sheetInfo.coverImgUrl
+      );
+    };
+
     const router = useRouter();
     onMounted(() => {
       getSheetDetail({
         id: router.currentRoute.value.query.id as string,
       }).then((res: any) => {
-        console.log(res);
         data.sheetInfo = res.data.playlist;
         data.navList[0] = {
           name: `歌曲列表<span style='color: #949494; font-size: 12px'>(${data.sheetInfo.trackCount})</span>`,
@@ -66,6 +80,7 @@ export default defineComponent({
     });
     return {
       ...toRefs(data),
+      shareEvent,
     };
   },
 });

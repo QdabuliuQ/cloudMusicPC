@@ -36,7 +36,7 @@
 
 <script lang='ts'>
 import { defineComponent, reactive, onMounted, toRefs } from "vue";
-import { getFollowList } from "@/network/UserInfo/UserFollow";
+import { getFollowList } from "@/network/UserInfo/userFollow";
 import { InitData } from "@/types/UserInfo/UserFollow";
 import loading from "@/components/common/loading.vue";
 import userItem from "@/components/private/userItem.vue";

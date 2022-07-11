@@ -9,37 +9,45 @@
     <div class="commentContainer">
       <loading v-if="commentList.length == 0 && total != 0"></loading>
       <div v-else>
-          <div v-if="hotCommentList.length" class="title">热门评论</div>
-          <commentItem
-            v-for="item in hotCommentList"
-            :key="item.commentId"
-            :avatarUrl="item.user.avatarUrl"
-            :time="item.time"
-            :likedCount="item.likedCount"
-            :content="item.content"
-            :nickname="item.user.nickname"
-            :userId="item.user.userId"
-            :beReplied="item.beReplied"
-          ></commentItem>
-          <div
-            v-if="commentList.length"
-            ref="newCommentTitle"
-            style="margin-top: 40px"
-            class="title"
-          >
-            最新评论({{ total }})
-          </div>
-          <commentItem
-            v-for="item in commentList"
-            :key="item.commentId"
-            :avatarUrl="item.user.avatarUrl"
-            :time="item.time"
-            :likedCount="item.likedCount"
-            :content="item.content"
-            :nickname="item.user.nickname"
-            :userId="item.user.userId"
-            :beReplied="item.beReplied"
-          ></commentItem>
+        <div v-if="hotCommentList.length" class="title">热门评论</div>
+        <commentItem
+          v-for="item in hotCommentList"
+          :key="item.commentId"
+          :avatarUrl="item.user.avatarUrl"
+          :time="item.time"
+          :likedCount="item.likedCount"
+          :content="item.content"
+          :nickname="item.user.nickname"
+          :userId="item.user.userId"
+          :beReplied="item.beReplied"
+          :liked="item.liked"
+          :id="id"
+          :cid="item.commentId"
+          :type="2"
+        ></commentItem>
+        <div
+          v-if="commentList.length"
+          ref="newCommentTitle"
+          style="margin-top: 40px"
+          class="title"
+        >
+          最新评论({{ total }})
+        </div>
+        <commentItem
+          v-for="item in commentList"
+          :key="item.commentId"
+          :avatarUrl="item.user.avatarUrl"
+          :time="item.time"
+          :likedCount="item.likedCount"
+          :content="item.content"
+          :nickname="item.user.nickname"
+          :userId="item.user.userId"
+          :beReplied="item.beReplied"
+          :liked="item.liked"
+          :id="id"
+          :cid="item.commentId"
+          :type="2"
+        ></commentItem>
       </div>
 
       <emptyContent v-if="total == 0"></emptyContent>
@@ -68,7 +76,7 @@
 <script lang='ts'>
 import { defineComponent, reactive, onMounted, toRefs, ref } from "vue";
 import commentItem from "@/components/private/commentItem.vue";
-import { getSheetComment } from "@/network/SheetDetail/SheetDetail";
+import { getSheetComment } from "@/network/SheetDetail/sheetDetail";
 import { useRouter } from "vue-router";
 import { InitData } from "@/types/SheetDetail/SheetComment";
 import useToPoint from "@/hooks/useToPoint";
@@ -86,6 +94,8 @@ export default defineComponent({
     const data = reactive(new InitData());
     const router = useRouter();
     const newCommentTitle = ref();
+
+    data.id = router.currentRoute.value.query.id as string
 
     const pageChange = (e: number) => {
       data.offset = e;

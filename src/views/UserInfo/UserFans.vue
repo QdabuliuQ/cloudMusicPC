@@ -40,7 +40,7 @@
 <script lang='ts'>
 import { defineComponent, reactive, onMounted, toRefs } from "vue";
 import userItem from "@/components/private/userItem.vue";
-import { getUserFans } from "@/network/UserInfo/UserFans";
+import { getUserFans } from "@/network/UserInfo/userFans";
 import { InitData } from "@/types/UserInfo/UserFans";
 import loading from "@/components/common/loading.vue";
 import emptyContent from "@/components/common/emptyContent.vue";

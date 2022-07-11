@@ -159,6 +159,7 @@ export default defineComponent({
           ElNotification({
             message: "退出账户成功",
             type: "success",
+            customClass: 'darkNotice',
           });
         }
       });
@@ -182,11 +183,26 @@ export default defineComponent({
 </script>
 
 <style lang='less'>
-.el-popper.is-dark {
-  background-color: #424242 !important;
+.infoPopperClass.is-dark {
+  background-color: #292929 !important;
+  .el-popper__arrow::before {
+    border: 1px solid #292929 !important;
+  }
 }
-.el-popper.is-dark .el-popper__arrow::before {
-  background: #424242 !important;
+.infoPopperClass.is-light {
+  background-color: #292929 !important;
+}
+.infoPopperClass.is-light .el-popper__arrow::before {
+  border: 1px solid #292929 !important;
+  
+}
+.el-popper.is-light .el-popper__arrow::before {
+  background: #292929 !important;
+  border: 1px solid #292929 !important;
+}
+.infoPopperClass.is-dark .el-popper__arrow::before {
+  background: #292929 !important;
+  border: 1px solid #292929 !important;
 }
 .popperContainer {
   .topContainer {

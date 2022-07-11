@@ -24,7 +24,7 @@
           <img v-else src="~images/common/uncollect.png" alt="" />
           {{ subed ? "已收藏" : "收藏" }}({{ subCount }})
         </div>
-        <div class="btnItem">
+        <div @click="shareResource" class="btnItem">
           <img src="~images/common/share.png" alt="" />
           分享({{ shareCount }})
         </div>
@@ -67,7 +67,7 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, reactive, onMounted, toRefs } from "vue";
+import { defineComponent } from "vue";
 
 export default defineComponent({
   props: [
@@ -86,12 +86,15 @@ export default defineComponent({
     "count",
     "playCount"
   ],
+  emits: ['shareEvent'],
   name: "detailPanel",
-  setup() {
-    const data = reactive({});
-    onMounted(() => {});
+  setup(props, context) {
+    const shareResource = () => {
+      context.emit('shareEvent')
+    }
+
     return {
-      ...toRefs(data),
+      shareResource
     };
   },
 });

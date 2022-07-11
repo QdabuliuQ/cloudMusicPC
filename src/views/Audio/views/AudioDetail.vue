@@ -14,6 +14,7 @@
       :shareCount="audioDetail.shareCount"
       :category="audioDetail.category"
       :desc="audioDetail.desc"
+      @shareEvent="shareEvent"
     ></detailPanel>
     <detailNav style="margin-bottom: 20px" :routerKey="'kIndex'" :list="navList"></detailNav>
     <div class="routerView">
@@ -23,7 +24,7 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, reactive, onMounted, toRefs } from 'vue'
+import { defineComponent, reactive, onMounted, toRefs, getCurrentInstance } from 'vue'
 import { getAudioDetail } from "@/network/Audio/audioDetail";
 import { useRouter } from "vue-router";
 import detailPanel from "@/components/common/detailPanel.vue";
@@ -40,7 +41,17 @@ export default defineComponent({
   },
   setup() {
     const data = reactive(new InitData())
+    const _this: any = getCurrentInstance()
     const router = useRouter()
+
+    const shareEvent = () => {
+      _this.proxy.$toShare(
+        router.currentRoute.value.query.audioId,
+        'djradio',
+        data.audioDetail.name,
+        data.audioDetail.dj.avatarUrl
+      )
+    }
 
     onMounted(() => {
       let t = router.currentRoute.value.query
@@ -60,6 +71,7 @@ export default defineComponent({
     })
     return {
       ...toRefs(data),
+      shareEvent
     }
   }
 })

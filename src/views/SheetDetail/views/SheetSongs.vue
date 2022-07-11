@@ -67,7 +67,7 @@
 
 <script lang='ts'>
 import { defineComponent, reactive, onMounted, toRefs } from "vue";
-import { getSheetSongs } from "@/network/SheetDetail/SheetDetail";
+import { getSheetSongs } from "@/network/SheetDetail/sheetDetail";
 import { useRouter } from "vue-router";
 import { InitData } from "@/types/SheetDetail/SheetSongs";
 import loading from "@/components/common/loading.vue";

@@ -63,4 +63,6 @@ export class InitData {
   url: string = ''
 
   miniModel: boolean = false
+
+  liked: boolean = false
 }

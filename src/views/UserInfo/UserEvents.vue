@@ -1,14 +1,23 @@
 <template>
   <div id="UserEvents">
     <div v-if="userInfo" class="title">{{ userInfo.nickname }}的动态</div>
-    <div class="eventContainer">
-      <loading v-if="!eventList.length && size != 0"></loading>
+    <loading v-if="!eventList.length && size != 0"></loading>
+    <emptyContent v-if="size == 0"></emptyContent>
+    <div
+      v-if="showContainer"
+      :infinite-scroll-delay="700"
+      :infinite-scroll-disabled="disableScroll"
+      :infinite-scroll-immediate="false"
+      v-infinite-scroll="loadData"
+      class="eventContainer"
+    >
       <div v-for="item in eventList" :key="item.id" class="eventItem">
         <songEItem
           class="eventItem"
           v-if="item.type == 18"
           :avatarUrl="item.user.avatarUrl"
           :nickname="item.user.nickname"
+          :uid="item.user.userId"
           :time="item.showTime"
           :infoJson="item.json"
           :target="item.bottomActivityInfos"
@@ -24,6 +33,7 @@
           v-else-if="item.type == 19"
           :avatarUrl="item.user.avatarUrl"
           :nickname="item.user.nickname"
+          :uid="item.user.userId"
           :time="item.showTime"
           :infoJson="item.json"
           :target="item.bottomActivityInfos"
@@ -39,6 +49,7 @@
           v-else-if="item.type == 28"
           :avatarUrl="item.user.avatarUrl"
           :nickname="item.user.nickname"
+          :uid="item.user.userId"
           :time="item.showTime"
           :infoJson="item.json"
           :target="item.bottomActivityInfos"
@@ -54,6 +65,7 @@
           v-else-if="item.type == 17"
           :avatarUrl="item.user.avatarUrl"
           :nickname="item.user.nickname"
+          :uid="item.user.userId"
           :time="item.showTime"
           :infoJson="item.json"
           :target="item.bottomActivityInfos"
@@ -69,6 +81,7 @@
           v-else-if="item.type == 22"
           :avatarUrl="item.user.avatarUrl"
           :nickname="item.user.nickname"
+          :uid="item.user.userId"
           :time="item.showTime"
           :infoJson="item.json"
           :liked="item.info.liked"
@@ -83,6 +96,7 @@
           v-else-if="item.type == 13"
           :avatarUrl="item.user.avatarUrl"
           :nickname="item.user.nickname"
+          :uid="item.user.userId"
           :time="item.showTime"
           :infoJson="item.json"
           :liked="item.info.liked"
@@ -97,6 +111,7 @@
           v-else-if="item.type == 41"
           :avatarUrl="item.user.avatarUrl"
           :nickname="item.user.nickname"
+          :uid="item.user.userId"
           :time="item.showTime"
           :infoJson="item.json"
           :liked="item.info.liked"
@@ -111,6 +126,7 @@
           v-else-if="item.type == 21"
           :avatarUrl="item.user.avatarUrl"
           :nickname="item.user.nickname"
+          :uid="item.user.userId"
           :time="item.showTime"
           :infoJson="item.json"
           :liked="item.info.liked"
@@ -125,6 +141,7 @@
           v-else-if="item.type == 31"
           :avatarUrl="item.user.avatarUrl"
           :nickname="item.user.nickname"
+          :uid="item.user.userId"
           :time="item.showTime"
           :infoJson="item.json"
           :liked="item.info.liked"
@@ -135,7 +152,6 @@
           :pics="item.pics"
         ></commentEItem>
       </div>
-      <emptyContent v-if="size == 0"></emptyContent>
     </div>
   </div>
 </template>
@@ -147,11 +163,22 @@ import {
   onMounted,
   toRefs,
   defineAsyncComponent,
+  nextTick,
+  getCurrentInstance,
 } from "vue";
+import { ElNotification } from "element-plus";
 import { InitData } from "@/types/UserInfo/UserEvents";
-import { getUserEvents } from "@/network/UserInfo/UserEvents";
+import {
+  getUserEvents,
+  deleteEvent,
+  getFollowEvent,
+  commentResource,
+} from "@/network/UserInfo/userEvents";
+import { getTopicEvent } from "@/network/Topic/topic";
+import bus from "vue3-eventbus";
 import loading from "@/components/common/loading.vue";
 import emptyContent from "@/components/common/emptyContent.vue";
+import { useRouter } from "vue-router";
 const songEItem = defineAsyncComponent(() => import("./songEItem.vue"));
 const albumEItem = defineAsyncComponent(() => import("./albumEItem.vue"));
 const audioEItem = defineAsyncComponent(() => import("./audioEItem.vue"));
@@ -164,6 +191,7 @@ const commentEItem = defineAsyncComponent(() => import("./commentEItem.vue"));
 
 export default defineComponent({
   name: "UserEvents",
+  props: ['actid'],
   components: {
     songEItem,
     albumEItem,
@@ -177,28 +205,117 @@ export default defineComponent({
     loading,
     emptyContent,
   },
-  setup() {
+  setup(props) {
     const data = reactive(new InitData());
+    const _this: any = getCurrentInstance();
+    const router = useRouter();
 
+    // 加载数据
+    const loadData = () => {
+      if (!props.actid) {
+        getData();
+      }
+    };
+
+    // 获取数据
     const getData = () => {
-      getUserEvents({
-        uid: data.userInfo.userId,
-        limit: 30,
-        lasttime: data.lasttime,
-      }).then((res: any) => {
-        data.size = res.data.size;
-        data.eventList = [...data.eventList, ...res.data.events];
-        data.lasttime = res.data.lasttime;
-      });
+      let p = router.currentRoute.value.fullPath;
+      if (p != "/FollowUserEvents" && !props.actid) {
+        getUserEvents({
+          uid: data.userInfo.userId,
+          limit: 15,
+          lasttime: data.lasttime,
+        }).then((res: any) => {
+          if (data.lasttime == -1) {
+            nextTick(() => {
+              data.showContainer = true;
+            });
+          }
+          if (res.data.events.length) {
+            data.size = res.data.size;
+            data.eventList = [...data.eventList, ...res.data.events];
+            data.lasttime = res.data.lasttime;
+          } else {
+            data.disableScroll = true;
+          }
+        });
+      } else if(p == "/FollowUserEvents"){
+        getFollowEvent({
+          pagesize: 10,
+          lasttime: data.lasttime
+        }).then((res: any) => {
+          if (data.lasttime == -1) {
+            nextTick(() => {
+              data.showContainer = true;
+            });
+          }
+          data.size = res.data.size;
+          if (res.data.event.length) {
+            data.eventList = [...data.eventList, ...res.data.event];
+            data.lasttime = res.data.lasttime;
+          } else {
+            data.disableScroll = true;
+          }
+        })
+      } else if(props.actid) {
+        getTopicEvent({
+          actid: props.actid
+        }).then((res: any) => {
+          nextTick(() => {
+              data.showContainer = true;
+            });
+          data.eventList = res.data.events
+          
+        })
+      }
     };
 
     onMounted(() => {
+      // console.log(router.currentRoute.value);
+
       data.userInfo = JSON.parse(localStorage.getItem("data") as string);
 
+      bus.on("refreshData", () => {
+        data.eventList = [];
+        data.lasttime = -1;
+        getData();
+      });
+
       getData();
+
+      // 删除动态
+      bus.on("deleteEvent", (e: any) => {
+        for (const [index, value] of data.eventList.entries()) {
+          if (value.info.threadId == e) {
+            deleteEvent({
+              evId: value.id,
+            }).then((res: any) => {
+              if (res.data.code == 200) {
+                ElNotification({
+                  message: "删除动态成功",
+                  type: "success",
+                  customClass: "darkNotice",
+                });
+                data.eventList.splice(index, 1);
+              }
+            });
+            return;
+          }
+        }
+      });
+
+      // 转发用户动态
+      bus.on("shareEvent", (e: any) => {
+        for (const value of data.eventList) {
+          if (value.info.threadId == e) {
+            _this.proxy.$toShare(value.id, "event", "", "", value.user.userId);
+          }
+        }
+      });
     });
     return {
       ...toRefs(data),
+      loadData,
     };
   },
 });

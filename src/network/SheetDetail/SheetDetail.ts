@@ -31,7 +31,11 @@ export function getSheetComment(data: {
 }) {
   return $http({
     url: '/comment/playlist',
-    params: data
+    params: {
+      ...data,
+      timestamp: Date.now(),
+      cookie: localStorage.getItem('cookie')
+    }
   })
 }
 

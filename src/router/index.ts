@@ -31,6 +31,10 @@ const UserFollow = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Us
 const UserFans = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/UserInfo/UserFans.vue')
 const UserEvents = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/UserInfo/UserEvents.vue')
 
+const Follow = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Follow/Follow.vue')
+const Topic = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Topic/Topic.vue')
+const TopicDetail = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Topic/TopicDetail.vue')
+
 const routes: Array<RouteRecordRaw> = [
   { path: '/', redirect: '/HomePage' },
   {
@@ -131,6 +135,18 @@ const routes: Array<RouteRecordRaw> = [
         component: Audio
       },
       {
+        path: '/Follow',
+        name: 'Follow',
+        meta: {
+          index: 3
+        },
+        component: Follow,
+        children: [
+          { path: '/Follow', redirect: '/FollowUserEvents' },
+          { path: '/FollowUserEvents', name: 'FollowUserEvents', component: UserEvents }
+        ]
+      },
+      {
         path: '/AudioList',
         name: 'AudioList',
         meta: {
@@ -176,6 +192,20 @@ const routes: Array<RouteRecordRaw> = [
         path: '/UserEvents',
         name: 'UserEvents',
         component: UserEvents
+      },
+      {
+        path: '/Topic',
+        name: 'Topic',
+        component: Topic
+      },
+      {
+        path: '/TopicDetail',
+        name: 'TopicDetail',
+        component: TopicDetail,
+        children: [
+          {path: '/TopicDetail', redirect: '/TopicEvent'},
+          {path: '/TopicEvent', name: 'TopicEvent', component: UserEvents}
+        ]
       },
     ]
   },

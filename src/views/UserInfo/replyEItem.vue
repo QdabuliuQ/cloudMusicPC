@@ -1,4 +1,4 @@
-<template>
+ <template>
   <div class="replyEItem">
     <eventHead
       :text="'转发'"
@@ -128,10 +128,14 @@
         :pics="event.pics"
         :disableOpe="true"
       ></commentEItem>
+      <div v-else style="text-align: center; padding: 15px 0" class="unSupport">
+        暂无支持显示该动态类型
+      </div>
     </div>
     <eventPics :pics="pics"></eventPics>
     <eventOperate
       :liked="liked"
+      :uid="uid"
       :likedCount="likedCount"
       :commentCount="commentCount"
       :shareCount="shareCount"
@@ -188,6 +192,7 @@ export default defineComponent({
     "commentCount",
     "shareCount",
     "pics",
+    "uid",
   ],
   setup(props) {
     const data = reactive({
@@ -218,24 +223,24 @@ export default defineComponent({
 <style lang='less'>
 .replyEItem {
   .replyEventContent {
-      margin-left: 60px;
-      padding: 8px 12px;
-      background: @eventBgc;
-      border-radius: 8px;
-      font-size: 13px;
-      cursor: pointer;
-      .eventHead {
-        .rightInfo {
-          margin-left: 0 !important;
-        }
-      }
-      .eventContent {
-        margin-left: 0 !important;
-        background: #333333 !important;
-      }
-      .eventPics {
+    margin-left: 60px;
+    padding: 8px 12px;
+    background: @eventBgc;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+    .eventHead {
+      .rightInfo {
         margin-left: 0 !important;
       }
+    }
+    .eventContent {
+      margin-left: 0 !important;
+      background: #333333 !important;
+    }
+    .eventPics {
+      margin-left: 0 !important;
+    }
   }
 }
 </style>

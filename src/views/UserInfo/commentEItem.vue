@@ -28,6 +28,7 @@
       :commentCount="commentCount"
       :shareCount="shareCount"
       :threadId="threadId"
+      :uid="uid"
     ></eventOperate>
   </div>
 </template>
@@ -53,6 +54,7 @@ export default defineComponent({
     "shareCount",
     "pics",
     "disableOpe",
+    "uid"
   ],
   components: {
     eventHead,

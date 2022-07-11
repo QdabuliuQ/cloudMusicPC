@@ -63,8 +63,11 @@
           />
           <el-input :size="'large'" v-model="code" placeholder="请输入验证码">
             <template #append>
-              <el-button :disabled="btnText == '发送验证码' ? false : true" @click="sendCodeEvent" class="codeBtn"
-                >{{btnText}}</el-button
+              <el-button
+                :disabled="btnText == '发送验证码' ? false : true"
+                @click="sendCodeEvent"
+                class="codeBtn"
+                >{{ btnText }}</el-button
               >
             </template>
           </el-input>
@@ -93,7 +96,7 @@ import bus from "vue3-eventbus";
 
 let timer: any;
 let timerCode: any;
-let time: number = 60
+let time: number = 60;
 
 export default defineComponent({
   name: "loginDialog",
@@ -114,6 +117,7 @@ export default defineComponent({
       btnText: "发送验证码",
       status: 0, // 是否失效
     });
+
     const openLoginDialog = () => {
       let cookie: string = localStorage.getItem("cookie") as string;
       if (cookie) {
@@ -130,14 +134,14 @@ export default defineComponent({
     // 验证码计时
     const computedTime = () => {
       if (time == 0) {
-        data.btnText = '发送验证码'
-        time = 60
-        clearInterval(timerCode)
+        data.btnText = "发送验证码";
+        time = 60;
+        clearInterval(timerCode);
       } else {
-        time --
-        data.btnText = time+'秒后重新发送'
+        time--;
+        data.btnText = time + "秒后重新发送";
       }
-    }
+    };
 
     // 发送验证码
     const sendCodeEvent = () => {
@@ -148,13 +152,15 @@ export default defineComponent({
           ElNotification({
             message: "验证码已发送",
             type: "success",
+            customClass: "darkNotice",
           });
-          timerCode = setInterval(computedTime, 1000)
+          timerCode = setInterval(computedTime, 1000);
         });
       } else {
         ElNotification({
           message: "手机号不能为空",
           type: "error",
+          customClass: "darkNotice",
         });
       }
     };
@@ -171,11 +177,11 @@ export default defineComponent({
       }).then((res: any) => {
         localStorage.setItem("id", res.data.profile.userId);
         getUserDetail({
-          uid: res.data.profile.userId
+          uid: res.data.profile.userId,
         }).then((res: any) => {
           localStorage.setItem("data", JSON.stringify(res.data.profile));
           bus.emit("loginStatus");
-        })
+        });
       });
     };
 
@@ -209,6 +215,7 @@ export default defineComponent({
             ElNotification({
               message: res.data.message,
               type: "error",
+              customClass: 'darkNotice',
             });
           }
         });
@@ -216,6 +223,7 @@ export default defineComponent({
         ElNotification({
           message: "输入内容不能为空",
           type: "error",
+          customClass: 'darkNotice',
         });
       }
     };
@@ -247,6 +255,7 @@ export default defineComponent({
             ElNotification({
               message: "登录账户成功",
               type: "success",
+              customClass: 'darkNotice',
             });
             getLoginStatus({
               cookie: res.data.cookie,

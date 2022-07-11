@@ -2,10 +2,14 @@
   <div class="operationContainer">
     <div class="eventOperate">
       <div class="operationBox">
-        <div style="margin-right: 30px" class="opeItem">
-          <img v-if="!liked" src="~images/common/unpraise.png" alt="" />
+        <div
+          @click="praiseEvent"
+          style="margin-right: 30px"
+          :class="[isLike ? 'likeItem' : '', 'opeItem']"
+        >
+          <img v-if="!isLike" src="~images/common/unpraise.png" alt="" />
           <img v-else src="~images/common/praise.png" alt="" />
-          {{ likedCount }}
+          {{ likeSum }}
         </div>
         <div @click="eventComment" style="margin-right: 30px" class="opeItem">
           <img
@@ -13,13 +17,22 @@
             src="~images/common/comment.png"
             alt=""
           />
-          {{ commentCount }}
+          {{ commentSum }}
         </div>
-        <div style="margin-right: 30px" class="opeItem">
+        <div @click="shareEvent" :style="{marginRight: id == uid ? '30px' : '0'}" class="opeItem">
           <img src="~images/common/share.png" alt="" />
           {{ shareCount }}
         </div>
-        <el-popconfirm icon-color="#ec4141" confirm-button-type="danger" title="是否确定删除该动态" confirm-button-text="确定" cancel-button-text="取消">
+        <el-popconfirm
+          v-if="id == uid"
+          @confirm="confirmDelete"
+          icon-color="#ec4141"
+          confirm-button-type="danger"
+          title="是否确定删除该动态"
+          confirm-button-text="确定"
+          cancel-button-text="取消"
+          popper-class="infoPopperClass"
+        >
           <template #reference>
             <div class="opeItem">
               <img src="~images/common/delete.png" alt="" />
@@ -33,9 +46,13 @@
         <textarea v-model="comment"></textarea>
       </div>
       <div style="display: flex; justify-content: flex-end">
-        <div class="pushBtn">评论</div>
+        <div @click="pushComment" class="pushBtn">评论</div>
       </div>
-      <div style="margin-bottom: 30px" v-if="hotCommentList.length" class="commentList">
+      <div
+        style="margin-bottom: 30px"
+        v-if="hotCommentList.length"
+        class="commentList"
+      >
         <div class="commentTitle">热门评论</div>
         <commentItem
           v-for="item in hotCommentList"
@@ -47,6 +64,9 @@
           :userId="item.user.userId"
           :beReplied="item.beReplied"
           :liked="item.liked"
+          :threadId="threadId"
+          :cid="item.commentId"
+          :type="6"
           :key="item.commentId"
         ></commentItem>
       </div>
@@ -62,33 +82,118 @@
           :userId="item.user.userId"
           :beReplied="item.beReplied"
           :liked="item.liked"
+          :threadId="threadId"
+          :cid="item.commentId"
+          :type="6"
           :key="item.commentId"
         ></commentItem>
       </div>
-      <div v-if="!commentList.length && !hotCommentList.length" class="noComment">还没有评论哦，快来抢沙发~</div>
+      <div
+        v-if="!commentList.length && !hotCommentList.length"
+        class="noComment"
+      >
+        还没有评论哦，快来抢沙发~
+      </div>
     </div>
   </div>
 </template>
 
 <script lang='ts'>
-import { defineComponent, reactive, onMounted, toRefs } from "vue";
+import { watch, defineComponent, reactive, onMounted, toRefs } from "vue";
 import commentItem from "@/components/private/commentItem.vue";
-import { getEventComment } from "@/network/UserInfo/UserEvents";
+import { getEventComment, praiseResource, commentResource } from "@/network/UserInfo/userEvents";
 import bus from "vue3-eventbus";
+let timer: any;
 
 export default defineComponent({
   name: "eventOperate",
   components: {
     commentItem,
   },
-  props: ["threadId", "liked", "likedCount", "commentCount", "shareCount"],
+  props: ["threadId", "liked", "likedCount", "commentCount", "shareCount", "uid"],
   setup(props) {
     const data = reactive({
       comment: "",
       showComment: false,
-      commentList: [],
+      commentList: <any>[],
       hotCommentList: [],
+      isLike: false,
+      likeSum: 0,
+      commentSum: 0,
+      id: localStorage.getItem("id")
     });
+
+    watch(
+      () => props.liked,
+      (e) => {
+        data.isLike = e;
+      },
+      { immediate: true }
+    );
+
+    watch(
+      () => props.likedCount,
+      (e) => {
+        data.likeSum = e;
+      },
+      { immediate: true }
+    );
+
+    watch(
+      () => props.commentCount,
+      (e) => {
+        data.commentSum = e;
+      },
+      { immediate: true }
+    );
+
+    // 删除动态
+    const confirmDelete = () => {
+      bus.emit("deleteEvent", props.threadId);
+    };
+
+    // 转发动态
+    const shareEvent = () => {
+      bus.emit("shareEvent", props.threadId)
+    }
+
+    // 点赞动态
+    const praiseEvent = () => {
+      data.isLike = !data.isLike;
+      if (timer) {
+        clearTimeout(timer);
+      }
+      timer = setTimeout(() => {
+        praiseResource({
+          t: data.isLike ? 1 : 0,
+          type: 6,
+          threadId: props.threadId,
+        }).then((res: any) => {
+          if (res.data.code == 200) {
+            data.isLike ? data.likeSum++ : data.likeSum--;
+          }
+        });
+      }, 500);
+    };
+
+    // 发表评论
+    const pushComment = () => {
+      if (data.comment != '') {
+        commentResource({
+          t: 1,
+          type: 6,
+          threadId: props.threadId,
+          content: data.comment
+        }).then((res: any) => {
+          if (res.data.code == 200) {
+            res.data.comment.likedCount = 0
+            data.commentList.unshift(res.data.comment)
+            data.commentSum ++
+            data.comment = ''
+          }
+        })
+      }
+    }
 
     const eventComment = () => {
       data.showComment = !data.showComment;
@@ -98,40 +203,44 @@ export default defineComponent({
           threadId: props.threadId,
         }).then((res: any) => {
           data.commentList = res.data.comments;
-          data.hotCommentList = res.data.hotComments
+          data.hotCommentList = res.data.hotComments;
         });
       }
     };
 
     onMounted(() => {
       // 关闭弹窗
-      bus.on('openCommentPanel', (e: number) => {
+      bus.on("openCommentPanel", (e: number) => {
         if (props.threadId != e) {
-          data.showComment = false
+          data.showComment = false;
         }
-      })
+      });
     });
     return {
       ...toRefs(data),
       eventComment,
+      confirmDelete,
+      praiseEvent,
+      shareEvent,
+      pushComment,
     };
   },
 });
 </script>
 
 <style lang='less'>
-.el-popper.is-light {
+.infoPopperClass.is-light {
   background-color: #424242 !important;
   border: 1px solid #414243 !important;
   font-size: 13px;
   .el-popconfirm {
-    color: #Fff;
+    color: #fff;
   }
   .el-popper__arrow::before {
     background-color: #424242 !important;
   }
   .el-button.is-text {
-    color: #Fff;
+    color: #fff;
     &:hover {
       background-color: @hoverColor;
     }
@@ -160,6 +269,9 @@ export default defineComponent({
         width: 18px;
         margin-right: 4px;
       }
+    }
+    .likeItem {
+      color: @themeColor !important;
     }
   }
   .commentContainer {

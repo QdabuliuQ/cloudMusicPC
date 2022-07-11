@@ -37,8 +37,12 @@
           </span>
         </div>
         <div class="videoData">
-          <div class="dataItem">
-            <img src="~images/common/unpraise.png" alt="" />
+          <div
+            @click="likeEvent"
+            :class="[liked ? 'likeItem' : '', 'dataItem']"
+          >
+            <img v-if="!liked" src="~images/common/unpraise.png" alt="" />
+            <img v-else src="~images/common/praise.png" alt="" />
             {{ videoInfo.praisedCount }}
           </div>
           <div class="dataItem">
@@ -73,6 +77,10 @@
               :nickname="item.user.nickname"
               :userId="item.user.userId"
               :beReplied="item.beReplied"
+              :liked="item.liked"
+              :id="videoInfo.vid"
+              :cid="item.commentId"
+              :type="5"
             ></commentItem>
           </div>
           <div ref="title" style="font-weight: bold">最新评论</div>
@@ -88,6 +96,10 @@
               :nickname="item.user.nickname"
               :userId="item.user.userId"
               :beReplied="item.beReplied"
+              :liked="item.liked"
+              :id="videoInfo.vid"
+              :cid="item.commentId"
+              :type="5"
             ></commentItem>
           </div>
           <div style="display: flex; justify-content: center; margin-top: 10px">
@@ -130,7 +142,9 @@ import {
   getVideoComment,
   getRelateVideo,
   getVideoUrl,
-} from "@/network/VideoPlay/VideoPlay";
+  getVideoData,
+  likeResource
+} from "@/network/VideoPlay/videoPlay";
 import followBtn from "@/components/private/followBtn.vue";
 import commentItem from "@/components/private/commentItem.vue";
 import videoItem from "./videoItem.vue";
@@ -150,6 +164,23 @@ export default defineComponent({
     const router = useRouter();
     const title = ref();
     const playContainer = ref();
+
+    const likeEvent = () => {
+      let t = router.currentRoute.value.query;
+      if (t.type == "video") {
+        likeResource({
+          type: 5,
+          t: data.liked ? 0 : 1,
+          id: t.id as string
+        }).then((res: any) => {
+          if (res.data.code == 200) {
+            data.liked = !data.liked
+            data.liked ? data.videoInfo.praisedCount ++ : data.videoInfo.praisedCount--
+          }
+        })
+      }
+      
+    }
     // 评论页码切换
     const pageChange = (e: number) => {
       data.offset = e;
@@ -179,8 +210,13 @@ export default defineComponent({
         getVideoUrl({
           id: t.id as string,
         }).then((res: any) => {
-          console.log(res);
           data.url = res.data.urls[0].url;
+        });
+
+        getVideoData({
+          vid: t.id as string,
+        }).then((res: any) => {
+          data.liked = res.data.liked
         });
 
         // 视频详情
@@ -214,6 +250,7 @@ export default defineComponent({
     return {
       ...toRefs(data),
       pageChange,
+      likeEvent,
       title,
       playContainer,
     };
@@ -292,13 +329,17 @@ export default defineComponent({
         display: flex;
         align-items: center;
         margin-bottom: 40px;
+        .likeItem {
+          color: @themeColor !important;
+          border: 1px solid @themeColor !important;
+        }
         .dataItem {
           margin-right: 20px;
           padding: 6px 16px;
           font-size: 13px;
           color: @fontColor;
           border-radius: 35px;
-          border: 1px solid @fontColor;
+          border: 1px solid #6b6b6b;
           display: flex;
           align-items: center;
           cursor: pointer;

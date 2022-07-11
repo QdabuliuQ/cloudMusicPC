@@ -25,7 +25,7 @@
 import { defineComponent, reactive, onMounted, toRefs } from "vue";
 import loading from "@/components/common/loading.vue";
 import { InitData } from "@/types/SheetDetail/SheetCollect";
-import { getSheetCollect } from "@/network/SheetDetail/SheetDetail";
+import { getSheetCollect } from "@/network/SheetDetail/sheetDetail";
 import { useRouter } from "vue-router";
 
 export default defineComponent({

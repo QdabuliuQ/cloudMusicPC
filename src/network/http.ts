@@ -5,4 +5,5 @@ const $http = axios.create({
   timeout: 5000,
 })
 
-export default $http
+
+export default $http 

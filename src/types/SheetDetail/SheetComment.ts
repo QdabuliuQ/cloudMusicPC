@@ -5,4 +5,5 @@ export class InitData {
   hotCommentList: commentInt[] = []
   commentList: commentInt[] = []
   total: number = 0
+  id: string = ''
 }

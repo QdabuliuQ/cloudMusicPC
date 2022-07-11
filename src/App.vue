@@ -40,4 +40,12 @@ img {
   -webkit-box-orient: vertical;
   word-break: break-all;
 }
+.darkNotice {
+  background-color: rgb(30, 30, 30) !important;
+  border: 1px solid #000 !important;
+  
+  .el-notification__content {
+    color: #fff !important;
+  }
+}
 </style>
