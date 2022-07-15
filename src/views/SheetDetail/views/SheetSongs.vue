@@ -1,67 +1,37 @@
 <template>
+  <loading v-if="!songList.length && total != 0"></loading>
+  <emptyContent v-else-if="total == 0"></emptyContent>
   <div
+    v-else
     :infinite-scroll-disabled="disableScroll"
     :infinite-scroll-immediate="false"
     :infinite-scroll-delay="700"
     v-infinite-scroll="loadData"
     id="SheetSongs"
   >
-    <loading v-if="!songList.length"></loading>
-    <table v-else>
-      <thead>
-        <tr>
-          <td style="width: 3%"></td>
-          <td style="width: 4%">操作</td>
-          <td style="width: 35%">标题</td>
-          <td style="width: 20%">歌手</td>
-          <td style="width: 20%">专辑</td>
-          <td style="width: 10%">时间</td>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="songItem" v-for="(item, index) in songList" :key="index">
-          <td style="width: 3%; text-align: center; color: #949494">
-            {{ index + 1 < 10 ? "0" + (index + 1) : index + 1 }}
-          </td>
-          <td style="width: 4%">
-            <div class="iconBox">
-              <img
-                class="icon"
-                style="margin-right: 10px; position: relative; top: 1px"
-                src="~images/common/unlike.png"
-                alt=""
-              />
-              <img class="icon" src="~images/common/download.png" alt="" />
-            </div>
-          </td>
-          <td style="width: 35%">
-            <div class="nameBox">
-              {{ item.name }}
-              <span
-                style="color: #949494"
-                v-if="item.alia && item.alia.length"
-                v-for="al in item.alia"
-                :key="al"
-              >
-                ({{ al }})&nbsp;&nbsp;
-              </span>
-              <img v-if="item.mv" src="~images/recommend/mvIcon.png" alt="" />
-            </div>
-          </td>
-          <td class="info artInfo" style="width: 20%">
-            <div>
-              <span v-for="art in item.ar">{{ art.name }}&nbsp;&nbsp;</span>
-            </div>
-          </td>
-          <td class="info albumInfo" style="width: 20%">
-            <div>
-              <span>{{ item.al.name }}</span>
-            </div>
-          </td>
-          <td class="info" style="width: 10%">{{ $formatTime(item.dt) }}</td>
-        </tr>
-      </tbody>
-    </table>
+    <musicList :download="true" :columns="columns" :data="songList">
+      <template v-slot:name="{ content }">
+        <div class="songName">
+          {{ content.name }}
+          <span v-for="(item, index) in content.alia" :key="index">
+            ({{ item }})&nbsp;&nbsp;
+          </span>
+        </div>
+      </template>
+      <template v-slot:ar="{ content }">
+        <span class="infoItem clickItem" v-for="item in content.ar" :key="item.id"
+          >{{ item.name }}&nbsp;&nbsp;</span
+        >
+      </template>
+      <template v-slot:al="{ content }">
+        <div class="infoItem clickItem">
+          {{ content.al.name }}
+        </div>
+      </template>
+      <template v-slot:dt="{ content }">
+        <span class="infoItem">{{ $formatTime(content.dt) }}</span>
+      </template>
+    </musicList>
   </div>
 </template>
 
@@ -71,11 +41,15 @@ import { getSheetSongs } from "@/network/SheetDetail/sheetDetail";
 import { useRouter } from "vue-router";
 import { InitData } from "@/types/SheetDetail/SheetSongs";
 import loading from "@/components/common/loading.vue";
+import emptyContent from "@/components/common/emptyContent.vue";
+import musicList from "@/components/common/musicList.vue";
 
 export default defineComponent({
   name: "SheetSongs",
   components: {
-    loading
+    loading,
+    emptyContent,
+    musicList,
   },
   setup() {
     const data = reactive(new InitData());
@@ -90,6 +64,9 @@ export default defineComponent({
         offset: data.offset * 20,
         limit: 20,
       }).then((res: any) => {
+        if (data.total == 999) {
+          data.total = res.data.songs.length;
+        }
         if (res.data.songs.length) {
           data.offset++;
           data.songList = [...data.songList, ...res.data.songs];
@@ -113,81 +90,25 @@ export default defineComponent({
 <style lang='less'>
 #SheetSongs {
   width: 100%;
-  table {
-    width: 100%;
-    font-size: 13px;
-    thead {
+  .songName {
+    width: 400px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    span {
       color: @fontColor;
     }
-    td {
-      padding: 8px 0;
-    }
-    tbody {
-      .songItem:nth-child(even) {
-        background-color: #2c2c2c;
-      }
-      .iconBox {
-        display: flex;
-        align-items: center;
-        img {
-          width: 15px;
-        }
-        .icon {
-          opacity: 0.4;
-          &:hover {
-            opacity: 1;
-          }
-        }
-      }
-      .nameBox {
-        display: flex;
-        align-items: center;
-        img {
-          width: 20px;
-          margin-left: 8px;
-          opacity: 0.5;
-          &:hover {
-            opacity: 1;
-          }
-        }
-      }
-      tr {
-        cursor: pointer;
-        &:hover {
-          background-color: @hoverColor !important;
-        }
-      }
-      .info {
-        color: @fontColor;
-      }
-      .artInfo {
-        div {
-          width: 230px;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-        span {
-          cursor: pointer;
-          &:hover {
-            color: #fff;
-          }
-        }
-      }
-      .albumInfo {
-        div {
-          width: 230px;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          span {
-            cursor: pointer;
-            &:hover {
-              color: #fff;
-            }
-          }
-        }
-      }
+  }
+  .infoItem {
+    width: 200px;
+    color: @fontColor;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .clickItem {
+    &:hover {
+      color: #fff;
     }
   }
 }

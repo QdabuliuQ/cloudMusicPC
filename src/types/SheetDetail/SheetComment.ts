@@ -4,6 +4,6 @@ export class InitData {
   offset: number = 1
   hotCommentList: commentInt[] = []
   commentList: commentInt[] = []
-  total: number = 0
+  total: number = 999
   id: string = ''
 }

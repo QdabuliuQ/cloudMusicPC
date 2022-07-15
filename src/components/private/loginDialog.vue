@@ -175,11 +175,12 @@ export default defineComponent({
       getAccount({
         token: localStorage.getItem("cookie") as string,
       }).then((res: any) => {
-        localStorage.setItem("id", res.data.profile.userId);
+        // id加密
+        localStorage.setItem("id", window.btoa(window.encodeURIComponent(res.data.profile.userId)));
         getUserDetail({
           uid: res.data.profile.userId,
         }).then((res: any) => {
-          localStorage.setItem("data", JSON.stringify(res.data.profile));
+          localStorage.setItem("data",window.btoa(window.encodeURIComponent(JSON.stringify(res.data.profile))))
           bus.emit("loginStatus");
         });
       });

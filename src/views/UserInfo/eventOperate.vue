@@ -120,7 +120,7 @@ export default defineComponent({
       isLike: false,
       likeSum: 0,
       commentSum: 0,
-      id: localStorage.getItem("id")
+      id: decodeURIComponent(window.atob(localStorage.getItem('id') as string))
     });
 
     watch(
@@ -229,23 +229,7 @@ export default defineComponent({
 </script>
 
 <style lang='less'>
-.infoPopperClass.is-light {
-  background-color: #424242 !important;
-  border: 1px solid #414243 !important;
-  font-size: 13px;
-  .el-popconfirm {
-    color: #fff;
-  }
-  .el-popper__arrow::before {
-    background-color: #424242 !important;
-  }
-  .el-button.is-text {
-    color: #fff;
-    &:hover {
-      background-color: @hoverColor;
-    }
-  }
-}
+
 .operationContainer {
   width: 100%;
   margin: 20px 0 0;

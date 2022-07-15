@@ -19,7 +19,7 @@ import { useRouter } from "vue-router";
 export default defineComponent({
   props: ["list", "routerKey"],
   name: "detailNav",
-  setup(props) {
+  setup(props, content) {
     const data = reactive({
       activeIndex: 0
     });
@@ -28,6 +28,7 @@ export default defineComponent({
     const itemToggle = (e: number) => {
       data.activeIndex = e
       router.push(props.list[e].path)
+      content.emit('itemClick', e)
     }
     onMounted(() => {
       data.activeIndex = router.currentRoute.value.meta[props.routerKey] as number

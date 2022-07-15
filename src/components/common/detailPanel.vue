@@ -19,10 +19,10 @@
         {{ nickname }}
       </div>
       <div class="infoBtn infoItem">
-        <div class="btnItem">
-          <img v-if="subed" src="~images/common/collect.png" alt="" />
+        <div @click="collectEvent" :class="[isCollect ? 'collectBtn' : '', id == userId ? 'disableBtn' : '', 'btnItem']">
+          <img v-if="isCollect" src="~images/common/collect.png" alt="" />
           <img v-else src="~images/common/uncollect.png" alt="" />
-          {{ subed ? "已收藏" : "收藏" }}({{ subCount }})
+          {{ isCollect ? "已收藏" : "收藏" }}({{ subCount }})
         </div>
         <div @click="shareResource" class="btnItem">
           <img src="~images/common/share.png" alt="" />
@@ -31,26 +31,27 @@
       </div>
       <div v-if="target == '歌单'" class="infoDesc2">
         <div class="infoItem2">
-          <div class="infoTitle">
-            标签:&nbsp;&nbsp;
-          </div>
+          <div class="infoTitle">标签:&nbsp;&nbsp;</div>
           <div class="infoContent">
-            <span v-for="item in tags" :key="item">
-              {{item}}
+            <span v-if="tags.length" v-for="item in tags" :key="item">
+              {{ item }}
             </span>
+            <span v-else>添加标签</span>
           </div>
         </div>
         <div class="infoItem2">
           <div class="infoTitle">
-            歌曲:&nbsp;&nbsp;<span>{{count}}</span>
+            歌曲:&nbsp;&nbsp;<span>{{ count }}</span>
           </div>
           <div style="margin-left: 15px" class="infoTitle">
-            播放:&nbsp;&nbsp;<span>{{$countFormat(playCount)}}</span>
+            播放:&nbsp;&nbsp;<span>{{ $countFormat(playCount) }}</span>
           </div>
         </div>
         <div class="infoItem2">
           <div :title="desc" class="infoTitle overTwoLine">
-            简介:&nbsp;&nbsp;<span>{{desc}}</span>
+            简介:&nbsp;
+            <span v-if="desc">{{ desc }}</span>
+            <span class="addDesc" v-else> 添加简介 </span>
           </div>
         </div>
       </div>
@@ -67,7 +68,10 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent } from "vue";
+import { defineComponent, reactive, toRefs, watch } from "vue";
+import { collectSheet } from "@/network/DetailPanel/detailPanel";
+import { useRouter } from "vue-router";
+import bus from "vue3-eventbus";
 
 export default defineComponent({
   props: [
@@ -84,17 +88,44 @@ export default defineComponent({
     "category",
     "tags",
     "count",
-    "playCount"
+    "playCount",
   ],
-  emits: ['shareEvent'],
+  emits: ["shareEvent"],
   name: "detailPanel",
   setup(props, context) {
-    const shareResource = () => {
-      context.emit('shareEvent')
+    const router = useRouter()
+    const data = reactive({
+      id: decodeURIComponent(window.atob(localStorage.getItem('id') as string)),
+      isCollect: false
+    })
+    
+    const collectEvent = () => {
+      if (data.id != props.userId) {
+        collectSheet({
+          t: props.subed ? 2 : 1,
+          id: router.currentRoute.value.query.id as string
+        }).then((res: any) => {
+          if (res.data.code == 200) {
+            bus.emit('refreshSheetList')
+            data.isCollect = props.subed ? false : true
+          }
+        })
+      }
     }
+    const shareResource = () => {
+      context.emit("shareEvent");
+    };
+
+    watch(() => props.subed, (n) => {
+      data.isCollect = n
+      console.log(data.isCollect);
+      
+    }, {immediate: true})
 
     return {
-      shareResource
+      ...toRefs(data),
+      shareResource,
+      collectEvent,
     };
   },
 });
@@ -138,6 +169,15 @@ export default defineComponent({
     .infoBtn {
       display: flex;
       align-items: center;
+      .collectBtn {
+        border: 1px solid @themeColor !important;
+        color: @themeColor !important;
+      }
+      .disableBtn {
+        background-color: #4a4a4a;
+        color: @fontColor;
+        cursor: not-allowed !important;
+      }
       .btnItem {
         padding: 5px 18px 6px;
         font-size: 13px;
@@ -174,20 +214,28 @@ export default defineComponent({
     .infoDesc2 {
       font-size: 13px;
       color: #d5d5d5;
+
       .infoItem2 {
         display: flex;
         align-items: center;
         margin-bottom: 8px;
+
         .infoTitle {
           span {
             color: @fontColor;
             line-height: 20px;
+            cursor: pointer;
+          }
+          .addDesc {
+            color: @nameColor;
+            cursor: pointer;
           }
         }
         .infoContent {
           span {
             margin-right: 10px;
             color: @nameColor;
+            cursor: pointer;
           }
         }
       }

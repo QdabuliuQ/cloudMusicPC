@@ -1,6 +1,7 @@
 <template>
   <div id="SheetCollect">
-    <loading v-if="!userList.length"></loading>
+    <loading v-if="userList.length == 0 && total != 0"></loading>
+    <emptyContent v-else-if="total == 0"></emptyContent>
     <div
       v-else
       :infinite-scroll-immediate="false"
@@ -24,6 +25,7 @@
 <script lang='ts'>
 import { defineComponent, reactive, onMounted, toRefs } from "vue";
 import loading from "@/components/common/loading.vue";
+import emptyContent from "@/components/common/emptyContent.vue";
 import { InitData } from "@/types/SheetDetail/SheetCollect";
 import { getSheetCollect } from "@/network/SheetDetail/sheetDetail";
 import { useRouter } from "vue-router";
@@ -32,6 +34,7 @@ export default defineComponent({
   name: "SheetCollect",
   components: {
     loading,
+    emptyContent,
   },
   setup() {
     const data = reactive(new InitData());
@@ -47,6 +50,7 @@ export default defineComponent({
         limit: 40,
         offset: data.offset * 40,
       }).then((res: any) => {
+        data.total = res.data.total
         if (res.data.subscribers.length) {
           data.type = res.data.reason
           data.offset++;

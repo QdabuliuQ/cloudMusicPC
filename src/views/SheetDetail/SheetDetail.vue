@@ -15,12 +15,13 @@
         :tags="sheetInfo.tags"
         :count="sheetInfo.trackCount"
         :playCount="sheetInfo.playCount"
+        :userId="sheetInfo.userId"
         @shareEvent="shareEvent"
       ></detailPanel>
       <detailNav :routerKey="'sheetIndex'" :list="navList"></detailNav>
     </div>
     <div style="margin-bottom: 30px">
-      <router-view></router-view>
+      <router-view :key="routerId"></router-view>
     </div>
   </div>
 </template>
@@ -32,6 +33,7 @@ import {
   reactive,
   onMounted,
   toRefs,
+  watch,
 } from "vue";
 import { getSheetDetail } from "@/network/SheetDetail/sheetDetail";
 import { useRouter } from "vue-router";
@@ -47,6 +49,7 @@ export default defineComponent({
   },
   setup() {
     const data = reactive(new InitData());
+    const router = useRouter();
     const _this: any = getCurrentInstance();
 
     const shareEvent = () => {
@@ -57,11 +60,9 @@ export default defineComponent({
         data.sheetInfo.coverImgUrl
       );
     };
-
-    const router = useRouter();
-    onMounted(() => {
+    const getData = () => {
       getSheetDetail({
-        id: router.currentRoute.value.query.id as string,
+        id: data.routerId,
       }).then((res: any) => {
         data.sheetInfo = res.data.playlist;
         data.navList[0] = {
@@ -77,6 +78,21 @@ export default defineComponent({
           path: "/SheetCollect?id=" + router.currentRoute.value.query.id,
         };
       });
+    }
+
+    watch(
+      () => router.currentRoute.value.query.id,
+      (n) => {
+        data.routerId = n as string
+        getData()
+      },
+      { immediate: true }
+    );
+
+    onMounted(() => {
+      data.routerId = router.currentRoute.value.query.id as string
+      getData()
+      
     });
     return {
       ...toRefs(data),

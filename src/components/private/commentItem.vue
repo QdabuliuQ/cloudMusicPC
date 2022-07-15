@@ -126,7 +126,6 @@ export default defineComponent({
       }
       .infoContent {
         color: @fontColor;
-        white-space: pre;
       }
     }
     .centerInfo {

@@ -49,7 +49,6 @@
           :type="2"
         ></commentItem>
       </div>
-
       <emptyContent v-if="total == 0"></emptyContent>
       <div
         v-if="total"

@@ -9,21 +9,27 @@
         </div>
       </div>
       <div class="rightInfo">
-        <div @click="toLogin" v-if="!userInfo || !userInfo.nickname" class="userInfo">
+        <div
+          @click="toLogin"
+          v-if="!userInfo || !userInfo.nickname"
+          class="userInfo"
+        >
           <img src="~images/musicNavBar/userUnlogin.png" alt="" />
           未登录
         </div>
         <div v-else class="userData">
           <el-popover
+            ref="userInfoPopoverRef"
             placement="bottom-end"
             popper-class="infoPopperClass"
             effect="dark"
             :width="280"
             trigger="click"
+            :hide-after="50"
           >
             <template #reference>
               <div class="dataBox">
-                <img :src="userInfo.avatarUrl" alt="" />
+                <el-avatar style="margin-right: 10px" :fit="'cover'" :size='30' :src="userInfo.avatarUrl" />
                 {{ userInfo.nickname }}
                 <el-icon style="margin-left: 5px"><CaretBottom /></el-icon>
               </div>
@@ -68,7 +74,7 @@
                   </div>
                   <div>{{ listenSongs }}</div>
                 </div>
-                <div class="item">
+                <div @click="toDetailPage('/UserInfoEdit')" class="item">
                   <div class="itemTitle">
                     <el-icon style="margin-right: 5px" :size="22"
                       ><Edit
@@ -98,20 +104,25 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, reactive, onMounted, toRefs, getCurrentInstance } from "vue";
-import bus from "vue3-eventbus";
 import {
-  getUserDetail,
-  loginOut,
-} from "@/network/LoginDialog/loginDialog";
+  defineComponent,
+  reactive,
+  onMounted,
+  toRefs,
+  getCurrentInstance,
+  ref,
+} from "vue";
+import bus from "vue3-eventbus";
+import { getUserDetail, loginOut } from "@/network/LoginDialog/loginDialog";
 import { ElNotification } from "element-plus";
 import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "",
   setup() {
-    const _this: any = getCurrentInstance()
-    const router = useRouter()
+    const _this: any = getCurrentInstance();
+    const router = useRouter();
+    const userInfoPopoverRef = ref();
     const data = reactive({
       userInfo: {
         userId: 0,
@@ -122,17 +133,20 @@ export default defineComponent({
     });
 
     const toDetailPage = (p: string) => {
-      router.push(p)
-    }
+      router.push(p);
+      userInfoPopoverRef.value.hide();
+    };
 
     // 打开登录弹窗
     const toLogin = () => {
-      _this.proxy.$toLogin()
-    }
+      _this.proxy.$toLogin();
+    };
 
     // 获取用户相关数据
     const getData = () => {
-      data.userInfo = JSON.parse(localStorage.getItem("data") as string);
+      data.userInfo = JSON.parse(
+        decodeURIComponent(window.atob(localStorage.getItem("data") as string))
+      );
       if (data.userInfo) {
         getUserDetail({
           uid: data.userInfo.userId as number,
@@ -146,6 +160,7 @@ export default defineComponent({
 
     // 退出登录
     const loginOutEvent = () => {
+      userInfoPopoverRef.value.hide();
       loginOut({
         cookie: localStorage.getItem("cookie") as string,
       }).then((res: any) => {
@@ -159,8 +174,9 @@ export default defineComponent({
           ElNotification({
             message: "退出账户成功",
             type: "success",
-            customClass: 'darkNotice',
+            customClass: "darkNotice",
           });
+          router.push("/");
         }
       });
     };
@@ -177,6 +193,7 @@ export default defineComponent({
       loginOutEvent,
       toLogin,
       toDetailPage,
+      userInfoPopoverRef,
     };
   },
 });
@@ -194,7 +211,6 @@ export default defineComponent({
 }
 .infoPopperClass.is-light .el-popper__arrow::before {
   border: 1px solid #292929 !important;
-  
 }
 .el-popper.is-light .el-popper__arrow::before {
   background: #292929 !important;
@@ -317,11 +333,6 @@ export default defineComponent({
           align-items: center;
           font-size: 13px;
           cursor: pointer;
-          img {
-            width: 30px;
-            border-radius: 50%;
-            margin-right: 8px;
-          }
         }
       }
     }

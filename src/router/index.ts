@@ -30,6 +30,23 @@ const SheetCollect = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/
 const UserFollow = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/UserInfo/UserFollow.vue')
 const UserFans = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/UserInfo/UserFans.vue')
 const UserEvents = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/UserInfo/UserEvents.vue')
+const UserInfoEdit = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/UserInfo/UserInfoEdit.vue')
+
+const Recent = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Recent/Recent.vue')
+const RecentSongs = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Recent/views/RecentSongs.vue')
+const RecentVideos = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Recent/views/RecentVideos.vue')
+const RecentPrograms = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Recent/views/RecentPrograms.vue')
+const RecentSheets = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Recent/views/RecentSheets.vue')
+const RecentAlbums = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Recent/views/RecentAlbums.vue')
+const RecentAudios = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Recent/views/RecentAudios.vue')
+
+const CloudDick = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/CloudDick/CloudDick.vue')
+
+const Collect = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Collect/Collect.vue')
+const CollectAlbums = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Collect/views/CollectAlbums.vue')
+const CollectSingers = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Collect/views/CollectSingers.vue')
+const CollectMvs = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Collect/views/CollectMvs.vue')
+const CollectArticles = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Collect/views/CollectArticles.vue')
 
 const Follow = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Follow/Follow.vue')
 const Topic = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Topic/Topic.vue')
@@ -113,9 +130,9 @@ const routes: Array<RouteRecordRaw> = [
         },
         component: Video,
         children: [
-          {path: '/Video', redirect: '/VideoList'},
-          {path: '/VideoList', meta: {vIndex: 0}, name: 'VideoList', component: VideoList},
-          {path: '/MvList', meta: {vIndex: 1}, name: 'MvList', component: MvList},
+          { path: '/Video', redirect: '/VideoList' },
+          { path: '/VideoList', meta: { vIndex: 0 }, name: 'VideoList', component: VideoList },
+          { path: '/MvList', meta: { vIndex: 1 }, name: 'MvList', component: MvList },
         ]
       },
       {
@@ -163,8 +180,8 @@ const routes: Array<RouteRecordRaw> = [
         component: AudioDetail,
         children: [
           { path: '/AudioDetail', redirect: '/AudioSongs' },
-          { path: '/AudioSongs', meta: {kIndex: 0}, name: 'AudioSongs', component: AudioSongs },
-          { path: '/AudioCollect', meta: {kIndex: 1}, name: 'AudioCollect', component: AudioCollect }
+          { path: '/AudioSongs', meta: { kIndex: 0 }, name: 'AudioSongs', component: AudioSongs },
+          { path: '/AudioCollect', meta: { kIndex: 1 }, name: 'AudioCollect', component: AudioCollect }
         ]
       },
       {
@@ -173,9 +190,9 @@ const routes: Array<RouteRecordRaw> = [
         component: SheetDetail,
         children: [
           { path: '/SheetDetail', redirect: '/SheetSongs' },
-          { path: '/SheetSongs', meta: {sheetIndex: 0}, name: 'SheetSongs', component: SheetSongs },
-          { path: '/SheetComment', meta: {sheetIndex: 1}, name: 'SheetComment', component: SheetComment },
-          { path: '/SheetCollect', meta: {sheetIndex: 2}, name: 'SheetCollect', component: SheetCollect },
+          { path: '/SheetSongs', meta: { sheetIndex: 0 }, name: 'SheetSongs', component: SheetSongs },
+          { path: '/SheetComment', meta: { sheetIndex: 1 }, name: 'SheetComment', component: SheetComment },
+          { path: '/SheetCollect', meta: { sheetIndex: 2 }, name: 'SheetCollect', component: SheetCollect },
         ]
       },
       {
@@ -194,6 +211,11 @@ const routes: Array<RouteRecordRaw> = [
         component: UserEvents
       },
       {
+        path: '/UserInfoEdit',
+        name: 'UserInfoEdit',
+        component: UserInfoEdit
+      },
+      {
         path: '/Topic',
         name: 'Topic',
         component: Topic
@@ -203,8 +225,91 @@ const routes: Array<RouteRecordRaw> = [
         name: 'TopicDetail',
         component: TopicDetail,
         children: [
-          {path: '/TopicDetail', redirect: '/TopicEvent'},
-          {path: '/TopicEvent', name: 'TopicEvent', component: UserEvents}
+          { path: '/TopicDetail', redirect: '/TopicEvent' },
+          { path: '/TopicEvent', name: 'TopicEvent', component: UserEvents }
+        ]
+      },
+      {
+        path: '/Recent',
+        name: 'Recent',
+        meta: {
+          index: 5
+        },
+        component: Recent,
+        children: [
+          { path: '/Recent', redirect: '/RecentSongs' },
+          {
+            path: '/RecentSongs', name: 'RecentSongs', meta: {
+              recentIndex: 0
+            }, component: RecentSongs
+          },
+          {
+            path: '/RecentVideos', name: 'RecentVideos', meta: {
+              recentIndex: 1
+            }, component: RecentVideos
+          },
+          {
+            path: '/RecentPrograms', name: 'RecentPrograms', meta: {
+              recentIndex: 2
+            }, component: RecentPrograms
+          },
+          {
+            path: '/RecentSheets', name: 'RecentSheets', meta: {
+              recentIndex: 3
+            }, component: RecentSheets
+          },
+          {
+            path: '/RecentAlbums', name: 'RecentAlbums', meta: {
+              recentIndex: 4
+            }, component: RecentAlbums
+          },
+          {
+            path: '/RecentAudios', name: 'RecentAudios', meta: {
+              recentIndex: 5
+            }, component: RecentAudios
+          },
+        ]
+      },
+      {
+        path: '/CloudDick',
+        name: 'CloudDick',
+        meta: {
+          index: 6
+        },
+        component: CloudDick,
+      },
+      {
+        path: '/Collect',
+        name: 'Collect',
+        meta: {
+          index: 8
+        },
+        component: Collect,
+        children: [
+          { path: '/Collect', redirect: '/CollectAlbums' },
+          { path: '/CollectAlbums', name: 'CollectAlbums', meta: {
+            collectIndex: 0
+          }, component: CollectAlbums },
+          { path: '/CollectSingers', name: 'CollectSingers', meta: {
+            collectIndex: 1
+          }, component: CollectSingers },
+          { path: '/CollectMvs', name: 'CollectMvs', meta: {
+            collectIndex: 2
+          }, component: CollectMvs },
+          { path: '/CollectArticles', name: 'CollectArticles', meta: {
+            collectIndex: 3
+          }, component: CollectArticles },
+        ]
+      },
+      {
+        path: '/MySheet',
+        name: 'MySheet',
+        component: SheetDetail,
+        children: [
+          { path: '/MySheet', redirect: '/SheetSongs' },
+          { path: '/SheetSongs', meta: { sheetIndex: 0 }, name: 'SheetSongs', component: SheetSongs },
+          { path: '/SheetComment', meta: { sheetIndex: 1 }, name: 'SheetComment', component: SheetComment },
+          { path: '/SheetCollect', meta: { sheetIndex: 2 }, name: 'SheetCollect', component: SheetCollect },
         ]
       },
     ]
@@ -218,7 +323,14 @@ const routes: Array<RouteRecordRaw> = [
 
 const router = createRouter({
   history: createWebHashHistory(),
-  routes
+  routes,
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition;
+    } else {
+      return { top: 0 };
+    }
+  },
 })
 
 export default router

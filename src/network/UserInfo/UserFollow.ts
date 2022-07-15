@@ -8,7 +8,7 @@ export function getFollowList(data:{
     url: '/user/follows',
     params: {
       ...data,
-      uid: localStorage.getItem('id')
+      uid: decodeURIComponent(window.atob(localStorage.getItem("id") as string))
     }
   })
 }

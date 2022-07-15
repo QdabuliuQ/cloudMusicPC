@@ -49,7 +49,7 @@ export default defineComponent({
         router.currentRoute.value.query.audioId,
         'djradio',
         data.audioDetail.name,
-        data.audioDetail.dj.avatarUrl
+        data.audioDetail.picUrl
       )
     }
 

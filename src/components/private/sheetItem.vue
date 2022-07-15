@@ -1,6 +1,6 @@
 <template>
   <div @click="toPage" class="sheetItem">
-    <div class="sheetImage">
+    <div :style="{ height: imgHeight }" class="sheetImage">
       <div class="mask"></div>
       <div v-if="sum" class="count">
         <img src="~images/recommend/playLine.png" alt="" />

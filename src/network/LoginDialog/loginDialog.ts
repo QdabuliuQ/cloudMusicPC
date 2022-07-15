@@ -59,7 +59,10 @@ export function getUserDetail(data: {
 }) {
   return $http({
     url: '/user/detail',
-    params: data
+    params: {
+      ...data,
+      timestamp: Date.now(),
+    }
   })
 }
 

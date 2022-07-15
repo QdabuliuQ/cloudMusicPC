@@ -66,7 +66,7 @@ export default defineComponent({
 
     onMounted(() => {
       getData();
-      data.userInfo = JSON.parse(localStorage.getItem("data") as string);
+      data.userInfo = JSON.parse(decodeURIComponent(window.atob(localStorage.getItem('data') as string)));
       data.follows = data.userInfo.follows;
     });
     return {

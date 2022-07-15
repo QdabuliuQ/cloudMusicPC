@@ -1,10 +1,12 @@
 <template>
   <div id="HomePage">
     <div class="centerContainer">
-      <el-scrollbar :height="menuListHeight">
-        <menusList :menuListHeight='menuListHeight'></menusList>
-      </el-scrollbar>
-      <div :style="{minHeight: menuListHeight}" class="rightContainer">
+      <div class="leftMenu">
+        <el-scrollbar :height="menuListHeight">
+          <menusList :menuListHeight="menuListHeight"></menusList>
+        </el-scrollbar>
+      </div>
+      <div :style="{ minHeight: menuListHeight }" class="rightContainer">
         <router-view></router-view>
       </div>
     </div>
@@ -15,7 +17,7 @@
 <script lang='ts'>
 import { defineComponent, reactive, onMounted, toRefs } from "vue";
 import menusList from "components/common/menusList.vue";
-import bus from 'vue3-eventbus'
+import bus from "vue3-eventbus";
 import musicNav from "components/common/musicNav.vue";
 
 export default defineComponent({
@@ -26,12 +28,12 @@ export default defineComponent({
   },
   setup() {
     const data = reactive({
-      menuListHeight: ''
+      menuListHeight: "",
     });
-    
+
     const getWindowInfo = () => {
-      data.menuListHeight = window.innerHeight - 55 - 70.2 + 'px'
-      bus.emit('windowResize')
+      data.menuListHeight = window.innerHeight - 55 - 70.2 + "px";
+      bus.emit("windowResize");
     };
     const debounce = (fn: any, delay: number) => {
       let timer: any;
@@ -46,8 +48,9 @@ export default defineComponent({
     };
     const cancalDebounce = debounce(getWindowInfo, 500);
     onMounted(() => {
-      data.menuListHeight = document.documentElement.clientHeight - 55 - 70.2 + 'px'
-      
+      data.menuListHeight =
+        document.documentElement.clientHeight - 55 - 70.2 + "px";
+
       window.addEventListener("resize", cancalDebounce);
     });
     return {
@@ -63,13 +66,20 @@ export default defineComponent({
     margin-top: 55px;
     margin-bottom: 70px;
     display: flex;
+    .leftMenu {
+      width: 210px;
+      position: fixed;
+      left: 0;
+      z-index: 50;
+    }
     .el-scrollbar {
       width: 210px;
     }
-  }
-  .rightContainer {
-    width: calc(100vw - 210px);
-    background-color: @greyColor;
+    .rightContainer {
+      flex: 1;
+      margin-left: 210px;
+      background-color: @greyColor;
+    }
   }
 }
 </style>

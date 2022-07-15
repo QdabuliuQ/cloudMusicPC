@@ -8,8 +8,8 @@
         <router-view></router-view>
       </div>
     </div>
-    <div class="rightContainer">
-      <div ref="userInfoRef">
+    <div class="rightFollowContainer">
+      <div>
         <div style="padding: 30px 15px 0" class="userInfo">
           <el-avatar :size="50" :src="userInfo.avatarUrl" />
           <div class="info">
@@ -63,25 +63,6 @@
           </div>
         </div>
       </div>
-      <div :style="{opacity: showTopic ? 1 : 0, top: showTopic ? '70px' : '-999px'}" class="hotTopicFloat">
-        <div class="topicTitle">
-          <span style="font-weight: bold">热门话题</span>
-          <span @click="toTopicList" class="tip" style="cursor: pointer">更多</span>
-        </div>
-        <div @click="toTopic(item.actId)" v-for="item in topicList" :key="item.actId" class="topicItem">
-          <el-avatar
-            style="margin-right: 7px"
-            shape="square"
-            :size="35"
-            :fit="'cover'"
-            :src="item.sharePicUrl"
-          />
-          <div class="info">
-            <div class="name">#{{ item.title }}#</div>
-            <div class="count">{{ item.participateCount }}人参与</div>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </template>
@@ -120,8 +101,8 @@ export default defineComponent({
     }
 
     onMounted(() => {
-      data.userInfo = JSON.parse(localStorage.getItem("data") as string);
-
+      data.userInfo = JSON.parse(decodeURIComponent(window.atob(localStorage.getItem('data') as string)));
+      
       // 获取话题
       getHotTopic({
         limit: 8,
@@ -129,20 +110,6 @@ export default defineComponent({
       }).then((res: any) => {
         data.topicList = res.data.hot;
       });
-
-      // 监听元素
-      const observer = new IntersectionObserver(
-        (entries, observer) => {
-          entries.forEach((entry) => {
-            data.showTopic = !entry.isIntersecting;
-          });
-        },
-        {
-          root: null,
-          rootMargin: "0px 0px 20px 0px",
-        }
-      );
-      observer.observe(userInfoRef.value);
     });
     return {
       ...toRefs(data),
@@ -163,6 +130,7 @@ export default defineComponent({
   .leftContainer {
     padding: 30px;
     flex: 1;
+    margin-right: 250px;
     .title {
       font-size: 20px;
       font-weight: bold;
@@ -198,11 +166,14 @@ export default defineComponent({
     }
   }
 
-  .rightContainer {
-    width: 250px;
+  .rightFollowContainer {
+    position: fixed;
+    right: 0;
+    width: 250px !important;
+    min-height: calc(100vh - 55px - 70px);
     box-sizing: border-box;
     border-left: 1px solid #595959;
-    position: relative;
+    background-color: #313134;
     .userInfo {
       display: flex;
       align-items: center;

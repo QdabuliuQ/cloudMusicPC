@@ -35,8 +35,6 @@ export default defineComponent({
     };
 
     onMounted(() => {
-      console.log(router.currentRoute.value);
-      
       data.activeIndex = router.currentRoute.value.meta.xIndex as number ;
     });
     return {

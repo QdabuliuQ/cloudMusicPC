@@ -172,7 +172,6 @@ import {
   getUserEvents,
   deleteEvent,
   getFollowEvent,
-  commentResource,
 } from "@/network/UserInfo/userEvents";
 import { getTopicEvent } from "@/network/Topic/topic";
 import bus from "vue3-eventbus";
@@ -271,9 +270,7 @@ export default defineComponent({
     };
 
     onMounted(() => {
-      // console.log(router.currentRoute.value);
-
-      data.userInfo = JSON.parse(localStorage.getItem("data") as string);
+      data.userInfo = JSON.parse(decodeURIComponent(window.atob(localStorage.getItem('data') as string)));
 
       bus.on("refreshData", () => {
         data.eventList = [];

@@ -72,7 +72,7 @@ export default defineComponent({
     };
 
     onMounted(() => {
-      data.userInfo = JSON.parse(localStorage.getItem("data") as string);
+      data.userInfo = JSON.parse(decodeURIComponent(window.atob(localStorage.getItem('data') as string)));
       getData();
     });
     return {

@@ -36,4 +36,5 @@ export class InitData {
   }
 
   navList: navListInt[] = []
+  routerId: string = '0'
 }

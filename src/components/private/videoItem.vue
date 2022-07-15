@@ -12,10 +12,11 @@
         src="~images/common/sheetPlay.png"
         alt=""
       />
+      <img v-if="centerIcon" class="centerIcon" src="~images/common/sheetPlay.png" alt="">
       <div v-if="duration" class="duration">
         {{$formatTime(duration)}}
       </div>
-      <img style="height: 100%" class="image" :src="imageUrl" alt="" />
+      <img id="coverImage" style="height: 100%;" class="image" :src="imageUrl" alt="" />
     </div>
     <div class="videoTitle">
       {{ title }}
@@ -34,7 +35,7 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, withDefaults, defineProps } from "vue";
+import { defineComponent } from "vue";
 
 export default defineComponent({
   props: {
@@ -46,7 +47,8 @@ export default defineComponent({
     itemHeight: String,
     creator: String,
     artId: String,
-    duration: Number
+    duration: Number,
+    centerIcon: Boolean
   },
   name: "videoItem",
   setup() {
@@ -64,6 +66,17 @@ export default defineComponent({
     position: relative;
     overflow: hidden;
     border-radius: 8px;
+    background-color: #3e3e3e;
+    &:hover {
+      .centerIcon {
+        opacity: 1;
+      }
+    }
+    #coverImage {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
     .duration {
       z-index: 5;
       position: absolute;
@@ -101,6 +114,18 @@ export default defineComponent({
       top: 8px;
       left: 8px;
       width: 30px;
+      z-index: 5;
+    }
+    .centerIcon {
+      position: absolute;
+      width: 60px;
+      opacity: 0;
+      transition: 0.2s opacity linear;
+      top: 50%;
+      left: 50%;
+      width: 50px;
+      z-index: 5;
+      transform: translate(-50%, -50%);
     }
     .image {
       width: 100%;

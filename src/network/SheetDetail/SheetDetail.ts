@@ -6,7 +6,11 @@ export function getSheetDetail(data: {
 }) {
   return $http({
     url: '/playlist/detail',
-    params: data
+    params: {
+      ...data,
+      timestamp: Date.now(),
+      cookie: localStorage.getItem('cookie')
+    }
   })
 }
 
@@ -18,7 +22,10 @@ export function getSheetSongs(data: {
 }) {
   return $http({
     url: '/playlist/track/all',
-    params: data
+    params: {
+      ...data,
+      cookie: localStorage.getItem('cookie')
+    }
   })
 }
 
@@ -47,7 +54,10 @@ export function getSheetCollect(data: {
 }) {
   return $http({
     url: '/playlist/subscribers',
-    params: data
+    params: {
+      ...data,
+      timestamp: Date.now(),
+    }
   })
 }
 
