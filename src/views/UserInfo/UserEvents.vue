@@ -151,6 +151,22 @@
           :shareCount="item.info.shareCount"
           :pics="item.pics"
         ></commentEItem>
+        <textEItem
+          class="eventItem"
+          v-else-if="item.type == 57"
+          :avatarUrl="item.user.avatarUrl"
+          :nickname="item.user.nickname"
+          :uid="item.user.userId"
+          :time="item.showTime"
+          :infoJson="item.json"
+          :target="item.bottomActivityInfos"
+          :liked="item.info.liked"
+          :threadId="item.info.threadId"
+          :likedCount="item.info.likedCount"
+          :commentCount="item.info.commentCount"
+          :shareCount="item.info.shareCount"
+          :pics="item.pics"
+        ></textEItem>
       </div>
     </div>
   </div>
@@ -173,6 +189,7 @@ import {
   deleteEvent,
   getFollowEvent,
 } from "@/network/UserInfo/userEvents";
+import { getUserDetail } from "@/network/LoginDialog/loginDialog";
 import { getTopicEvent } from "@/network/Topic/topic";
 import bus from "vue3-eventbus";
 import loading from "@/components/common/loading.vue";
@@ -187,10 +204,11 @@ const videoEItem = defineAsyncComponent(() => import("./videoEItem.vue"));
 const mvEItem = defineAsyncComponent(() => import("./mvEItem.vue"));
 const replyEItem = defineAsyncComponent(() => import("./replyEItem.vue"));
 const commentEItem = defineAsyncComponent(() => import("./commentEItem.vue"));
+const textEItem = defineAsyncComponent(() => import("./textEItem.vue"));
 
 export default defineComponent({
   name: "UserEvents",
-  props: ['actid'],
+  props: ["actid"],
   components: {
     songEItem,
     albumEItem,
@@ -203,6 +221,7 @@ export default defineComponent({
     commentEItem,
     loading,
     emptyContent,
+    textEItem,
   },
   setup(props) {
     const data = reactive(new InitData());
@@ -238,10 +257,10 @@ export default defineComponent({
             data.disableScroll = true;
           }
         });
-      } else if(p == "/FollowUserEvents"){
+      } else if (p == "/FollowUserEvents") {
         getFollowEvent({
           pagesize: 10,
-          lasttime: data.lasttime
+          lasttime: data.lasttime,
         }).then((res: any) => {
           if (data.lasttime == -1) {
             nextTick(() => {
@@ -255,30 +274,34 @@ export default defineComponent({
           } else {
             data.disableScroll = true;
           }
-        })
-      } else if(props.actid) {
+        });
+      } else if (props.actid) {
         getTopicEvent({
-          actid: props.actid
+          actid: props.actid,
         }).then((res: any) => {
           nextTick(() => {
-              data.showContainer = true;
-            });
-          data.eventList = res.data.events
-          
-        })
+            data.showContainer = true;
+          });
+          data.eventList = res.data.events;
+        });
       }
     };
 
+    getUserDetail({
+      uid: parseInt(router.currentRoute.value.query.id as string),
+    }).then((res: any) => {
+      data.userInfo = res.data.profile;
+      console.log(data.userInfo);
+      getData();
+    });
+
     onMounted(() => {
-      data.userInfo = JSON.parse(decodeURIComponent(window.atob(localStorage.getItem('data') as string)));
 
       bus.on("refreshData", () => {
         data.eventList = [];
         data.lasttime = -1;
         getData();
       });
-
-      getData();
 
       // 删除动态
       bus.on("deleteEvent", (e: any) => {

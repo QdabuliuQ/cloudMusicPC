@@ -115,6 +115,7 @@ export default defineComponent({
       getFollowList({
         limit: 10,
         offset: data.offset * 10,
+        uid: useLogin(false) ? decodeURIComponent(window.atob(localStorage.getItem('id') as string)) : ''
       }).then((res: any) => {
         data.isMore = res.data.more;
         data.offset++;

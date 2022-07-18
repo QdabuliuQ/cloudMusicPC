@@ -4,34 +4,46 @@
       v-if="list && list.length"
       v-for="(item, index) in list"
       :key="index"
-      :class="[activeIndex==index?'activeItem':'','navItem']"
+      :class="[activeIndex == index ? 'activeItem' : '', 'navItem']"
       v-html="item.name"
       @click="itemToggle(index)"
-    >
-    </div>
+    ></div>
   </div>
 </template>
 
 <script lang='ts'>
-import { defineComponent, reactive, onMounted, toRefs } from "vue";
+import { defineComponent, reactive, onMounted, toRefs, watch } from "vue";
 import { useRouter } from "vue-router";
 
 export default defineComponent({
-  props: ["list", "routerKey"],
+  props: ["list", "routerKey", "watch"],
   name: "detailNav",
   setup(props, content) {
     const data = reactive({
-      activeIndex: 0
+      activeIndex: 0,
     });
-    const router = useRouter()
+    const router = useRouter();
 
     const itemToggle = (e: number) => {
-      data.activeIndex = e
-      router.push(props.list[e].path)
-      content.emit('itemClick', e)
-    }
+      data.activeIndex = e;
+      router.push(props.list[e].path);
+      content.emit("itemClick", e);
+    };
+
+    watch(
+      () => router.currentRoute.value.name,
+      (n) => {
+        if (props.watch) {
+          data.activeIndex = router.currentRoute.value.meta[
+            props.routerKey
+          ] as number;
+        }
+      }
+    );
     onMounted(() => {
-      data.activeIndex = router.currentRoute.value.meta[props.routerKey] as number
+      data.activeIndex = router.currentRoute.value.meta[
+        props.routerKey
+      ] as number;
     });
     return {
       ...toRefs(data),
@@ -58,7 +70,7 @@ export default defineComponent({
     }
     &::after {
       position: absolute;
-      content: '';
+      content: "";
       width: 80%;
       bottom: -5px;
       left: 50%;

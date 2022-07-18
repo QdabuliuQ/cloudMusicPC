@@ -5,6 +5,7 @@
     <emptyContent v-else-if="size == 0"></emptyContent>
     <div v-else class="userContainer">
       <userItem
+        @click="router.push('/UserDetail?id='+item.userId)"
         :nickname="item.nickname"
         :avatarUrl="item.avatarUrl"
         :signature="item.signature"
@@ -25,7 +26,7 @@
       "
     >
       <el-pagination
-        v-if="userInfo"
+        v-if="userInfo && userInfo.followeds > 32"
         @current-change="pageChange"
         :page-size="32"
         :current-page="offset"
@@ -44,6 +45,8 @@ import { getUserFans } from "@/network/UserInfo/userFans";
 import { InitData } from "@/types/UserInfo/UserFans";
 import loading from "@/components/common/loading.vue";
 import emptyContent from "@/components/common/emptyContent.vue";
+import { useRouter } from "vue-router";
+import { getUserDetail } from "@/network/LoginDialog/loginDialog";
 
 export default defineComponent({
   name: "UserFans",
@@ -53,6 +56,7 @@ export default defineComponent({
     emptyContent
   },
   setup() {
+    const router = useRouter()
     const data = reactive(new InitData());
 
     const pageChange = (e: number) => {
@@ -64,7 +68,7 @@ export default defineComponent({
       getUserFans({
         offset: (data.offset - 1) * 32,
         limit: 32,
-        uid: data.userInfo.userId,
+        uid: router.currentRoute.value.query.id as string,
       }).then((res: any) => {
         data.userList = res.data.followeds;
         data.size = res.data.size
@@ -72,12 +76,17 @@ export default defineComponent({
     };
 
     onMounted(() => {
-      data.userInfo = JSON.parse(decodeURIComponent(window.atob(localStorage.getItem('data') as string)));
+      getUserDetail({
+        uid: parseInt(router.currentRoute.value.query.id as string),
+      }).then((res: any) => {
+        data.userInfo = res.data.profile;
+      });
       getData();
     });
     return {
       ...toRefs(data),
       pageChange,
+      router,
     };
   },
 });

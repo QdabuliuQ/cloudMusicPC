@@ -15,7 +15,7 @@
             shape="square"
             :size="40"
             :fit="'cover'"
-            :src="info.song.img80x80"
+            :src="info.song.img80x80 ? info.song.img80x80 : info.song.album.blurPicUrl"
           />
         </div>
         <div style="margin-left: 10px">
@@ -89,6 +89,8 @@ export default defineComponent({
       (n) => {
         if (n) {
           data.info = JSON.parse(n);
+          console.log(data.info);
+          
           data.msg = JSON.parse(n)
             .msg.replaceAll(/#[^#]*#/g, "")
             .trim();

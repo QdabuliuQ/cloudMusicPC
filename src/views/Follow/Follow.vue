@@ -30,15 +30,15 @@
           </div>
         </div>
         <div class="userData">
-          <div @click="toPage('/UserEvents')" class="dataItem">
+          <div @click="toPage('/UserEvents?id='+userInfo.userId)" class="dataItem">
             <div class="data">{{ userInfo.eventCount }}</div>
             <div class="title">动态</div>
           </div>
-          <div @click="toPage('/UserFollow')" class="dataItem">
+          <div @click="toPage('/UserFollow?id='+userInfo.userId)" class="dataItem">
             <div class="data">{{ userInfo.follows }}</div>
             <div class="title">关注</div>
           </div>
-          <div @click="toPage('/UserFans')" class="dataItem">
+          <div @click="toPage('/UserFans?id='+userInfo.userId)" class="dataItem">
             <div class="data">{{ userInfo.followeds }}</div>
             <div class="title">粉丝</div>
           </div>

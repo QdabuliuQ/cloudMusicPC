@@ -62,6 +62,7 @@ export function getUserDetail(data: {
     params: {
       ...data,
       timestamp: Date.now(),
+      cookie: localStorage.getItem('cookie')
     }
   })
 }

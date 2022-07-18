@@ -4,6 +4,7 @@
     <loading v-if="!userList.length"></loading>
     <div v-else class="userContainer">
       <userItem
+        @click="router.push('/UserDetail?id=' + item.userId)"
         :avatarUrl="item.avatarUrl"
         :nickname="item.nickname"
         :signature="item.signature"
@@ -23,6 +24,7 @@
       "
     >
       <el-pagination
+        v-if="follows > 32"
         @current-change="pageChange"
         :page-size="32"
         :current-page="offset"
@@ -40,7 +42,8 @@ import { getFollowList } from "@/network/UserInfo/userFollow";
 import { InitData } from "@/types/UserInfo/UserFollow";
 import loading from "@/components/common/loading.vue";
 import userItem from "@/components/private/userItem.vue";
-import useLogin from "@/hooks/useLogin";
+import { useRouter } from "vue-router";
+import { getUserDetail } from "@/network/LoginDialog/loginDialog";
 
 export default defineComponent({
   name: "UserFollow",
@@ -49,6 +52,7 @@ export default defineComponent({
     userItem,
   },
   setup() {
+    const router = useRouter();
     const data = reactive(new InitData());
 
     const pageChange = (e: number) => {
@@ -60,25 +64,25 @@ export default defineComponent({
       getFollowList({
         offset: (data.offset - 1) * 32,
         limit: 32,
+        uid: router.currentRoute.value.query.id as string,
       }).then((res: any) => {
         data.userList = res.data.follow;
       });
     };
 
     onMounted(() => {
-      if (useLogin()) {
-        getData();
-        data.userInfo = JSON.parse(
-          decodeURIComponent(
-            window.atob(localStorage.getItem("data") as string)
-          )
-        );
+      getData();
+      getUserDetail({
+        uid: parseInt(router.currentRoute.value.query.id as string),
+      }).then((res: any) => {
+        data.userInfo = res.data.profile;
         data.follows = data.userInfo.follows;
-      }
+      });
     });
     return {
       ...toRefs(data),
       pageChange,
+      router,
     };
   },
 });

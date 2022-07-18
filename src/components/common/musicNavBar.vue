@@ -118,90 +118,93 @@
           未登录
         </div>
         <div v-else class="userData">
-          <el-popover
-            ref="userInfoPopoverRef"
-            placement="bottom-end"
-            popper-class="infoPopperClass"
-            effect="dark"
-            :width="280"
-            trigger="click"
-            :hide-after="50"
-          >
-            <template #reference>
-              <div class="dataBox">
-                <el-avatar
-                  style="margin-right: 10px"
-                  :fit="'cover'"
-                  :size="30"
-                  :src="userInfo.avatarUrl"
-                />
-                {{ userInfo.nickname }}
-                <el-icon style="margin-left: 5px"><CaretBottom /></el-icon>
+          <div class="dataBox">
+            <el-avatar
+              @click="router.push('/UserDetail?id=' + userInfo.userId)"
+              style="margin-right: 10px"
+              :fit="'cover'"
+              :size="30"
+              :src="userInfo.avatarUrl"
+            />
+            <el-popover
+              ref="userInfoPopoverRef"
+              placement="bottom-end"
+              popper-class="infoPopperClass"
+              effect="dark"
+              :width="280"
+              trigger="click"
+              :hide-after="50"
+            >
+              <template #reference>
+                <span style="display:flex;align-items:center">
+                  {{ userInfo.nickname }}
+                  <el-icon style="margin-left: 5px"><CaretBottom /></el-icon>
+                </span>
+              </template>
+              <div class="popperContainer">
+                <div class="topContainer">
+                  <div class="item">
+                    <div @click="toDetailPage('/UserEvents?id='+userInfo.userId)" class="itemBox">
+                      <div>{{ userDetail.eventCount }}</div>
+                      <div class="itemText">动态</div>
+                    </div>
+                  </div>
+                  <div class="item">
+                    <div @click="toDetailPage('/UserFollow?id='+userInfo.userId)" class="itemBox">
+                      <div>{{ userDetail.follows }}</div>
+                      <div class="itemText">关注</div>
+                    </div>
+                  </div>
+                  <div class="item">
+                    <div @click="toDetailPage('/UserFans?id='+userInfo.userId)" class="itemBox">
+                      <div>{{ userDetail.followeds }}</div>
+                      <div class="itemText">粉丝</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="bottomContainer">
+                  <div class="item">
+                    <div class="itemTitle">
+                      <el-icon style="margin-right: 5px" :size="22"
+                        ><Notebook
+                      /></el-icon>
+                      等级
+                    </div>
+                    <div>{{ level }}</div>
+                  </div>
+                  <div class="item">
+                    <div class="itemTitle">
+                      <el-icon style="margin-right: 5px" :size="22"
+                        ><Headset
+                      /></el-icon>
+                      累计听歌
+                    </div>
+                    <div>{{ listenSongs }}</div>
+                  </div>
+                  <div @click="toDetailPage('/UserInfoEdit')" class="item">
+                    <div class="itemTitle">
+                      <el-icon style="margin-right: 5px" :size="22"
+                        ><Edit
+                      /></el-icon>
+                      个人信息设置
+                    </div>
+                    <div>
+                      <el-icon><ArrowRight /></el-icon>
+                    </div>
+                  </div>
+                  <div @click="loginOutEvent" class="item">
+                    <div class="itemTitle">
+                      <el-icon style="margin-right: 5px" :size="22"
+                        ><Link
+                      /></el-icon>
+                      退出登录
+                    </div>
+                    <div></div>
+                  </div>
+                </div>
               </div>
-            </template>
-            <div class="popperContainer">
-              <div class="topContainer">
-                <div class="item">
-                  <div @click="toDetailPage('/UserEvents')" class="itemBox">
-                    <div>{{ userDetail.eventCount }}</div>
-                    <div class="itemText">动态</div>
-                  </div>
-                </div>
-                <div class="item">
-                  <div @click="toDetailPage('/UserFollow')" class="itemBox">
-                    <div>{{ userDetail.follows }}</div>
-                    <div class="itemText">关注</div>
-                  </div>
-                </div>
-                <div class="item">
-                  <div @click="toDetailPage('/UserFans')" class="itemBox">
-                    <div>{{ userDetail.followeds }}</div>
-                    <div class="itemText">粉丝</div>
-                  </div>
-                </div>
-              </div>
-              <div class="bottomContainer">
-                <div class="item">
-                  <div class="itemTitle">
-                    <el-icon style="margin-right: 5px" :size="22"
-                      ><Notebook
-                    /></el-icon>
-                    等级
-                  </div>
-                  <div>{{ level }}</div>
-                </div>
-                <div class="item">
-                  <div class="itemTitle">
-                    <el-icon style="margin-right: 5px" :size="22"
-                      ><Headset
-                    /></el-icon>
-                    累计听歌
-                  </div>
-                  <div>{{ listenSongs }}</div>
-                </div>
-                <div @click="toDetailPage('/UserInfoEdit')" class="item">
-                  <div class="itemTitle">
-                    <el-icon style="margin-right: 5px" :size="22"
-                      ><Edit
-                    /></el-icon>
-                    个人信息设置
-                  </div>
-                  <div>
-                    <el-icon><ArrowRight /></el-icon>
-                  </div>
-                </div>
-                <div @click="loginOutEvent" class="item">
-                  <div class="itemTitle">
-                    <el-icon style="margin-right: 5px" :size="22"
-                      ><Link
-                    /></el-icon>
-                    退出登录
-                  </div>
-                  <div></div>
-                </div>
-              </div>
-            </div>
-          </el-popover>
+            </el-popover>
+          </div>
         </div>
       </div>
     </div>
@@ -378,6 +381,7 @@ export default defineComponent({
       searchChange,
       recommendType,
       userInfoPopoverRef,
+      router,
     };
   },
 });
@@ -405,7 +409,6 @@ export default defineComponent({
         font-weight: bold;
       }
       .itemInfo {
-        
         display: flex;
         align-items: center;
         min-height: 40px;
@@ -417,8 +420,8 @@ export default defineComponent({
           display: flex;
           align-items: center;
           white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+          overflow: hidden;
+          text-overflow: ellipsis;
           span {
             font-size: 12px;
             color: @fontColor;

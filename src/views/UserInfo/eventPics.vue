@@ -53,6 +53,7 @@ export default defineComponent({
     grid-gap: 10px;
     .el-avatar {
       cursor: pointer;
+      background-color: #383838;
     }
   }
 }

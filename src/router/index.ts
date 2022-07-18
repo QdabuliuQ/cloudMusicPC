@@ -54,6 +54,9 @@ const Follow = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Follow
 const Topic = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Topic/Topic.vue')
 const TopicDetail = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Topic/TopicDetail.vue')
 
+const UserDetail = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/AccountDetail/UserDetail.vue')
+const UserSheet = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/AccountDetail/views/UserSheet.vue')
+
 const routes: Array<RouteRecordRaw> = [
   { path: '/', redirect: '/HomePage' },
   {
@@ -341,6 +344,31 @@ const routes: Array<RouteRecordRaw> = [
           { path: '/SheetCollect', meta: { sheetIndex: 2 }, name: 'SheetCollect', component: SheetCollect },
         ]
       },
+      {
+        path: '/UserDetail',
+        name: 'UserDetail',
+        meta: {
+        },
+        component: UserDetail,
+        children: [
+          {path: '/UserDetail', redirect: '/UserSheet'},
+          {path: '/UserSheet', name: 'UserSheet', meta: {
+            userInfoIndex: 0
+          }, component: UserSheet},
+          {path: '/UserCollect', name: 'UserCollect', meta: {
+            userInfoIndex: 1
+          }, component: UserSheet},
+          {path: '/UserEventList', name: 'UserEventList', meta: {
+            userInfoIndex: 2
+          }, component: UserEvents},
+          {path: '/UserFollowList', name: 'UserFollowList', meta: {
+            userInfoIndex: 3
+          }, component: UserFollow},
+          {path: '/UserFansList', name: 'UserFansList', meta: {
+            userInfoIndex: 4
+          }, component: UserFans},
+        ]
+      },
     ]
   },
   {
@@ -364,7 +392,6 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
 	// 判断有没有登录
-  console.log(to);
 	if (to.meta.login) {
     if (useLogin(false)) {
       next();
