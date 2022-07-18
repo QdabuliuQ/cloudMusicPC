@@ -30,3 +30,18 @@ export function addUserSheet(data: {
     }
   })
 }
+
+// 删除歌单
+export function deleteSheet(data: {
+  id: number,
+}) {
+  return $http({
+    url: '/playlist/delete',
+    params: {
+      ...data,
+      cookie: localStorage.getItem('cookie')
+    }
+  })
+}
+
+//

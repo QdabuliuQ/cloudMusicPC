@@ -40,6 +40,7 @@ import { useRouter } from "vue-router";
 import { InitData } from "@/types/SheetDetail/SheetDetail";
 import detailPanel from "@/components/common/detailPanel.vue";
 import detailNav from "@/components/common/detailNav.vue";
+import bus from "vue3-eventbus";
 
 export default defineComponent({
   name: "SheetDetail",
@@ -93,6 +94,12 @@ export default defineComponent({
       data.routerId = router.currentRoute.value.query.id as string
       getData()
       
+      bus.on('updateCount', (n: number) => {
+        data.navList[0] = {
+          name: `歌曲列表<span style='color: #949494; font-size: 12px'>(${n})</span>`,
+          path: "/SheetSongs?id=" + router.currentRoute.value.query.id,
+        };
+      })
     });
     return {
       ...toRefs(data),

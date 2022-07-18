@@ -78,11 +78,18 @@
         class="dialogInfoBox"
       >
         <el-avatar
+          v-if="infoImage"
           style="margin-left: 7px"
           shape="square"
           :size="30"
           :fit="'cover'"
           :src="infoImage"
+        />
+        <img
+          v-else
+          style="width: 30px; margin-right: 7px"
+          src="~images/shareDialog/musicEvent.png"
+          alt=""
         />
         <span class="target">{{ filterType(type) }}</span>
         <div class="name">
@@ -247,7 +254,7 @@ import searchSheetItem from "@/components/private/searchSheetItem.vue";
 import searchMvItem from "@/components/private/searchMvItem.vue";
 import searchAudioItem from "@/components/private/searchAudioItem.vue";
 import searchProgramItem from "@/components/private/searchProgramItem.vue";
-
+import useLogin from "@/hooks/useLogin";
 let timer: any;
 
 export default defineComponent({
@@ -567,8 +574,9 @@ export default defineComponent({
 
     onMounted(() => {
       data.emoji = emoji;
-
-      getData();
+      if (useLogin(false)) {
+        getData();
+      }
     });
 
     return {

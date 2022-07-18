@@ -9,6 +9,9 @@ import loginDialog from "@/components/loginDialog"
 import shareDialog from "@/components/shareDialog"
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import vue3PreviewImage from 'vue3-preview-image'
+import contextmenu from "v-contextmenu";
+import "v-contextmenu/dist/themes/default.css";
+
 
 const app = createApp(App)
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
@@ -73,4 +76,4 @@ app.config.globalProperties.$fileType = function (fileName: any) {  // 判断文
   if (result) return 'radio';
 }
 
-app.use(store).use(router).use(ElementPlus).use(vue3PreviewImage).use(eventBus).mount('#app')
+app.use(store).use(router).use(ElementPlus).use(contextmenu).use(vue3PreviewImage).use(eventBus).mount('#app')

@@ -40,6 +40,7 @@ import { getFollowList } from "@/network/UserInfo/userFollow";
 import { InitData } from "@/types/UserInfo/UserFollow";
 import loading from "@/components/common/loading.vue";
 import userItem from "@/components/private/userItem.vue";
+import useLogin from "@/hooks/useLogin";
 
 export default defineComponent({
   name: "UserFollow",
@@ -65,9 +66,15 @@ export default defineComponent({
     };
 
     onMounted(() => {
-      getData();
-      data.userInfo = JSON.parse(decodeURIComponent(window.atob(localStorage.getItem('data') as string)));
-      data.follows = data.userInfo.follows;
+      if (useLogin()) {
+        getData();
+        data.userInfo = JSON.parse(
+          decodeURIComponent(
+            window.atob(localStorage.getItem("data") as string)
+          )
+        );
+        data.follows = data.userInfo.follows;
+      }
     });
     return {
       ...toRefs(data),

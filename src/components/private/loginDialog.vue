@@ -177,6 +177,7 @@ export default defineComponent({
       }).then((res: any) => {
         // id加密
         localStorage.setItem("id", window.btoa(window.encodeURIComponent(res.data.profile.userId)));
+        bus.emit("refreshSheetList")
         getUserDetail({
           uid: res.data.profile.userId,
         }).then((res: any) => {
@@ -252,18 +253,19 @@ export default defineComponent({
             // 待确认
           } else if (res.data.code == 803) {
             // 授权成功
+            clearInterval(timer); // 清除定时器
             localStorage.setItem("cookie", res.data.cookie);
             ElNotification({
               message: "登录账户成功",
               type: "success",
               customClass: 'darkNotice',
             });
+            
             getLoginStatus({
               cookie: res.data.cookie,
             }).then((res: any) => {
               getData();
             });
-            clearInterval(timer); // 清除定时器
             setTimeout(() => {
               data.visible = false; // 关闭弹窗
             }, 1000);
@@ -276,7 +278,11 @@ export default defineComponent({
       data.activeIndex = e;
     };
 
-    onMounted(() => {});
+    onMounted(() => {
+      bus.on('loginDialog', () => {
+        openLoginDialog()
+      })
+    });
     return {
       ...toRefs(data),
       openLoginDialog,

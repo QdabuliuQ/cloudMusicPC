@@ -11,3 +11,4 @@ declare module '*.vue' {
 
 declare module 'vue3-eventbus'
 declare module 'vue3-preview-image'
+declare module 'v-contextmenu'

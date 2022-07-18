@@ -83,7 +83,13 @@
         </div>
       </div>
       <div class="rightImg">
-        <el-avatar
+        <avatarUpload
+          :coverUrl="tempInfo.avatarUrl"
+          @changeEvent="uploadChange"
+          :formName="'imgFile'"
+          :btnText="'修改头像'"
+        ></avatarUpload>
+        <!-- <el-avatar
           shape="square"
           :size="150"
           :fit="'cover'"
@@ -98,7 +104,7 @@
         />
         <div class="btnBox">
           <div @click="uploadInputRef.click()" class="editBtn">修改头像</div>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
@@ -118,6 +124,7 @@ import { InitData } from "@/types/UserInfo/UserInfoEdit";
 import { editInfo } from "@/network/UserInfo/UserEditInfo";
 import { getUserDetail } from "@/network/LoginDialog/loginDialog";
 import { ElNotification } from "element-plus";
+import avatarUpload from "@/components/private/avatarUpload.vue";
 import axios from "axios";
 import bus from "vue3-eventbus";
 import zhcn from "element-plus/lib/locale/lang/zh-cn";
@@ -125,14 +132,14 @@ let local = zhcn;
 
 export default defineComponent({
   name: "UserInfoEdit",
+  components: {
+    avatarUpload
+  },
   setup() {
     const _this: any = getCurrentInstance();
     const data = reactive(new InitData());
-    const uploadInputRef = ref();
 
     const uploadImage = async () => {
-      let f = new FormData();
-      f.append("imgFile", data.tempInfo.imgForm);
       const res = await axios({
         method: "post",
         url: `http://localhost:3000/avatar/upload?cookie=${localStorage.getItem(
@@ -141,9 +148,8 @@ export default defineComponent({
         headers: {
           "Content-Type": "multipart/form-data",
         },
-        data: f,
+        data: data.tempInfo.imgForm,
       });
-      uploadInputRef.value.value = "";
       refreshData();
       ElNotification({
         message: "修改信息成功",
@@ -152,41 +158,10 @@ export default defineComponent({
       });
       data.tempInfo.imgForm = null;
     };
-    const getObjectURL = (file: any) => {
-      var url = null;
-      if (window.URL != undefined) {
-        // mozilla(firefox)
-        url = window.URL.createObjectURL(file);
-      } else if (window.webkitURL != undefined) {
-        // webkit or chrome
-        url = window.webkitURL.createObjectURL(file);
-      }
-      return url;
-    };
-    const loadChange = (e: any) => {
-      if (
-        _this.proxy.$fileType(uploadInputRef.value.files[0].name) == "image"
-      ) {
-        var reader = new FileReader();
-        reader.onload = function (evt: any) {
-          var image = new Image();
-          image.onload = function (e) {
-            data.tempInfo.imageWidth = image.width
-          };
-          image.src = evt.target.result;
-        };
-        reader.readAsDataURL(uploadInputRef.value.files[0]);
-        data.tempInfo.avatarUrl = getObjectURL(
-          uploadInputRef.value.files[0]
-        ) as string;
-        data.tempInfo.imgForm = uploadInputRef.value.files[0];
-      } else {
-        ElNotification({
-          message: "文件类型错误",
-          type: "error",
-          customClass: "darkNotice",
-        });
-      }
+
+    const uploadChange = (e: any, w: number) => {
+      data.tempInfo.imgForm = e
+      data.tempInfo.imageWidth = w
     };
     // 刷新数据
     const refreshData = () => {
@@ -282,10 +257,9 @@ export default defineComponent({
       ...toRefs(data),
       optionClick,
       submitInfo,
-      loadChange,
+      uploadChange,
       local,
       area_codes,
-      uploadInputRef,
     };
   },
 });
@@ -443,23 +417,6 @@ export default defineComponent({
     }
     .rightImg {
       margin-left: 50px;
-      .btnBox {
-        margin-top: 20px;
-        display: flex;
-        align-items: center;
-      }
-      .editBtn {
-        font-size: 13px;
-        margin: 0 auto;
-        padding: 7px 20px;
-        border-radius: 30px;
-        border: 1px solid #757575;
-        color: @fontColor;
-        cursor: pointer;
-        &:hover {
-          background: @hoverColor;
-        }
-      }
     }
   }
 }

@@ -1,4 +1,5 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
+import useLogin from "@/hooks/useLogin";
 const HomePage = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/HomePage.vue')
 const DiscoverMusic = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/DiscoverMusic/DiscoverMusic.vue')
 const Recommend = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/DiscoverMusic/views/Recommend.vue')
@@ -26,6 +27,7 @@ const SheetDetail = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/S
 const SheetSongs = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/SheetDetail/views/SheetSongs.vue')
 const SheetComment = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/SheetDetail/views/SheetComment.vue')
 const SheetCollect = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/SheetDetail/views/SheetCollect.vue')
+const EditSheet = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/EditSheet/EditSheet.vue')
 
 const UserFollow = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/UserInfo/UserFollow.vue')
 const UserFans = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/UserInfo/UserFans.vue')
@@ -155,7 +157,8 @@ const routes: Array<RouteRecordRaw> = [
         path: '/Follow',
         name: 'Follow',
         meta: {
-          index: 3
+          index: 3,
+          login: true
         },
         component: Follow,
         children: [
@@ -185,6 +188,14 @@ const routes: Array<RouteRecordRaw> = [
         ]
       },
       {
+        path: '/EditSheet',
+        name: 'EditSheet',
+        meta: {
+          login: true
+        },
+        component: EditSheet
+      },
+      {
         path: '/SheetDetail',
         name: 'SheetDetail',
         component: SheetDetail,
@@ -198,21 +209,33 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: '/UserFollow',
         name: 'UserFollow',
+        meta: {
+          login: true
+        },
         component: UserFollow
       },
       {
         path: '/UserFans',
         name: 'UserFans',
+        meta: {
+          login: true
+        },
         component: UserFans
       },
       {
         path: '/UserEvents',
         name: 'UserEvents',
+        meta: {
+          login: true
+        },
         component: UserEvents
       },
       {
         path: '/UserInfoEdit',
         name: 'UserInfoEdit',
+        meta: {
+          login: true
+        },
         component: UserInfoEdit
       },
       {
@@ -233,7 +256,8 @@ const routes: Array<RouteRecordRaw> = [
         path: '/Recent',
         name: 'Recent',
         meta: {
-          index: 5
+          index: 4,
+          login: true
         },
         component: Recent,
         children: [
@@ -274,7 +298,8 @@ const routes: Array<RouteRecordRaw> = [
         path: '/CloudDick',
         name: 'CloudDick',
         meta: {
-          index: 6
+          index: 5,
+          login: true
         },
         component: CloudDick,
       },
@@ -282,7 +307,8 @@ const routes: Array<RouteRecordRaw> = [
         path: '/Collect',
         name: 'Collect',
         meta: {
-          index: 8
+          index: 6,
+          login: true
         },
         component: Collect,
         children: [
@@ -304,6 +330,9 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: '/MySheet',
         name: 'MySheet',
+        meta: {
+          login: true
+        },
         component: SheetDetail,
         children: [
           { path: '/MySheet', redirect: '/SheetSongs' },
@@ -332,5 +361,19 @@ const router = createRouter({
     }
   },
 })
+
+router.beforeEach((to, from, next) => {
+	// 判断有没有登录
+  console.log(to);
+	if (to.meta.login) {
+    if (useLogin(false)) {
+      next();
+    } else {
+      useLogin(true)
+    }
+	} else {
+		next();
+	}
+});
 
 export default router

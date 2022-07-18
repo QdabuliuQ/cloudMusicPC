@@ -82,7 +82,7 @@ export default defineComponent({
       }
       .info {
         margin-left: 7px;
-        width: 11vw;
+        width: 200px;
         .name {
           font-size: 14px;
           font-weight: bold;

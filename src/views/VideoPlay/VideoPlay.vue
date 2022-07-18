@@ -49,7 +49,7 @@
             <img src="~images/common/uncollect.png" alt="" />
             {{ videoInfo.subscribeCount }}
           </div>
-          <div class="dataItem">
+          <div @click="shareEvent" class="dataItem">
             <img src="~images/common/share.png" alt="" />
             {{ videoInfo.shareCount }}
           </div>
@@ -58,14 +58,9 @@
           <div class="commentTitle">
             评论<span>({{ total }})</span>
           </div>
-          <div class="commentBox">
-            <textarea></textarea>
-          </div>
-          <div class="btnContainer">
-            <div class="sendBtn">评论</div>
-          </div>
-          <div style="font-weight: bold">精彩评论</div>
-          <div style="margin-bottom: 50px" class="commentList">
+          <commentArea @commentEvent="commentEvent"></commentArea>
+          <div v-if="hotComment.length" style="font-weight: bold">精彩评论</div>
+          <div v-if="hotComment.length" style="margin-bottom: 50px" class="commentList">
             <commentItem
               class="comItem"
               v-for="item in hotComment"
@@ -83,8 +78,8 @@
               :type="5"
             ></commentItem>
           </div>
-          <div ref="title" style="font-weight: bold">最新评论</div>
-          <div class="commentList">
+          <div v-if="allComment.length" ref="title" style="font-weight: bold">最新评论</div>
+          <div v-if="allComment.length" class="commentList">
             <commentItem
               class="comItem"
               v-for="item in allComment"
@@ -104,6 +99,7 @@
           </div>
           <div style="display: flex; justify-content: center; margin-top: 10px">
             <el-pagination
+              v-if="total > 20"
               @current-change="pageChange"
               :current-page="offset"
               :page-size="20"
@@ -112,6 +108,7 @@
               :total="total"
             />
           </div>
+          <emptyContent v-if="(!hotComment.length && !allComment.length) && total == 0"></emptyContent>
         </div>
       </div>
     </div>
@@ -133,7 +130,7 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, reactive, onMounted, toRefs, ref } from "vue";
+import { defineComponent, reactive, onMounted, toRefs, ref, getCurrentInstance } from "vue";
 import pageNav from "@/components/private/pageNav.vue";
 import { useRouter } from "vue-router";
 import { InitData } from "@/types/VideoPlay/VideoPlay";
@@ -143,12 +140,16 @@ import {
   getRelateVideo,
   getVideoUrl,
   getVideoData,
-  likeResource
+  likeResource,
 } from "@/network/VideoPlay/videoPlay";
 import followBtn from "@/components/private/followBtn.vue";
 import commentItem from "@/components/private/commentItem.vue";
 import videoItem from "./videoItem.vue";
 import mediaPlay from "@/components/common/mediaPlay.vue";
+import commentArea from "@/components/common/commentArea.vue";
+import useLogin from "@/hooks/useLogin";
+import { commentResource } from "@/network/UserInfo/userEvents";
+import emptyContent from "@/components/common/emptyContent.vue";
 
 export default defineComponent({
   name: "VideoPlay",
@@ -158,6 +159,8 @@ export default defineComponent({
     commentItem,
     videoItem,
     mediaPlay,
+    commentArea,
+    emptyContent,
   },
   setup() {
     const data = reactive(new InitData());
@@ -165,22 +168,41 @@ export default defineComponent({
     const title = ref();
     const playContainer = ref();
 
+
+    // 评论回调
+    const commentEvent = (e: string) => {
+      commentResource({
+        t: 1,
+        type: 5,
+        id: router.currentRoute.value.query.id as string,
+        content: e
+      }).then((res: any) => {
+        if (res.data.code == 200) {
+          res.data.comment.likedCount = 0
+          data.allComment.unshift(res.data.comment)
+        }
+      })
+    };
+
     const likeEvent = () => {
-      let t = router.currentRoute.value.query;
-      if (t.type == "video") {
-        likeResource({
-          type: 5,
-          t: data.liked ? 0 : 1,
-          id: t.id as string
-        }).then((res: any) => {
-          if (res.data.code == 200) {
-            data.liked = !data.liked
-            data.liked ? data.videoInfo.praisedCount ++ : data.videoInfo.praisedCount--
-          }
-        })
+      if (useLogin()) {
+        let t = router.currentRoute.value.query;
+        if (t.type == "video") {
+          likeResource({
+            type: 5,
+            t: data.liked ? 0 : 1,
+            id: t.id as string,
+          }).then((res: any) => {
+            if (res.data.code == 200) {
+              data.liked = !data.liked;
+              data.liked
+                ? data.videoInfo.praisedCount++
+                : data.videoInfo.praisedCount--;
+            }
+          });
+        }
       }
-      
-    }
+    };
     // 评论页码切换
     const pageChange = (e: number) => {
       data.offset = e;
@@ -216,7 +238,7 @@ export default defineComponent({
         getVideoData({
           vid: t.id as string,
         }).then((res: any) => {
-          data.liked = res.data.liked
+          data.liked = res.data.liked;
         });
 
         // 视频详情
@@ -237,20 +259,24 @@ export default defineComponent({
       // 视频评论
       getCommentData(false);
 
-      const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach((entry) => {
-          data.miniModel = !entry.isIntersecting
-        });
-      }, {
-        root: null,
-        rootMargin: '0px 0px 30px 0px',
-      });
+      const observer = new IntersectionObserver(
+        (entries, observer) => {
+          entries.forEach((entry) => {
+            data.miniModel = !entry.isIntersecting;
+          });
+        },
+        {
+          root: null,
+          rootMargin: "0px 0px 30px 0px",
+        }
+      );
       observer.observe(playContainer.value);
     });
     return {
       ...toRefs(data),
       pageChange,
       likeEvent,
+      commentEvent,
       title,
       playContainer,
     };

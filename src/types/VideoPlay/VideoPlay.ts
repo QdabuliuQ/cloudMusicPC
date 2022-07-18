@@ -7,6 +7,7 @@ interface videoInfoInt {
     userId: number
     followed: boolean
   }
+  coverUrl: string
   description: string,
   playTime: number,
   title: string,
@@ -42,6 +43,7 @@ export class InitData {
       userId: 0,
       followed: false
     },
+    coverUrl: '',
     description: '',
     playTime: 0,
     title: '',

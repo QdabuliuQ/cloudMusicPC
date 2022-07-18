@@ -14,10 +14,10 @@
       <div v-if="isLogin" style="margin-top: 15px" class="menuList">
         <div class="menuTitle">我的音乐</div>
         <div
-          @click="toPage(item.path, index)"
+          @click="toPage(item.path, index+4)"
           v-for="(item, index) in myMusicList"
           :key="item.path"
-          :class="[activeIndex == index + 5 ? 'activeItem' : '', 'menuItem']"
+          :class="[activeIndex == index + 4 ? 'activeItem' : '', 'menuItem']"
         >
           <img :src="item.img" alt="" />
           {{ item.title }}
@@ -26,9 +26,16 @@
       <div v-if="isLogin" style="margin-top: 15px" class="menuList">
         <div class="menuTitle createSheet">
           <span>创建的歌单</span>
-          <img title="新建歌单" src="~images/menuList/plus.png" alt="" />
+          <img
+            @click="visible = true"
+            title="新建歌单"
+            src="~images/menuList/plus.png"
+            alt=""
+          />
         </div>
         <div
+          v-contextmenu:sheetContextRef
+          :data-index="index"
           @click="toDetail(item.id, index)"
           v-if="mySheet.length"
           v-for="(item, index) in mySheet"
@@ -37,7 +44,7 @@
         >
           <img v-if="index == 0" src="~images/menuList/like.png" alt="" />
           <img
-            v-else-if="!item.ordered"
+            v-else-if="item.privacy == 10"
             src="~images/menuList/lock.png"
             alt=""
           />
@@ -52,7 +59,9 @@
           <span>收藏的歌单</span>
         </div>
         <div
+          v-contextmenu:collectSheetContextRef
           @click="toDetail(item.id, index)"
+          :data-index="index"
           v-if="mySheet.length"
           v-for="(item, index) in collectSheet"
           :key="item.id"
@@ -66,6 +75,49 @@
       </div>
     </div>
   </div>
+  <v-contextmenu @show="menuOpenEvent" ref="sheetContextRef">
+    <v-contextmenu-item
+      @click="editSheetInfo"
+      :disabled="contextMenuIndex == 0"
+    >
+      <div class="contextItem">
+        <img class="contextIcon" src="~images/common/editGrey.png" alt="" />
+        编辑歌单信息
+      </div>
+    </v-contextmenu-item>
+    <v-contextmenu-item
+      :disabled="contextMenuIndex == 0"
+      @click="menuItemDelete('create')"
+    >
+      <div class="contextItem">
+        <img class="contextIcon" src="~images/common/delete.png" alt="" />
+        删除歌单
+      </div>
+    </v-contextmenu-item>
+    <v-contextmenu-item
+      @click="menuItemShare('create')"
+      :disabled="!mySheet[contextMenuIndex].trackCount"
+    >
+      <div class="contextItem">
+        <img class="contextIcon" src="~images/common/share.png" alt="" />
+        分享歌单
+      </div>
+    </v-contextmenu-item>
+  </v-contextmenu>
+  <v-contextmenu @show="collectMenuOpenEvent" ref="collectSheetContextRef">
+    <v-contextmenu-item @click="menuItemDelete('collect')">
+      <div class="contextItem">
+        <img class="contextIcon" src="~images/common/delete.png" alt="" />
+        删除歌单
+      </div>
+    </v-contextmenu-item>
+    <v-contextmenu-item @click="menuItemShare('collect')">
+      <div class="contextItem">
+        <img class="contextIcon" src="~images/common/share.png" alt="" />
+        分享歌单
+      </div>
+    </v-contextmenu-item>
+  </v-contextmenu>
   <el-dialog
     custom-class="shareDialogClass"
     v-model="visible"
@@ -87,17 +139,89 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, reactive, onMounted, toRefs, watch } from "vue";
+import {
+  defineComponent,
+  reactive,
+  onMounted,
+  toRefs,
+  watch,
+  ref,
+  getCurrentInstance,
+} from "vue";
 import { useRouter } from "vue-router";
-import { getUserSheet, addUserSheet } from "@/network/MenuList/menuList";
+import {
+  getUserSheet,
+  addUserSheet,
+  deleteSheet,
+} from "@/network/MenuList/menuList";
 import { ElNotification } from "element-plus";
 import bus from "vue3-eventbus";
+import useLogin from "@/hooks/useLogin";
 
 export default defineComponent({
   props: ["menuListHeight"], // 声明所接收的数据
   name: "menusList",
   setup(props) {
+    const sheetContextRef = ref();
+    const collectSheetContextRef = ref();
+    const _this: any = getCurrentInstance();
     const router = useRouter();
+
+    const editSheetInfo = () => {
+      data.activeIndex = data.mySheet[data.contextMenuIndex].id;
+      router.push("/EditSheet?id=" + data.activeIndex);
+    };
+    const collectMenuOpenEvent = (e: number) => {
+      data.contextMenuIndex = e;
+    };
+    const menuOpenEvent = (e: number) => {
+      data.contextMenuIndex = e;
+    };
+
+    // 分享歌单
+    const menuItemShare = (type: string) => {
+      if (type == "create") {
+        _this.proxy.$toShare(
+          data.mySheet[data.contextMenuIndex].id,
+          "playlist",
+          data.mySheet[data.contextMenuIndex].name,
+          data.mySheet[data.contextMenuIndex].coverImgUrl
+        );
+      } else {
+        _this.proxy.$toShare(
+          data.collectSheet[data.contextMenuIndex].id,
+          "playlist",
+          data.collectSheet[data.contextMenuIndex].name,
+          data.collectSheet[data.contextMenuIndex].coverImgUrl
+        );
+      }
+    };
+
+    // 删除歌单
+    const menuItemDelete = (type: string) => {
+      deleteSheet({
+        id:
+          type == "create"
+            ? data.mySheet[data.contextMenuIndex].id
+            : data.collectSheet[data.contextMenuIndex].id,
+      }).then((res: any) => {
+        if (res.data.code) {
+          ElNotification({
+            message: "删除歌单成功",
+            type: "success",
+            customClass: "darkNotice",
+          });
+          bus.emit("refreshSheetData");
+          data.getData();
+        } else {
+          ElNotification({
+            message: "删除歌单失败",
+            type: "error",
+            customClass: "darkNotice",
+          });
+        }
+      });
+    };
 
     watch(
       () => props.menuListHeight,
@@ -108,6 +232,7 @@ export default defineComponent({
     );
 
     const data = reactive({
+      contextMenuIndex: 0,
       sheetName: "",
       visible: false, // 是否可见
       private: false, // 是否是隐私歌单
@@ -118,7 +243,6 @@ export default defineComponent({
         { title: "视频", path: "/Video" },
         { title: "播客", path: "/Audio" },
         { title: "关注", path: "/Follow" },
-        { title: "私人FM", path: "/PrivateFM" },
       ],
       myMusicList: [
         {
@@ -151,6 +275,7 @@ export default defineComponent({
           }).then((res: any) => {
             if (res.data.code == 200) {
               data.mySheet.splice(1, 0, res.data.playlist);
+              bus.emit("refreshSheetData");
               ElNotification({
                 message: "创建歌单成功",
                 type: "success",
@@ -187,8 +312,8 @@ export default defineComponent({
           limit: 10,
           offset: data.offset * 10,
         }).then((res: any) => {
-          data.mySheet = []
-          data.collectSheet = []
+          data.mySheet = [];
+          data.collectSheet = [];
           for (const item of res.data.playlist) {
             if (item.userId == data.uid) {
               data.mySheet.push(item);
@@ -231,24 +356,47 @@ export default defineComponent({
         );
       }
 
-      data.uid = decodeURIComponent(
-        window.atob(localStorage.getItem("id") as string)
-      );
-      data.isLogin =
-        data.uid ==
-        JSON.parse(
-          decodeURIComponent(
-            window.atob(localStorage.getItem("data") as string)
-          )
-        ).userId;
+      if (useLogin(false)) {
+        data.uid = decodeURIComponent(
+          window.atob(localStorage.getItem("id") as string)
+        );
+        data.isLogin =
+          data.uid ==
+          JSON.parse(
+            decodeURIComponent(
+              window.atob(localStorage.getItem("data") as string)
+            )
+          ).userId;
+      }
 
-      bus.on('refreshSheetList', () => {
-        console.log(666);
-        
+      bus.on("refreshSheetList", () => {
+        data.uid = decodeURIComponent(
+          window.atob(localStorage.getItem("id") as string)
+        );
         data.getData();
+        if (!data.isLogin) {
+          data.isLogin = true
+        }
+      });
+
+      bus.on("loginOut", () => {
+        data.mySheet = []
+        data.collectSheet = []
+        data.isLogin = false
       })
+
+      bus.on("createSheet", () => {
+        data.visible = true;
+      });
     });
     return {
+      sheetContextRef,
+      collectSheetContextRef,
+      editSheetInfo,
+      collectMenuOpenEvent,
+      menuOpenEvent,
+      menuItemDelete,
+      menuItemShare,
       ...toRefs(data),
     };
   },

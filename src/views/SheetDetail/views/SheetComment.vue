@@ -1,11 +1,6 @@
 <template>
   <div id="SheetComment">
-    <div class="commentBox">
-      <textarea></textarea>
-    </div>
-    <div class="btnContainer">
-      <div class="sendBtn">评论</div>
-    </div>
+    <commentArea @commentEvent="commentEvent"></commentArea>
     <div class="commentContainer">
       <loading v-if="commentList.length == 0 && total != 0"></loading>
       <div v-else>
@@ -31,7 +26,7 @@
           style="margin-top: 40px"
           class="title"
         >
-          最新评论({{ total }})
+          最新评论({{ commentList.length }})
         </div>
         <commentItem
           v-for="item in commentList"
@@ -81,6 +76,8 @@ import { InitData } from "@/types/SheetDetail/SheetComment";
 import useToPoint from "@/hooks/useToPoint";
 import loading from "@/components/common/loading.vue";
 import emptyContent from "@/components/common/emptyContent.vue";
+import commentArea from "@/components/common/commentArea.vue";
+import { commentResource } from "@/network/UserInfo/userEvents";
 
 export default defineComponent({
   name: "SheetComment",
@@ -88,6 +85,7 @@ export default defineComponent({
     commentItem,
     loading,
     emptyContent,
+    commentArea,
   },
   setup() {
     const data = reactive(new InitData());
@@ -95,6 +93,20 @@ export default defineComponent({
     const newCommentTitle = ref();
 
     data.id = router.currentRoute.value.query.id as string
+
+    const commentEvent = (e: string) => {
+      commentResource({
+        t: 1,
+        type: 2,
+        id: parseInt(router.currentRoute.value.query.id as string),
+        content: e,
+      }).then((res: any) => {
+        if (res.data.code == 200) {
+          res.data.comment.likedCount = 0
+          data.commentList.unshift(res.data.comment)
+        }
+      })
+    }
 
     const pageChange = (e: number) => {
       data.offset = e;
@@ -122,6 +134,7 @@ export default defineComponent({
     return {
       ...toRefs(data),
       pageChange,
+      commentEvent,
       newCommentTitle,
     };
   },
@@ -131,43 +144,5 @@ export default defineComponent({
 <style lang='less'>
 #SheetComment {
   padding: 0 30px 30px;
-  .commentBox {
-    padding: 10px 12px;
-    border-radius: 8px;
-    background-color: @eventBgc;
-    margin-bottom: 8px;
-    textarea {
-      resize: none;
-      width: 100%;
-      height: 80px;
-      background-color: transparent;
-      outline: none;
-      border: 0;
-      color: #fff;
-      font-size: 15px;
-    }
-  }
-  .btnContainer {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 40px;
-    .sendBtn {
-      font-size: 13px;
-      padding: 10px 24px;
-      background-color: @eventBgc;
-      border-radius: 10px;
-      transition: 0.2s all linear;
-      cursor: pointer;
-      &:hover {
-        background-color: @themeColor;
-        color: #fff;
-      }
-    }
-  }
-  .commentContainer {
-    .title {
-      font-weight: bold;
-    }
-  }
 }
 </style>

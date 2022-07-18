@@ -11,6 +11,7 @@ export class InitData {
   total: number = 999
   songList: songInt[] = []
   disableScroll: boolean = false
+  isMe: boolean = false
 
   columns: columnInt[] = [
     {title: '标题', width: '40%', key: 'name', slot: 'name'},

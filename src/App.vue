@@ -9,7 +9,6 @@ import musicNavBar from "components/common/musicNavBar.vue";
 
 export default defineComponent({
   name: "App",
-
   components: {
     musicNavBar,
   },
@@ -89,6 +88,45 @@ img {
   border: 1px solid #000 !important;
 
   .el-notification__content {
+    color: #fff !important;
+  }
+}
+.v-contextmenu {
+  background-color: #464646 !important;
+  border: 1px solid #464646 !important;
+  color: #fff !important;
+  .v-contextmenu-inner {
+    padding: 10px 0;
+  }
+  .v-contextmenu-item {
+    font-size: 13px !important;
+    padding: 10px 80px 10px 12px;
+    color: #dcdcdc !important;
+  }
+  .contextItem {
+    display: flex;
+    align-items: center;
+    .contextIcon {
+      width: 20px;
+      margin-right: 10px;
+    }
+  }
+  .v-contextmenu-submenu__title {
+    padding: 10px 80px 10px 12px;
+    position: relative;
+    .v-contextmenu-submenu__arrow {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+  .v-contextmenu-item--disabled {
+    background-color: #505050 !important;
+    color: @fontColor !important;
+  }
+  .v-contextmenu-item--hover {
+    background-color: rgb(57, 57, 57) !important;
     color: #fff !important;
   }
 }

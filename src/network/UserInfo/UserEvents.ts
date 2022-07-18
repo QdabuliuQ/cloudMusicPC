@@ -63,7 +63,7 @@ export function praiseResource(data: {
 export function commentResource(data: {
   t: number,
   type: number,
-  id?: number,
+  id?: number | string,
   content: string,
   commentId?: number,
   threadId?: string

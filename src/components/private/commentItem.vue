@@ -1,28 +1,54 @@
 <template>
-  <div class="commentItem">
+  <div v-if="show" class="commentItem">
     <div class="itemImage">
       <el-avatar style="margin-top: 5px" :size="40" :src="avatarUrl" />
     </div>
     <div class="itemInfo">
       <div class="infoBox">
         <div class="topInfo">
-          <div class="infoName">{{nickname}}:<span class="infoContent">&nbsp;{{content}}</span></div>
+          <div class="infoName">
+            {{ nickname }}:<span class="infoContent">&nbsp;{{ content }}</span>
+          </div>
         </div>
         <div v-if="beReplied && beReplied.length" class="centerInfo">
-          <div v-for="item in beReplied" :key="item.beRepliedCommentId" class="listItem">
-            <span>{{item.user.nickname}}:</span>&nbsp;{{item.content}}
+          <div
+            v-for="item in beReplied"
+            :key="item.beRepliedCommentId"
+            class="listItem"
+          >
+            <span>{{ item.user.nickname }}:</span>&nbsp;{{ item.content }}
           </div>
         </div>
         <div class="bottomInfo">
           <div class="time">
-            {{$getTime(time)}}
+            {{ $getTime(time) }}
           </div>
           <div class="data">
-            <div @click="praiseResource" :class="[isLike?'likeItem':'','dataItem']">
-              <img v-if="!isLike" src="~images/common/unpraise.png" alt="">
-              <img v-else src="~images/common/praise.png" alt="">
-              {{count}}
+            <div
+              @click="praiseResource"
+              :class="[isLike ? 'likeItem' : '', 'dataItem']"
+            >
+              <img v-if="!isLike" src="~images/common/unpraise.png" alt="" />
+              <img v-else src="~images/common/praise.png" alt="" />
+              {{ count }}
             </div>
+            <el-popconfirm
+              v-if="useLogin(false) && uid == userId"
+              @confirm="confirmDelete"
+              icon-color="#ec4141"
+              confirm-button-type="danger"
+              title="是否确定删除该评论"
+              confirm-button-text="确定"
+              cancel-button-text="取消"
+              popper-class="infoPopperClass"
+            >
+              <template #reference>
+                <div class="dataItem">
+                  <img src="~images/common/delete.png" alt="" />
+                  删除
+                </div>
+              </template>
+            </el-popconfirm>
           </div>
         </div>
       </div>
@@ -31,73 +57,110 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, watch, reactive, toRefs } from 'vue'
+import { defineComponent, watch, reactive, toRefs } from "vue";
 import { commentLike } from "@/network/VideoPlay/videoPlay";
+import useLogin from "@/hooks/useLogin";
+import { commentResource } from "@/network/UserInfo/userEvents";
 
 export default defineComponent({
-  name: 'commentItem',
+  name: "commentItem",
+  emits: ['deleteCallback'],
   props: [
-    'avatarUrl',
-    'time',
-    'likedCount',
-    'content',
-    'nickname',
-    'userId',
-    'beReplied',
-    'liked',
-    'type',
-    'id',
-    'cid',
-    'threadId'
+    "avatarUrl",
+    "time",
+    "likedCount",
+    "content",
+    "nickname",
+    "userId",
+    "beReplied",
+    "liked",
+    "type",
+    "id",
+    "cid",
+    "threadId",
   ],
-  setup(props) {
+  setup(props, context) {
     const data = reactive({
       isLike: false,
-      count: 0
-    })
+      count: 0,
+      uid: '0',
+      show: true
+    });
 
-    watch(() => props.liked, (n) => {
-      data.isLike = n
-    }, {immediate: true})
-    watch(() => props.likedCount, (n) => {
-      data.count = n
-    }, {immediate: true})
+    if (localStorage.getItem('id')) {
+      data.uid = decodeURIComponent(window.atob(localStorage.getItem('id') as string))
+    }
 
-    const praiseResource = () => {
-      if (props.type != 6) {
-        commentLike({
+    watch(
+      () => props.liked,
+      (n) => {
+        data.isLike = n;
+      },
+      { immediate: true }
+    );
+    watch(
+      () => props.likedCount,
+      (n) => {
+        data.count = n;
+      },
+      { immediate: true }
+    );
+
+    const confirmDelete = () => {
+      if (useLogin()) {
+        commentResource({
+          t: 0,
           type: props.type,
-          t: data.isLike ? 0 : 1,
           id: props.id,
-          cid: props.cid
+          content: '',
+          commentId: props.cid
         }).then((res: any) => {
           if (res.data.code == 200) {
-            data.isLike = !data.isLike
-            data.isLike ? data.count ++ : data.count --
-          }
-        })
-      } else {
-        // 动态评论点赞
-        commentLike({
-          type: props.type,
-          t: data.isLike ? 0 : 1,
-          threadId: props.threadId,
-          cid: props.cid
-        }).then((res: any) => {
-          if (res.data.code == 200) {
-            data.isLike = !data.isLike
-            data.isLike ? data.count ++ : data.count --
+            data.show = false
           }
         })
       }
     }
 
+    const praiseResource = () => {
+      if (useLogin()) {
+        if (props.type != 6) {
+          commentLike({
+            type: props.type,
+            t: data.isLike ? 0 : 1,
+            id: props.id,
+            cid: props.cid,
+          }).then((res: any) => {
+            if (res.data.code == 200) {
+              data.isLike = !data.isLike;
+              data.isLike ? data.count++ : data.count--;
+            }
+          });
+        } else {
+          // 动态评论点赞
+          commentLike({
+            type: props.type,
+            t: data.isLike ? 0 : 1,
+            threadId: props.threadId,
+            cid: props.cid,
+          }).then((res: any) => {
+            if (res.data.code == 200) {
+              data.isLike = !data.isLike;
+              data.isLike ? data.count++ : data.count--;
+            }
+          });
+        }
+      }
+    };
+
     return {
       ...toRefs(data),
-      praiseResource
-    }
-  }
-})
+      praiseResource,
+      confirmDelete,
+      useLogin,
+    };
+  },
+});
 </script>
 
 <style lang='less'>
@@ -122,7 +185,7 @@ export default defineComponent({
         color: @nameColor;
         cursor: pointer;
         line-height: 21px;
-        word-break:break-all;
+        word-break: break-all;
       }
       .infoContent {
         color: @fontColor;
@@ -147,6 +210,10 @@ export default defineComponent({
       display: flex;
       align-items: center;
       justify-content: space-between;
+      .data {
+        display: flex;
+        align-items: center;
+      }
       .likeItem {
         color: @themeColor;
       }
@@ -155,6 +222,9 @@ export default defineComponent({
         display: flex;
         align-items: center;
         cursor: pointer;
+        &:not(:last-child) {
+          margin-right: 20px;
+        }
         &:hover {
           color: @themeColor;
         }

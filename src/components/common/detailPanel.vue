@@ -19,7 +19,14 @@
         {{ nickname }}
       </div>
       <div class="infoBtn infoItem">
-        <div @click="collectEvent" :class="[isCollect ? 'collectBtn' : '', id == userId ? 'disableBtn' : '', 'btnItem']">
+        <div
+          @click="collectEvent"
+          :class="[
+            isCollect ? 'collectBtn' : '',
+            id == userId ? 'disableBtn' : '',
+            'btnItem',
+          ]"
+        >
           <img v-if="isCollect" src="~images/common/collect.png" alt="" />
           <img v-else src="~images/common/uncollect.png" alt="" />
           {{ isCollect ? "已收藏" : "收藏" }}({{ subCount }})
@@ -36,7 +43,8 @@
             <span v-if="tags.length" v-for="item in tags" :key="item">
               {{ item }}
             </span>
-            <span v-else>添加标签</span>
+            <span v-else-if="id == userId">添加标签</span>
+            <span class="noData" v-else>暂无标签</span>
           </div>
         </div>
         <div class="infoItem2">
@@ -51,7 +59,8 @@
           <div :title="desc" class="infoTitle overTwoLine">
             简介:&nbsp;
             <span v-if="desc">{{ desc }}</span>
-            <span class="addDesc" v-else> 添加简介 </span>
+            <span class="addDesc" v-else-if="id == userId"> 添加简介 </span>
+            <span v-else>暂无简介</span>
           </div>
         </div>
       </div>
@@ -72,6 +81,7 @@ import { defineComponent, reactive, toRefs, watch } from "vue";
 import { collectSheet } from "@/network/DetailPanel/detailPanel";
 import { useRouter } from "vue-router";
 import bus from "vue3-eventbus";
+import useLogin from "@/hooks/useLogin";
 
 export default defineComponent({
   props: [
@@ -93,34 +103,40 @@ export default defineComponent({
   emits: ["shareEvent"],
   name: "detailPanel",
   setup(props, context) {
-    const router = useRouter()
+    const router = useRouter();
     const data = reactive({
-      id: decodeURIComponent(window.atob(localStorage.getItem('id') as string)),
-      isCollect: false
-    })
-    
+      id: decodeURIComponent(window.atob(localStorage.getItem("id") as string)),
+      isCollect: false,
+    });
+
     const collectEvent = () => {
-      if (data.id != props.userId) {
-        collectSheet({
-          t: props.subed ? 2 : 1,
-          id: router.currentRoute.value.query.id as string
-        }).then((res: any) => {
-          if (res.data.code == 200) {
-            bus.emit('refreshSheetList')
-            data.isCollect = props.subed ? false : true
-          }
-        })
+      if (useLogin()) {
+        if (data.id != props.userId) {
+          collectSheet({
+            t: props.subed ? 2 : 1,
+            id: router.currentRoute.value.query.id as string,
+          }).then((res: any) => {
+            if (res.data.code == 200) {
+              bus.emit("refreshSheetList");
+              data.isCollect = props.subed ? false : true;
+            }
+          });
+        }
       }
-    }
+    };
     const shareResource = () => {
-      context.emit("shareEvent");
+      if (useLogin()) {
+        context.emit("shareEvent");
+      }
     };
 
-    watch(() => props.subed, (n) => {
-      data.isCollect = n
-      console.log(data.isCollect);
-      
-    }, {immediate: true})
+    watch(
+      () => props.subed,
+      (n) => {
+        data.isCollect = n;
+      },
+      { immediate: true }
+    );
 
     return {
       ...toRefs(data),
@@ -139,6 +155,9 @@ export default defineComponent({
     margin-right: 20px;
   }
   .rightPanel {
+    .noData {
+      color: @fontColor !important;
+    }
     .target {
       display: inline-block;
       font-size: 14px;

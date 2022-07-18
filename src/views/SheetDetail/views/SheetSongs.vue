@@ -9,7 +9,12 @@
     v-infinite-scroll="loadData"
     id="SheetSongs"
   >
-    <musicList :download="true" :columns="columns" :data="songList">
+    <musicList
+      :isMe="isMe"
+      :download="true"
+      :columns="columns"
+      :data="songList"
+    >
       <template v-slot:name="{ content }">
         <div class="songName">
           {{ content.name }}
@@ -19,7 +24,10 @@
         </div>
       </template>
       <template v-slot:ar="{ content }">
-        <span class="infoItem clickItem" v-for="item in content.ar" :key="item.id"
+        <span
+          class="infoItem clickItem"
+          v-for="item in content.ar"
+          :key="item.id"
           >{{ item.name }}&nbsp;&nbsp;</span
         >
       </template>
@@ -37,7 +45,10 @@
 
 <script lang='ts'>
 import { defineComponent, reactive, onMounted, toRefs } from "vue";
-import { getSheetSongs } from "@/network/SheetDetail/sheetDetail";
+import {
+  getSheetSongs,
+  getSheetDetail,
+} from "@/network/SheetDetail/sheetDetail";
 import { useRouter } from "vue-router";
 import { InitData } from "@/types/SheetDetail/SheetSongs";
 import loading from "@/components/common/loading.vue";
@@ -78,6 +89,17 @@ export default defineComponent({
 
     onMounted(() => {
       getData();
+
+      getSheetDetail({
+        id: router.currentRoute.value.query.id as string,
+      }).then((res: any) => {
+        if (localStorage.getItem("id")) {
+          data.isMe =
+            decodeURIComponent(
+              window.atob(localStorage.getItem("id") as string)
+            ) == res.data.playlist.userId;
+        }
+      });
     });
     return {
       ...toRefs(data),

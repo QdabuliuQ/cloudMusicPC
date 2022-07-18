@@ -29,7 +29,7 @@ export default defineComponent({
 
 <style lang='less'>
 #Recent {
-  padding: 40px 40px 0;
+  padding: 30px 30px 0;
   .title {
     font-size: 20px;
     font-weight: bold;

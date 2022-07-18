@@ -18,7 +18,7 @@
         </div>
       </div>
     </div>
-    <div v-if="type=='needLogin'" class="tip">登录查看更多评论</div>
+    <div v-if="!useLogin(false)" class="tip">登录查看更多评论</div>
   </div>
 </template>
 
@@ -29,6 +29,7 @@ import emptyContent from "@/components/common/emptyContent.vue";
 import { InitData } from "@/types/SheetDetail/SheetCollect";
 import { getSheetCollect } from "@/network/SheetDetail/sheetDetail";
 import { useRouter } from "vue-router";
+import useLogin from "@/hooks/useLogin";
 
 export default defineComponent({
   name: "SheetCollect",
@@ -67,6 +68,7 @@ export default defineComponent({
     return {
       ...toRefs(data),
       loadData,
+      useLogin,
     };
   },
 });

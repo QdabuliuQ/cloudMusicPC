@@ -24,6 +24,7 @@ export function getSheetSongs(data: {
     url: '/playlist/track/all',
     params: {
       ...data,
+      timestamp: Date.now(),
       cookie: localStorage.getItem('cookie')
     }
   })
@@ -68,5 +69,20 @@ export function getSimilarSheet(data: {
   return $http({
     url: '/playlist/detail/dynamic',
     params: data
+  })
+}
+
+// 添加/删除歌曲
+export function setSheetSong(data: {
+  op: string,
+  pid: string,
+  tracks: string,
+}) {
+  return $http({
+    url: '/playlist/tracks',
+    params: {
+      ...data,
+      cookie: localStorage.getItem('cookie')
+    }
   })
 }
