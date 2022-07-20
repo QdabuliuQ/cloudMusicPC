@@ -1,6 +1,8 @@
 <template>
   <div id="AudioSongs">
-    <loading v-if="!programList.length"></loading>
+    <div ref="toRefBox" class="box" style="width: 100%; height: 1px"></div>
+    <loading v-if="!programList.length && count != 0"></loading>
+    <emptyContent v-else-if="count == 0"></emptyContent>
     <div v-else class="songsItem" v-for="(item, index) in programList" :key="item.id">
       <div class="itemIndex">
         {{ index + 1 }}
@@ -39,7 +41,7 @@
         {{ $formatTime(item.duration) }}
       </div>
     </div>
-    <div style="display: flex; align-items: center; justify-content: center">
+    <div style="margin-top: 20px; display: flex; align-items: center; justify-content: center">
       <el-pagination
         @current-change="pageChange"
         :current-page="offset"
@@ -53,24 +55,29 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, reactive, onMounted, toRefs } from "vue";
+import { defineComponent, reactive, onMounted, toRefs, ref } from "vue";
 import { getAudioSongs } from "@/network/Audio/audioSongs";
 import { useRouter } from "vue-router";
 import { InitData } from "@/types/Audio/AudioSongs";
 import loading from "@/components/common/loading.vue";
+import emptyContent from "@/components/common/emptyContent.vue";
+import useToPoint from "@/hooks/useToPoint";
 
 export default defineComponent({
   name: "AudioSongs",
   components: {
-    loading
+    loading,
+    emptyContent
   },
   setup() {
+    const toRefBox = ref()
     const data = reactive(new InitData());
     const router = useRouter();
 
     const pageChange = (e: number) => {
       data.offset = e;
       getData()
+      useToPoint(toRefBox.value, -70)
     };
     const getData = () => {
       getAudioSongs({
@@ -89,6 +96,7 @@ export default defineComponent({
     return {
       ...toRefs(data),
       pageChange,
+      toRefBox,
     };
   },
 });

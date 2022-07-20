@@ -48,7 +48,7 @@ export default defineComponent({
   margin-bottom: 10px;
   .leftInfo {
     width: 55%;
-    height: 6vw;
+    aspect-ratio: 2/1.1;
     display: flex;
     align-items: center;
     position: relative;

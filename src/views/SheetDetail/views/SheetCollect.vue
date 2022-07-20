@@ -10,7 +10,12 @@
       v-infinite-scroll="loadData"
       class="userContainer"
     >
-      <div v-for="item in userList" :key="item.userId" class="userItem">
+      <div
+        @click="router.push('/UserDetail?id=' + item.userId)"
+        v-for="item in userList"
+        :key="item.userId"
+        class="userItem"
+      >
         <el-avatar style="margin-left: 8px" :size="50" :src="item.avatarUrl" />
         <div class="itemInfo">
           <div class="itemName">{{ item.nickname }}</div>
@@ -42,7 +47,7 @@ export default defineComponent({
     const router = useRouter();
 
     const loadData = () => {
-      getData()
+      getData();
     };
 
     const getData = () => {
@@ -51,13 +56,13 @@ export default defineComponent({
         limit: 40,
         offset: data.offset * 40,
       }).then((res: any) => {
-        data.total = res.data.total
+        data.total = res.data.total;
         if (res.data.subscribers.length) {
-          data.type = res.data.reason
+          data.type = res.data.reason;
           data.offset++;
           data.userList = [...data.userList, ...res.data.subscribers];
         } else {
-          data.disableScroll = true
+          data.disableScroll = true;
         }
       });
     };
@@ -69,6 +74,7 @@ export default defineComponent({
       ...toRefs(data),
       loadData,
       useLogin,
+      router,
     };
   },
 });
@@ -76,7 +82,7 @@ export default defineComponent({
 
 <style lang='less'>
 #SheetCollect {
-  padding:0 30px 30px;
+  padding: 0 30px 30px;
   .userContainer {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;

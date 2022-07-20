@@ -1,6 +1,7 @@
 <template>
   <div @click="toPage" class="sheetItem">
-    <div :style="{ height: imgHeight }" class="sheetImage">
+    <!--  :style="{ height: imgHeight }" -->
+    <div class="sheetImage">
       <div class="mask"></div>
       <div v-if="sum" class="count">
         <img src="~images/recommend/playLine.png" alt="" />
@@ -8,7 +9,7 @@
       </div>
       <img class="icon" src="~images/common/sheetPlay.png" alt="" />
       <el-avatar
-        :style="{ height: imgHeight }"
+        style="height: 100%"
         shape="square"
         :fit="'cover'"
         :src="imageUrl"
@@ -28,7 +29,7 @@ import { defineComponent } from "vue";
 import { useRouter } from "vue-router";
 
 export default defineComponent({
-  props: ["imageUrl", "title", "sum", "artist", "artId", "imgHeight", "type", "id"],
+  props: ["imageUrl", "title", "sum", "artist", "artId", "type", "id"],
   name: "sheetItem",
   setup(props) {
     const router = useRouter()
@@ -57,6 +58,7 @@ export default defineComponent({
   }
   .sheetImage {
     width: 100%;
+    aspect-ratio: 1/1;
     position: relative;
     .el-avatar {
       width: 100% !important;

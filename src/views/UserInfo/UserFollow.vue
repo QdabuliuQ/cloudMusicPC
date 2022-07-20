@@ -1,7 +1,8 @@
 <template>
   <div id="UserFollow">
     <div v-if="userInfo" class="title">{{ userInfo.nickname }}的关注</div>
-    <loading v-if="!userList.length"></loading>
+    <loading v-if="!userList.length && total != 0"></loading>
+    <emptyContent v-else-if="total == 0"></emptyContent>
     <div v-else class="userContainer">
       <userItem
         @click="router.push('/UserDetail?id=' + item.userId)"
@@ -41,6 +42,7 @@ import { defineComponent, reactive, onMounted, toRefs } from "vue";
 import { getFollowList } from "@/network/UserInfo/userFollow";
 import { InitData } from "@/types/UserInfo/UserFollow";
 import loading from "@/components/common/loading.vue";
+import emptyContent from "@/components/common/emptyContent.vue";
 import userItem from "@/components/private/userItem.vue";
 import { useRouter } from "vue-router";
 import { getUserDetail } from "@/network/LoginDialog/loginDialog";
@@ -49,6 +51,7 @@ export default defineComponent({
   name: "UserFollow",
   components: {
     loading,
+    emptyContent,
     userItem,
   },
   setup() {
@@ -66,6 +69,7 @@ export default defineComponent({
         limit: 32,
         uid: router.currentRoute.value.query.id as string,
       }).then((res: any) => {
+        data.total = res.data.touchCount
         data.userList = res.data.follow;
       });
     };

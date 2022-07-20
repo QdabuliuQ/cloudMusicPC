@@ -32,7 +32,7 @@ export interface commentInt {
     nickname: string,
     userId: number
   },
-  beReplied: commentInt[]
+  beReplied?: commentInt[]
 }
 
 export class InitData {

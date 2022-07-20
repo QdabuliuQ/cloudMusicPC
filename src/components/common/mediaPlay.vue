@@ -109,7 +109,7 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, reactive, onMounted, toRefs, ref, watch } from "vue";
+import { defineComponent, reactive, onMounted, toRefs, ref, watch, onUnmounted } from "vue";
 export default defineComponent({
   name: "mediaPlay",
   props: ["src", "miniModel"],
@@ -349,6 +349,13 @@ export default defineComponent({
         sliderDom?.addEventListener("mousemove", mousemoveEvent);
       });
     });
+
+    onUnmounted(() => {
+      if (timer) {
+        clearInterval(timer)
+      }
+    })
+
     return {
       ...toRefs(data),
       videoRef,

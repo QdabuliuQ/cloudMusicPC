@@ -14,7 +14,7 @@
         <span class="target">{{ target }}</span>
         <div class="name">{{ name }}</div>
       </div>
-      <div class="infoCreator infoItem">
+      <div @click="router.push('/UserDetail?id='+userId)" class="infoCreator infoItem">
         <el-avatar style="margin-right: 7px" :size="30" :src="avatarUrl" />
         {{ nickname }}
       </div>
@@ -142,6 +142,7 @@ export default defineComponent({
       ...toRefs(data),
       shareResource,
       collectEvent,
+      router,
     };
   },
 });

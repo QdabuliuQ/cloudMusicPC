@@ -131,7 +131,9 @@ export default defineComponent({
     }
 
     bus.on("windowResize", () => {
-      data.bannerHeight = bannerRef.value[0].clientHeight;
+      if (bannerRef.value[0]) {
+        data.bannerHeight = bannerRef.value[0].clientHeight;
+      }
     });
 
     onMounted(() => {

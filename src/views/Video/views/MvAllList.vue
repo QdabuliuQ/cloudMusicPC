@@ -55,8 +55,8 @@
         :artists="item.artists"
         :imageUrl="item.cover"
         :playCount="item.playCount"
-        :itemHeight="'10vw'"
         :duration="item.duration"
+        :ratio="'2/1.1'"
       ></videoItem>
     </div>
   </div>

@@ -54,7 +54,6 @@ export default defineComponent({
       info: <any>{},
       msg: "",
       id: 0,
-      pics: <any>[]
     });
 
     watch(
@@ -62,14 +61,6 @@ export default defineComponent({
       (n) => {
         if (n) {
           data.info = JSON.parse(n);
-          console.log(data.info);
-          for (const item of data.info?.resource.mlogDetail.content.image) {
-            data.pics.push({
-              originUrl: item.imageUrl,
-              pcSquareUrl: item.imageUrl
-            })
-          }
-          // data.id = JSON.parse(n).djRadio.id
           data.msg = JSON.parse(n)
             .msg.replaceAll(/#[^#]*#/g, "")
             .trim();

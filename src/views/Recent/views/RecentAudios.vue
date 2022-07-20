@@ -10,7 +10,7 @@
         class="programItem"
       >
         <el-image
-          style="width: 6vw; height: 6vw"
+          style="width: 80px; height: 80px"
           :src="item.data.picUrl"
           :fit="'contain'"
         />

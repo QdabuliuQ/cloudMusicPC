@@ -16,17 +16,16 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, reactive, onMounted, toRefs } from 'vue'
+import { defineComponent } from 'vue'
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: 'eventHead',
   props: ['avatarUrl','nickname','time', 'text', 'msg', 'target'],
   setup() {
-    const data = reactive({})
-    onMounted(() => {
-    })
+    const router = useRouter()
     return {
-      ...toRefs(data),
+      router
     }
   }
 })

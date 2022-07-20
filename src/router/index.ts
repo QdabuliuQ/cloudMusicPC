@@ -57,6 +57,16 @@ const TopicDetail = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/T
 const UserDetail = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/AccountDetail/UserDetail.vue')
 const UserSheet = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/AccountDetail/views/UserSheet.vue')
 
+const CommentDetail = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/CommentDetail/CommentDetail.vue')
+
+const SearchResult = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/SearchResult/SearchResult.vue')
+const SearchSongs = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/SearchResult/views/SearchSongs.vue')
+const SearchSingers = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/SearchResult/views/SearchSingers.vue')
+const SearchAlbums = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/SearchResult/views/SearchAlbums.vue')
+const SearchVideos = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/SearchResult/views/SearchVideos.vue')
+const SearchMvs = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/SearchResult/views/SearchMvs.vue')
+const SearchSheets = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/SearchResult/views/SearchSheets.vue')
+
 const routes: Array<RouteRecordRaw> = [
   { path: '/', redirect: '/HomePage' },
   {
@@ -367,6 +377,67 @@ const routes: Array<RouteRecordRaw> = [
           {path: '/UserFansList', name: 'UserFansList', meta: {
             userInfoIndex: 4
           }, component: UserFans},
+        ]
+      },
+      {
+        path: '/CommentDetail',
+        name: 'CommentDetail',
+        component: CommentDetail
+      },
+      {
+        path: '/SearchResult',
+        name: 'SearchResult',
+        component: SearchResult,
+        children: [
+          { path: '/SearchResult', redirect: '/SearchSongs' },
+          { 
+            path: '/SearchSongs',
+            name: 'SearchSongs',
+            meta: {
+              searchIndex: 0
+            },
+            component: SearchSongs
+          },
+          { 
+            path: '/SearchSingers',
+            name: 'SearchSingers',
+            meta: {
+              searchIndex: 1
+            },
+            component: SearchSingers
+          },
+          { 
+            path: '/SearchAlbums',
+            name: 'SearchAlbums',
+            meta: {
+              searchIndex: 2
+            },
+            component: SearchAlbums
+          },
+          { 
+            path: '/SearchVideos',
+            name: 'SearchVideos',
+            meta: {
+              searchIndex: 3
+            },
+            component: SearchVideos
+          },
+          { 
+            path: '/SearchMvs',
+            name: 'SearchMvs',
+            meta: {
+              searchIndex: 4
+            },
+            component: SearchMvs
+          },
+          { 
+            path: '/SearchSheets',
+            name: 'SearchSheets',
+            meta: {
+              searchIndex: 5
+            },
+            component: SearchSheets
+          },
         ]
       },
     ]

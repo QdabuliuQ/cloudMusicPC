@@ -1,6 +1,7 @@
 <template>
   <div class="videoItem">
-    <div :style="{ height: itemHeight }" class="videoImage">
+    <!--  :style="{ height: itemHeight }" -->
+    <div :style="{aspectRatio: ratio ? ratio : '2/.9'}" class="videoImage">
       <div class="mask"></div>
       <div v-if="playCount" class="playCount">
         <img src="~images/recommend/playLine.png" alt="" />
@@ -16,7 +17,7 @@
       <div v-if="duration" class="duration">
         {{$formatTime(duration)}}
       </div>
-      <img id="coverImage" style="height: 100%;" class="image" :src="imageUrl" alt="" />
+      <img id="coverImage" class="image" :src="imageUrl" alt="" />
     </div>
     <div class="videoTitle">
       {{ title }}
@@ -24,8 +25,8 @@
     <div v-if="artists" class="videoArtists">
       <!-- <label v-if="index != artists.length && index != 0"> / </label
         > -->
-      <span v-for="(item, index) in artists" :key="item.id"
-        >{{ item.name }}&nbsp;&nbsp;&nbsp;&nbsp;</span
+      <span v-for="(item, index) in artists" :key="item.id ? item.id : item.userId"
+        >{{ item.name ? item.name : item.userName }}&nbsp;&nbsp;</span
       >
     </div>
     <div class="videoCreator" v-if="creator">
@@ -44,11 +45,11 @@ export default defineComponent({
     topLeftIcon: Boolean,
     artists: Object,
     playCount: Number,
-    itemHeight: String,
     creator: String,
     artId: String,
     duration: Number,
-    centerIcon: Boolean
+    centerIcon: Boolean,
+    ratio: String
   },
   name: "videoItem",
   setup() {
@@ -63,6 +64,7 @@ export default defineComponent({
   cursor: pointer;
   .videoImage {
     width: 100%;
+    aspect-ratio: 2/.9;
     position: relative;
     overflow: hidden;
     border-radius: 8px;
@@ -75,7 +77,7 @@ export default defineComponent({
     #coverImage {
       width: 100%;
       height: 100%;
-      object-fit: contain;
+      object-fit: cover;
     }
     .duration {
       z-index: 5;
@@ -148,11 +150,14 @@ export default defineComponent({
     font-size: 14px;
   }
   .videoArtists {
+    max-width: 200px;
+    min-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     font-size: 12px;
     margin-top: 4px;
     color: rgb(155, 155, 155);
-    display: flex;
-    align-items: center;
     span {
       cursor: pointer;
       &:hover {

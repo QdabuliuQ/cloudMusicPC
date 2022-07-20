@@ -1,7 +1,9 @@
 <template>
   <div id="SheetDetail">
     <div class="topInfoContainer">
+      <loading v-if="sheetInfo.coverImgUrl == ''"></loading>
       <detailPanel
+        v-else
         style="margin-bottom: 30px"
         :picUrl="sheetInfo.coverImgUrl"
         :target="'歌单'"
@@ -18,7 +20,7 @@
         :userId="sheetInfo.userId"
         @shareEvent="shareEvent"
       ></detailPanel>
-      <detailNav :routerKey="'sheetIndex'" :list="navList"></detailNav>
+      <detailNav :watch="true" :routerKey="'sheetIndex'" :list="navList"></detailNav>
     </div>
     <div style="margin-bottom: 30px">
       <router-view :key="routerId"></router-view>
@@ -41,12 +43,14 @@ import { InitData } from "@/types/SheetDetail/SheetDetail";
 import detailPanel from "@/components/common/detailPanel.vue";
 import detailNav from "@/components/common/detailNav.vue";
 import bus from "vue3-eventbus";
+import loading from "@/components/common/loading.vue";
 
 export default defineComponent({
   name: "SheetDetail",
   components: {
     detailPanel,
     detailNav,
+    loading,
   },
   setup() {
     const data = reactive(new InitData());

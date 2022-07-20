@@ -1,4 +1,4 @@
-interface singerInt {
+export interface singerInt {
   alias: string[],
   img1v1Url: string,
   name: string,

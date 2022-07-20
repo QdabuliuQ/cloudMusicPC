@@ -14,7 +14,11 @@
           :hide-after="0"
         >
           <template #reference>
-            <img style="width: 29px" src="~images/shareDialog/emoji.png" alt="" />
+            <img
+              style="width: 29px"
+              src="~images/shareDialog/emoji.png"
+              alt=""
+            />
           </template>
           <div class="emojiContainer">
             <div
@@ -76,26 +80,46 @@ import { defineComponent, reactive, onMounted, toRefs, ref } from "vue";
 import emoji from "@/static/emoji";
 import { getFollowList } from "@/network/UserInfo/userFollow";
 import useLogin from "@/hooks/useLogin";
+import bus from "vue3-eventbus";
 
 export default defineComponent({
-  emits: ['commentEvent'],
+  emits: ["commentEvent"],
   name: "commentArea",
   setup(props, context) {
     const emojiPopoverRef = ref();
     const userPopoverRef = ref();
     const data = reactive({
-      comment: '',
+      comment: "",
       isMore: true,
       offset: 0,
-      userList: <any>[]
+      cid: 0,
+      userList: <any>[],
     });
 
     const commentEvent = () => {
-      if (useLogin() && data.comment != '') {
-        context.emit('commentEvent', data.comment.trim())
+      if (useLogin() && data.comment != "") {
+        let reg = /\u56de[^\u56de]*\uff1a/g;
+        // 回复
+        
+        if (reg.test(data.comment)) {
+          console.log(reg.test(data.comment), data.cid);
+          let format = data.comment.replaceAll(reg, "").trim();
+          context.emit('commentEvent', {
+            content: format, 
+            cid: data.cid
+          })
+          data.cid = 0
+        } else {
+          context.emit('commentEvent', {
+            content: data.comment.trim(), 
+            cid: 0
+          })
+          data.cid = 0
+        }
         data.comment = ''
+        
       }
-    }
+    };
     // 用户点击
     const userClick = (i: string) => {
       data.comment += `@${i} `;
@@ -115,14 +139,23 @@ export default defineComponent({
       getFollowList({
         limit: 10,
         offset: data.offset * 10,
-        uid: useLogin(false) ? decodeURIComponent(window.atob(localStorage.getItem('id') as string)) : ''
+        uid: useLogin(false)
+          ? decodeURIComponent(
+              window.atob(localStorage.getItem("id") as string)
+            )
+          : "",
       }).then((res: any) => {
         data.isMore = res.data.more;
         data.offset++;
         data.userList = [...data.userList, ...res.data.follow];
       });
     };
-    
+
+    bus.on("replyComment", (e: { id: string | number; name: string }) => {
+      data.comment = `回复${e.name}：`;
+      data.cid = e.id as number;
+    });
+
     onMounted(() => {
       getData();
     });

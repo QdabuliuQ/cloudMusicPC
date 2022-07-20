@@ -10,7 +10,8 @@
         :title="item.name"
         :artists="item.artists"
         :playCount="item.playCount"
-        :itemHeight="'9.7vw'"
+        :centerIcon="true"
+        :ratio="'2/1.2'"
       ></videoItem>
     </div>
     <splitLine :title="'热播MV'" :path="'/MvAllList?order=1'" :icon="true"></splitLine>
@@ -23,7 +24,8 @@
         :title="item.name"
         :artists="item.artists"
         :playCount="item.playCount"
-        :itemHeight="'9.7vw'"
+        :centerIcon="true"
+        :ratio="'2/1.2'"
       ></videoItem>
     </div>
     <splitLine :title="'网易出品'" :path="'/MvAllList?type=4'" :icon="true"></splitLine>
@@ -36,7 +38,8 @@
         :title="item.name"
         :artists="item.artists"
         :playCount="item.playCount"
-        :itemHeight="'9.7vw'"
+        :centerIcon="true"
+        :ratio="'2/1.2'"
       ></videoItem>
     </div>
     <splitLine :title="'MV排行榜'"></splitLine>

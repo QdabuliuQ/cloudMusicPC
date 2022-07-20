@@ -11,7 +11,7 @@
         :duration="item.data.duration"
         :centerIcon="true"
         :creator="item.data.artists ? getName(item.data.artists) : item.data.creator.nickname"
-        :itemHeight="'10rem'"
+        :ratio="'2/1.1'"
       ></videoItem>
     </div>
   </div>

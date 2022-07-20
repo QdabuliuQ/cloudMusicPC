@@ -1,22 +1,23 @@
 <template>
   <div v-if="show" class="commentItem">
     <div class="itemImage">
-      <el-avatar style="margin-top: 5px" :size="40" :src="avatarUrl" />
+      <el-avatar @click="toDetail(userId)" style="margin-top: 5px" :size="40" :src="avatarUrl" />
     </div>
-    <div class="itemInfo">
+    <div :style="{cursor: !disOperation ? 'pointer' : 'auto'}" @click="commentDetail(cid)" class="itemInfo">
       <div class="infoBox">
         <div class="topInfo">
           <div class="infoName">
-            {{ nickname }}:<span class="infoContent">&nbsp;{{ content }}</span>
+            <span @click.stop="toDetail(userId)">{{ nickname }}</span>:<span class="infoContent">&nbsp;{{ content }}</span>
           </div>
         </div>
         <div v-if="beReplied && beReplied.length" class="centerInfo">
           <div
+            @click.stop="commentDetail(item.beRepliedCommentId)"
             v-for="item in beReplied"
             :key="item.beRepliedCommentId"
             class="listItem"
           >
-            <span>{{ item.user.nickname }}:</span>&nbsp;{{ item.content }}
+            <span @click.stop="toDetail(item.user.userId)">{{ item.user.nickname }}:</span>&nbsp;{{ item.content }}
           </div>
         </div>
         <div class="bottomInfo">
@@ -25,15 +26,18 @@
           </div>
           <div class="data">
             <div
-              @click="praiseResource"
+              @click.stop="praiseResource"
               :class="[isLike ? 'likeItem' : '', 'dataItem']"
             >
               <img v-if="!isLike" src="~images/common/unpraise.png" alt="" />
               <img v-else src="~images/common/praise.png" alt="" />
               {{ count }}
             </div>
+            <div v-if="!disOperation" @click.stop="replyComment" class="dataItem">
+              <img style="margin-right: 0; position: relative; top: 1px" src="~images/common/comment.png" alt="" />
+            </div>
             <el-popconfirm
-              v-if="useLogin(false) && uid == userId"
+              v-if="!disOperation && useLogin(false) && uid == userId"
               @confirm="confirmDelete"
               icon-color="#ec4141"
               confirm-button-type="danger"
@@ -43,7 +47,7 @@
               popper-class="infoPopperClass"
             >
               <template #reference>
-                <div class="dataItem">
+                <div @click.native.stop class="dataItem">
                   <img src="~images/common/delete.png" alt="" />
                   删除
                 </div>
@@ -61,6 +65,8 @@ import { defineComponent, watch, reactive, toRefs } from "vue";
 import { commentLike } from "@/network/VideoPlay/videoPlay";
 import useLogin from "@/hooks/useLogin";
 import { commentResource } from "@/network/UserInfo/userEvents";
+import bus from "vue3-eventbus";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "commentItem",
@@ -78,8 +84,10 @@ export default defineComponent({
     "id",
     "cid",
     "threadId",
+    "disOperation"
   ],
   setup(props, context) {
+    const router = useRouter()
     const data = reactive({
       isLike: false,
       count: 0,
@@ -105,7 +113,29 @@ export default defineComponent({
       },
       { immediate: true }
     );
+    
+    // 评论详情
+    const commentDetail = (e: number) => {
+      if (!props.disOperation) {
+        router.push(`/CommentDetail?cid=${e}&id=${props.id}&type=${props.type}`)
+      }
+    }
+    
+    const toDetail = (e: number) => {
+      router.push(`/UserDetail?id=${e}`)
+    }
 
+    // 回复评论
+    const replyComment = () => {
+      if (useLogin()) {
+        bus.emit('replyComment', {
+          id:  props.cid, 
+          name: props.nickname
+        })
+      }
+    }
+
+    // 删除评论
     const confirmDelete = () => {
       if (useLogin()) {
         commentResource({
@@ -157,6 +187,9 @@ export default defineComponent({
       ...toRefs(data),
       praiseResource,
       confirmDelete,
+      replyComment,
+      toDetail,
+      commentDetail,
       useLogin,
     };
   },
@@ -166,12 +199,17 @@ export default defineComponent({
 <style lang='less'>
 .commentItem {
   display: flex;
-  padding: 12px 0;
+  padding: 12px 12px;
+  border-radius: 8px;
+  &:hover {
+    background: @hoverColor;
+  }
   .itemImage {
     margin-right: 10px;
+    cursor: pointer;
   }
   .itemInfo {
-    width: 94%;
+    flex: 1;
     font-size: 13px;
     .listItem {
       span {
@@ -198,6 +236,7 @@ export default defineComponent({
       background-color: @eventBgc;
       border-radius: 8px;
       color: @fontColor;
+      cursor: pointer;
       span {
         color: @nameColor;
       }

@@ -15,6 +15,7 @@
           >
             <template #reference>
               <input
+                @keyup.enter="toSearch"
                 :placeholder="searchDefault"
                 @input="searchChange"
                 v-model="searchText"
@@ -252,6 +253,12 @@ export default defineComponent({
       isSearch: false,
     });
 
+    const toSearch = () => {
+      if (data.searchText != '') {
+        router.push('/SearchResult?key='+data.searchText.trim())
+      }
+    }
+
     const recommendType = (e: string) => {
       switch (e) {
         case "songs":
@@ -375,6 +382,7 @@ export default defineComponent({
     });
     return {
       ...toRefs(data),
+      toSearch,
       loginOutEvent,
       toLogin,
       toDetailPage,

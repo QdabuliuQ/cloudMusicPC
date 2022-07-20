@@ -47,6 +47,8 @@
         :creator="item.data.creator ? item.data.creator.nickname : null"
         :itemHeight="'9.5vw'"
         :duration="item.data.durationms"
+        :centerIcon="true"
+        :ratio="'2/1.1'"
       ></videoItem>
     </div>
   </div>

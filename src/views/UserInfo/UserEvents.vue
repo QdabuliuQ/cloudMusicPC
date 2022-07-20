@@ -2,7 +2,7 @@
   <div id="UserEvents">
     <div v-if="userInfo" class="title">{{ userInfo.nickname }}的动态</div>
     <loading v-if="!eventList.length && size != 0"></loading>
-    <emptyContent v-if="size == 0"></emptyContent>
+    <emptyContent v-else-if="size == 0"></emptyContent>
     <div
       v-if="showContainer"
       :infinite-scroll-delay="700"
@@ -153,7 +153,7 @@
         ></commentEItem>
         <textEItem
           class="eventItem"
-          v-else-if="item.type == 57"
+          v-else-if="item.type == 35"
           :avatarUrl="item.user.avatarUrl"
           :nickname="item.user.nickname"
           :uid="item.user.userId"
@@ -167,6 +167,22 @@
           :shareCount="item.info.shareCount"
           :pics="item.pics"
         ></textEItem>
+        <unsupportEItem
+          class="eventItem"
+          v-else
+          :avatarUrl="item.user.avatarUrl"
+          :nickname="item.user.nickname"
+          :uid="item.user.userId"
+          :time="item.showTime"
+          :infoJson="item.json"
+          :target="item.bottomActivityInfos"
+          :liked="item.info.liked"
+          :threadId="item.info.threadId"
+          :likedCount="item.info.likedCount"
+          :commentCount="item.info.commentCount"
+          :shareCount="item.info.shareCount"
+          :pics="item.pics"
+        ></unsupportEItem>
       </div>
     </div>
   </div>
@@ -205,6 +221,7 @@ const mvEItem = defineAsyncComponent(() => import("./mvEItem.vue"));
 const replyEItem = defineAsyncComponent(() => import("./replyEItem.vue"));
 const commentEItem = defineAsyncComponent(() => import("./commentEItem.vue"));
 const textEItem = defineAsyncComponent(() => import("./textEItem.vue"));
+const unsupportEItem = defineAsyncComponent(() => import("./unsupportEItem.vue"));
 
 export default defineComponent({
   name: "UserEvents",
@@ -222,6 +239,7 @@ export default defineComponent({
     loading,
     emptyContent,
     textEItem,
+    unsupportEItem,
   },
   setup(props) {
     const data = reactive(new InitData());
@@ -249,8 +267,9 @@ export default defineComponent({
               data.showContainer = true;
             });
           }
+          data.size = res.data.size;
           if (res.data.events.length) {
-            data.size = res.data.size;
+            
             data.eventList = [...data.eventList, ...res.data.events];
             data.lasttime = res.data.lasttime;
           } else {

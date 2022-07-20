@@ -12,7 +12,7 @@
         :playCount="item.playTime"
         :duration="item.durationms"
         :creator="item.creator.name"
-        :itemHeight="'10vw'"
+        :ratio="'2/1.1'"
       ></videoItem>
     </div>
   </div>

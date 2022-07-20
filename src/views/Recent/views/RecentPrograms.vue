@@ -8,11 +8,14 @@
         :key="item.resourceId"
         class="programItem"
       >
-        <el-image
-          style="width: 6vw; height: 6vw"
-          :src="item.data.pubDJProgramData.coverUrl"
-          :fit="'contain'"
-        />
+        <div class="imgContainer">
+          <el-image
+            style="width: 100%; height: 100%"
+            :src="item.data.pubDJProgramData.coverUrl"
+            :fit="'contain'"
+          />
+        </div>
+
         <div class="info">
           <div class="name overTwoLine">
             {{ item.data.pubDJProgramData.name }}
@@ -25,9 +28,15 @@
                 alt=""
               />{{ $formatTime(item.data.pubDJProgramData.duration) }}
             </div>
-            <div>累计播放{{ $countFormat(item.data.pubDJProgramData.listenerCount) }}次</div>
+            <div>
+              累计播放{{
+                $countFormat(item.data.pubDJProgramData.listenerCount)
+              }}次
+            </div>
           </div>
-          <div v-if="item.data.commentCount" class="comment">评论：{{ item.data.commentCount }}条</div>
+          <div v-if="item.data.commentCount" class="comment">
+            评论：{{ item.data.commentCount }}条
+          </div>
         </div>
       </div>
     </div>
@@ -76,6 +85,10 @@ export default defineComponent({
       cursor: pointer;
       &:hover {
         background-color: @hoverColor;
+      }
+      .imgContainer {
+        width: 80px;
+        height: 80px;
       }
       .el-image__placeholder {
         background-color: #4a4a4a !important;

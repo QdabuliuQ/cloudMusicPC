@@ -37,7 +37,7 @@
           :content="item.content"
           :nickname="item.user.nickname"
           :userId="item.user.userId"
-          :beReplied="item.beReplied"
+          :beReplied="item.beReplied ? item.beReplied : item.beRepliedUser"
           :liked="item.liked"
           :id="id"
           :cid="item.commentId"
@@ -92,21 +92,37 @@ export default defineComponent({
     const router = useRouter();
     const newCommentTitle = ref();
 
-    data.id = router.currentRoute.value.query.id as string
+    data.id = router.currentRoute.value.query.id as string;
 
-    const commentEvent = (e: string) => {
-      commentResource({
-        t: 1,
-        type: 2,
-        id: parseInt(router.currentRoute.value.query.id as string),
-        content: e,
-      }).then((res: any) => {
-        if (res.data.code == 200) {
-          res.data.comment.likedCount = 0
-          data.commentList.unshift(res.data.comment)
-        }
-      })
-    }
+    const commentEvent = (e: {content: string, cid: number}) => {
+      if (e.cid) {
+        commentResource({
+          t: 2,
+          type: 2,
+          id: parseInt(router.currentRoute.value.query.id as string),
+          content: e.content,
+          commentId: e.cid
+        }).then((res: any) => {
+          if (res.data.code == 200) {
+            setTimeout(() => {
+              getData();
+            }, 300);
+          }
+        });
+      } else {
+        commentResource({
+          t: 1,
+          type: 2,
+          id: parseInt(router.currentRoute.value.query.id as string),
+          content: e.content,
+        }).then((res: any) => {
+          if (res.data.code == 200) {
+            res.data.comment.likedCount = 0;
+            data.commentList.unshift(res.data.comment);
+          }
+        });
+      }
+    };
 
     const pageChange = (e: number) => {
       data.offset = e;

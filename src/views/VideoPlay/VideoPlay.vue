@@ -60,7 +60,11 @@
           </div>
           <commentArea @commentEvent="commentEvent"></commentArea>
           <div v-if="hotComment.length" style="font-weight: bold">精彩评论</div>
-          <div v-if="hotComment.length" style="margin-bottom: 50px" class="commentList">
+          <div
+            v-if="hotComment.length"
+            style="margin-bottom: 50px"
+            class="commentList"
+          >
             <commentItem
               class="comItem"
               v-for="item in hotComment"
@@ -78,7 +82,9 @@
               :type="5"
             ></commentItem>
           </div>
-          <div v-if="allComment.length" ref="title" style="font-weight: bold">最新评论</div>
+          <div v-if="allComment.length" ref="title" style="font-weight: bold">
+            最新评论
+          </div>
           <div v-if="allComment.length" class="commentList">
             <commentItem
               class="comItem"
@@ -108,7 +114,9 @@
               :total="total"
             />
           </div>
-          <emptyContent v-if="(!hotComment.length && !allComment.length) && total == 0"></emptyContent>
+          <emptyContent
+            v-if="!hotComment.length && !allComment.length && total == 0"
+          ></emptyContent>
         </div>
       </div>
     </div>
@@ -130,7 +138,14 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, reactive, onMounted, toRefs, ref, getCurrentInstance } from "vue";
+import {
+  defineComponent,
+  reactive,
+  onMounted,
+  toRefs,
+  ref,
+  getCurrentInstance,
+} from "vue";
 import pageNav from "@/components/private/pageNav.vue";
 import { useRouter } from "vue-router";
 import { InitData } from "@/types/VideoPlay/VideoPlay";
@@ -168,20 +183,35 @@ export default defineComponent({
     const title = ref();
     const playContainer = ref();
 
-
     // 评论回调
-    const commentEvent = (e: string) => {
-      commentResource({
-        t: 1,
-        type: 5,
-        id: router.currentRoute.value.query.id as string,
-        content: e
-      }).then((res: any) => {
-        if (res.data.code == 200) {
-          res.data.comment.likedCount = 0
-          data.allComment.unshift(res.data.comment)
-        }
-      })
+    const commentEvent = (e: { content: string; cid: number }) => {
+      if (e.cid) {
+        commentResource({
+          t: 2,
+          type: 5,
+          id: router.currentRoute.value.query.id as string,
+          content: e.content,
+          commentId: e.cid,
+        }).then((res: any) => {
+          if (res.data.code == 200) {
+            setTimeout(() => {
+              getCommentData(false);
+            }, 300);
+          }
+        });
+      } else {
+        commentResource({
+          t: 1,
+          type: 5,
+          id: router.currentRoute.value.query.id as string,
+          content: e.content,
+        }).then((res: any) => {
+          if (res.data.code == 200) {
+            res.data.comment.likedCount = 0;
+            data.allComment.unshift(res.data.comment);
+          }
+        });
+      }
     };
 
     const likeEvent = () => {
