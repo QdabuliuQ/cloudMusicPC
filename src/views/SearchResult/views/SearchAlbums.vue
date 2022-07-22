@@ -15,7 +15,7 @@
       </template>
       <template v-slot:name="{ content }">
         <div class="albumName">
-          {{ content.name }}&nbsp;&nbsp;
+          <span v-html="$highKey(content.name, router.currentRoute.value.query.key)"></span>&nbsp;&nbsp;
           <span v-if="content.transNames" v-for="item,index in content.transNames">
             ({{item}})
           </span>
@@ -23,8 +23,7 @@
       </template>
       <template v-slot:artists="{ content }">
         <div class="creator">
-          <span v-for="item in content.artists" :key="item.id">
-            {{item.name}}
+          <span v-html="$highKey(item.name, router.currentRoute.value.query.key) + '&nbsp;&nbsp;'" v-for="item in content.artists" :key="item.id">
           </span>
         </div>
       </template>
@@ -89,6 +88,7 @@ export default defineComponent({
     getData()
 
     return {
+      router,
       ...toRefs(data),
       pageChange
     }

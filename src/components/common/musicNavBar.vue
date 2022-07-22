@@ -348,10 +348,10 @@ export default defineComponent({
         cookie: localStorage.getItem("cookie") as string,
       }).then((res: any) => {
         if (res.data.code == 200) {
-          bus.emit("loginOut");
           localStorage.removeItem("cookie");
           localStorage.removeItem("data");
           localStorage.removeItem("id");
+          bus.emit("loginOut");
           data.userInfo = {
             userId: 0,
           };
@@ -360,7 +360,7 @@ export default defineComponent({
             type: "success",
             customClass: "darkNotice",
           });
-          router.push("/");
+          location.reload()
         }
       });
     };

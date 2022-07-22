@@ -57,4 +57,6 @@ export class InitData {
   newSongsList: newSongsInt[] = []
   recommendMvList: recommendMvInt[] = []
   programsList: programInt[] = []
+
+  login: boolean = false
 }

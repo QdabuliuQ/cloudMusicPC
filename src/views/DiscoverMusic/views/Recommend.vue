@@ -19,6 +19,13 @@
     <loading v-if="!sheetList.length"></loading>
     <div v-else class="sheetContainer">
       <sheetItem
+        v-if="login"
+        :type="'sheet'"
+        @click="toRecommend"
+        :title="'每日歌曲推荐'"
+        :recommend="true"
+      ></sheetItem>
+      <sheetItem
         :type="'sheet'"
         :id="item.id"
         @click="toSheetDetail(item.id)"
@@ -27,7 +34,6 @@
         :imageUrl="item.picUrl"
         :title="item.name"
         :sum="item.playCount"
-        :imgHeight="'13vw'"
       ></sheetItem>
     </div>
     <splitLine :title="'独家放送'" :icon="true"></splitLine>
@@ -39,7 +45,6 @@
         :imageUrl="item.sPicUrl"
         :title="item.name"
         :topLeftIcon="true"
-        :itemHeight="'12vw'"
       ></videoItem>
     </div>
     <splitLine :title="'最新音乐'" :icon="true"></splitLine>
@@ -65,7 +70,8 @@
         :artists="item.artists"
         :playCount="item.playCount"
         :topLeftIcon="false"
-        :itemHeight="'8.5vw'"
+        :centerIcon='true'
+        :ratio='"2/1.1"'
       ></videoItem>
     </div>
     <splitLine :title="'推荐电台'" :icon="true"></splitLine>
@@ -88,7 +94,6 @@
 import {
   defineComponent,
   reactive,
-  onMounted,
   toRefs,
   ref,
   defineAsyncComponent,
@@ -103,13 +108,24 @@ import {
 } from "@/network/DiscoverMusic/recommend";
 import { InitData } from "@/types/DiscoverMusic/Recommend";
 import bus from "vue3-eventbus";
-import loading from "@/components/common/loading.vue"
+import loading from "@/components/common/loading.vue";
 import { useRouter } from "vue-router";
-const splitLine = defineAsyncComponent(()=> import("components/private/splitLine.vue"))
-const sheetItem = defineAsyncComponent(()=> import("components/private/sheetItem.vue"))
-const videoItem = defineAsyncComponent(()=> import("components/private/videoItem.vue"))
-const newMusicItem = defineAsyncComponent(()=> import("components/private/newMusicItem.vue"))
-const programItem = defineAsyncComponent(()=> import("components/private/programItem.vue"))
+import useLogin from "@/hooks/useLogin";
+const splitLine = defineAsyncComponent(
+  () => import("components/private/splitLine.vue")
+);
+const sheetItem = defineAsyncComponent(
+  () => import("components/private/sheetItem.vue")
+);
+const videoItem = defineAsyncComponent(
+  () => import("components/private/videoItem.vue")
+);
+const newMusicItem = defineAsyncComponent(
+  () => import("components/private/newMusicItem.vue")
+);
+const programItem = defineAsyncComponent(
+  () => import("components/private/programItem.vue")
+);
 
 export default defineComponent({
   name: "Recommend",
@@ -124,11 +140,30 @@ export default defineComponent({
   setup() {
     const data = reactive(new InitData());
     const bannerRef = ref();
-    const router = useRouter()
+    const router = useRouter();
 
+    data.login = useLogin(false);
+
+    const toRecommend = () => {
+      router.push("/RecommendSongs");
+    };
     const toSheetDetail = (e: number) => {
-      router.push('/SheetDetail?id='+e)
-    }
+      router.push("/SheetDetail?id=" + e);
+    };
+    const getSheet = () => {
+      data.login = useLogin(false);
+      getRecommendSheet({
+        limit: 10,
+      }).then((res: any) => {
+        if (data.login) {
+          data.sheetList = res.data.recommend.slice(0, 9);
+        } else {
+          data.sheetList = res.data.result;
+        }
+      });
+    };
+
+    getSheet()
 
     bus.on("windowResize", () => {
       if (bannerRef.value[0]) {
@@ -136,41 +171,36 @@ export default defineComponent({
       }
     });
 
-    onMounted(() => {
-      getBanner({
-        type: 0,
-      }).then((res: any) => {
-        data.bannerList = res.data.banners;
-      });
 
-      getRecommendSheet({
-        limit: 9,
-      }).then((res: any) => {
-        data.sheetList = res.data.result;
-      });
-
-      getPrivateContent().then((res: any) => {
-        data.privateList = res.data.result;
-      });
-
-      getNewSongs({
-        limit: 12,
-      }).then((res: any) => {
-        data.newSongsList = res.data.result;
-      });
-
-      getRecommendMv().then((res: any) => {
-        data.recommendMvList = res.data.result;
-      });
-
-      getRecommendProgram().then((res: any) => {
-        data.programsList = res.data.programs;
-      });
+    getBanner({
+      type: 0,
+    }).then((res: any) => {
+      data.bannerList = res.data.banners;
     });
+
+    getPrivateContent().then((res: any) => {
+      data.privateList = res.data.result;
+    });
+
+    getNewSongs({
+      limit: 12,
+    }).then((res: any) => {
+      data.newSongsList = res.data.result;
+    });
+
+    getRecommendMv().then((res: any) => {
+      data.recommendMvList = res.data.result;
+    });
+
+    getRecommendProgram().then((res: any) => {
+      data.programsList = res.data.programs;
+    });
+
     return {
       ...toRefs(data),
       bannerRef,
-      toSheetDetail
+      toRecommend,
+      toSheetDetail,
     };
   },
 });

@@ -9,6 +9,7 @@ const SingersList = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/D
 const NewSongs = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/DiscoverMusic/views/NewSongs.vue')
 const NewMusicList = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/DiscoverMusic/views/NewMusicList.vue')
 const NewDisc = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/DiscoverMusic/views/NewDisc.vue')
+const RecommendSongs = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/DiscoverMusic/RecommendSongs.vue')
 
 const Video = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Video/Video.vue')
 const VideoList = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Video/views/VideoList.vue')
@@ -66,6 +67,16 @@ const SearchAlbums = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/
 const SearchVideos = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/SearchResult/views/SearchVideos.vue')
 const SearchMvs = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/SearchResult/views/SearchMvs.vue')
 const SearchSheets = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/SearchResult/views/SearchSheets.vue')
+const SearchTexts = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/SearchResult/views/SearchTexts.vue')
+const SearchAudios = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/SearchResult/views/SearchAudios.vue')
+const SearchUsers = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/SearchResult/views/SearchUsers.vue')
+
+const SingerDetail = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/SingerDetail/SingerDetail.vue')
+const SingerSongs = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/SingerDetail/views/SingerSongs.vue')
+const SingerInfo = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/SingerDetail/views/SingerInfo.vue')
+const SingerMvs = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/SingerDetail/views/SingerMvs.vue')
+const SingerAlbums = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/SingerDetail/views/SingerAlbums.vue')
+const SingerSimilar = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/SingerDetail/views/SingerSimilar.vue')
 
 const routes: Array<RouteRecordRaw> = [
   { path: '/', redirect: '/HomePage' },
@@ -136,6 +147,15 @@ const routes: Array<RouteRecordRaw> = [
             ]
           },
         ]
+      },
+      {
+        path: '/RecommendSongs',
+        name: 'RecommendSongs',
+        meta: {
+          index: 0,
+          login: true
+        },
+        component: RecommendSongs
       },
       {
         path: '/Video',
@@ -438,8 +458,83 @@ const routes: Array<RouteRecordRaw> = [
             },
             component: SearchSheets
           },
+          { 
+            path: '/SearchTexts',
+            name: 'SearchTexts',
+            meta: {
+              searchIndex: 6
+            },
+            component: SearchTexts
+          },
+          { 
+            path: '/SearchAudios',
+            name: 'SearchAudios',
+            meta: {
+              searchIndex: 7
+            },
+            component: SearchAudios
+          },
+          { 
+            path: '/SearchUsers',
+            name: 'SearchUsers',
+            meta: {
+              searchIndex: 8
+            },
+            component: SearchUsers
+          },
         ]
       },
+      {
+        path: '/SingerDetail',
+        name: 'SingerDetail',
+        component: SingerDetail,
+        children: [
+          {
+            path: '/SingerDetail',
+            redirect: '/SingerSongs'
+          },
+          {
+            path: '/SingerSongs',
+            name: 'SingerSongs',
+            meta: {
+              singerIndex: 0
+            },
+            component: SingerSongs,
+          },
+          {
+            path: '/SingerAlbums',
+            name: 'SingerAlbums',
+            meta: {
+              singerIndex: 1
+            },
+            component: SingerAlbums,
+          },
+          {
+            path: '/SingerMvs',
+            name: 'SingerMvs',
+            meta: {
+              singerIndex: 2
+            },
+            component: SingerMvs,
+          },
+          {
+            path: '/SingerInfo',
+            name: 'SingerInfo',
+            meta: {
+              singerIndex: 3
+            },
+            component: SingerInfo,
+          },
+          {
+            path: '/SingerSimilar',
+            name: 'SingerSimilar',
+            meta: {
+              singerIndex: 4
+            },
+            component: SingerSimilar,
+          },
+        ]
+      }
     ]
   },
   {

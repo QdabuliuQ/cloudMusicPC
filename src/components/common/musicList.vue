@@ -41,7 +41,7 @@
             :key="i2"
           >
             <div class="tableItem">
-              <slot :content="item" :name="att" />
+              <slot :content="item" :index='i1' :name="att" />
             </div>
           </td>
         </tr>
@@ -207,7 +207,7 @@ export default defineComponent({
       }
     };
     const getData = () => {
-      data.userSheet = []
+      data.userSheet = [];
       let _id = decodeURIComponent(
         window.atob(localStorage.getItem("id") as string)
       );

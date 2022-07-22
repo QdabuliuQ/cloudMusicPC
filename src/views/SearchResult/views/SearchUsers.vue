@@ -1,31 +1,29 @@
 <template>
-  <div id="SearchSingers">
-    <loading v-if="!singerList.length && total != 0"></loading>
+  <div id="SearchUsers">
+    <loading v-if="!userList.length && total != 0"></loading>
     <emptyContent v-else-if="total == 0"></emptyContent>
-    <tableList :columns="columns" :data="singerList" v-else>
-      <template v-slot:img1v1Url="{ content }">
-        <div class="singerImage">
+    <tableList @itemClick="itemClick" :columns="columns" :data="userList" v-else>
+      <template v-slot:avatarUrl="{ content }">
+        <div class="userImage">
           <el-avatar
-            shape="square"
             :size="60"
             :fit="'cover'"
-            :src="content.img1v1Url"
+            :src="content.avatarUrl"
           />
         </div>
       </template>
-      <template v-slot:name="{ content }">
-        <div class="singerName">
-          <span v-html="$highKey(content.name, router.currentRoute.value.query.key)"></span>
-          <span v-for="(item, index) in content.alias" :key="index">
-            ({{ item }})
-          </span>
+      <template v-slot:nickname="{ content }">
+        <div class="userName">
+          <div class="name">
+            <span v-html="$highKey(content.nickname, router.currentRoute.value.query.key)"></span>
+            <img v-if="content.gender == 1" src="~images/common/boy.png" alt="">
+            <img v-else-if="content.gender == 2" src="~images/common/girl.png" alt="">
+          </div>
+          <div :title="content.signature" class="signature" v-html="$highKey(content.signature, router.currentRoute.value.query.key)"></div>
         </div>
       </template>
-      <template v-slot:mvSize="{ content }">
-        <div class="singerInfo">MV：{{ content.mvSize }}</div>
-      </template>
-      <template v-slot:albumSize="{ content }">
-        <div class="singerInfo">专辑：{{ content.mvSize }}</div>
+      <template v-slot:description="{ content }">
+        <div class="userInfo">{{ content.userType == 2 ? '歌手' : content.userType == 4 ? '网易音乐人' : ''}}</div>
       </template>
     </tableList>
     <div
@@ -56,10 +54,10 @@ import loading from "@/components/common/loading.vue";
 import emptyContent from "@/components/common/emptyContent.vue";
 import { getSearchData } from "@/network/SearchResult/searchResult";
 import { useRouter } from "vue-router";
-import { InitData } from "@/types/SearchResult/SearchSingers";
+import { InitData } from "@/types/SearchResult/SearchUsers";
 
 export default defineComponent({
-  name: "SearchSingers",
+  name: "SearchUsers",
   components: {
     tableList,
     loading,
@@ -68,7 +66,10 @@ export default defineComponent({
   setup() {
     const router = useRouter();
     const data = reactive(new InitData());
-    
+
+    const itemClick = (e: any) => {
+      router.push('/UserDetail?id='+e.userId)
+    }
     const pageChange = (e: number) => {
       window.scrollTo(0,0)
       data.offset = e
@@ -79,10 +80,10 @@ export default defineComponent({
         keywords: router.currentRoute.value.query.key as string,
         limit: 30,
         offset: (data.offset - 1) * 30,
-        type: 100,
+        type: 1002,
       }).then((res: any) => {
-        data.total = res.data.result.artistCount;
-        data.singerList = res.data.result.artists;
+        data.total = res.data.result.userprofileCount;
+        data.userList = res.data.result.userprofiles;
       });
     };
     getData();
@@ -90,6 +91,7 @@ export default defineComponent({
     return {
       router,
       pageChange,
+      itemClick,
       ...toRefs(data),
     };
   },
@@ -97,23 +99,36 @@ export default defineComponent({
 </script>
 
 <style lang='less'>
-#SearchSingers {
-  .singerImage {
+#SearchUsers {
+  .userImage {
     display: flex;
     align-items: center;
   }
-  .singerName {
-    display: flex;
-    align-items: center;
-    span {
-      color: @fontColor;
+  .userName {
+    margin-left: 10px;
+    .name {
+      font-size: 15px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      img {
+        width: 15px;
+        margin-left: 5px;
+      }
+    }
+    .signature {
+      max-width: 600px;
       font-size: 13px;
-      margin-right: 4px;
+      color: @fontColor;
+      margin-top: 5px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
   }
-  .singerInfo {
+  .userInfo {
+    font-size: 13px;
     color: @fontColor;
-    text-align: center;
   }
 }
 </style>

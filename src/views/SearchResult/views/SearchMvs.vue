@@ -7,7 +7,7 @@
         v-for="item in mvList"
         :key="item.id"
         :imageUrl="item.cover"
-        :title="item.name"
+        :title="$highKey(item.name, router.currentRoute.value.query.key)"
         :artists="item.artists"
         :playCount="item.playCount"
         :duration="item.duration"
@@ -76,6 +76,7 @@ export default defineComponent({
     getData();
 
     return {
+      router,
       pageChange,
       ...toRefs(data),
     }

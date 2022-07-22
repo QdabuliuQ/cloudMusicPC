@@ -7,7 +7,7 @@ export function getSearchData(data: {
   type: number
 }) {
   return $http({
-    // url: '/search',
+    // url: '/search',/
     url: '/cloudsearch',
     params: {
       ...data,

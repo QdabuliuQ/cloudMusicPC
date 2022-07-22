@@ -29,7 +29,7 @@
               />
             </div>
             <div class="btnList">
-              <div v-if="userInfo.profile.userType == 2" class="btnItem">
+              <div @click="router.push('/SingerDetail?id='+userInfo.profile.artistId)" v-if="userInfo.profile.userType == 2" class="btnItem">
                 <img src="~images/musicNavBar/singer.png" alt="" />
                 歌手主页
               </div>

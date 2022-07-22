@@ -31,7 +31,6 @@ export default defineComponent({
       { name: "歌单", path: "/SearchSheets?key="+key },
       { name: "歌词", path: "/SearchTexts?key="+key },
       { name: "播客", path: "/SearchAudios?key="+key },
-      { name: "声音", path: "/SearchPrograms?key="+key },
       { name: "用户", path: "/SearchUsers?key="+key },
     ];
 

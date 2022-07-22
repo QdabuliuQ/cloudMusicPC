@@ -7,7 +7,7 @@
         v-for="item in videoList"
         :key="item.vid"
         :imageUrl="item.coverUrl"
-        :title="item.title"
+        :title="$highKey(item.title, router.currentRoute.value.query.key)"
         :artists="item.creator"
         :playCount="item.playTime"
         :duration="item.durationms"
@@ -75,6 +75,7 @@ export default defineComponent({
     getData();
 
     return {
+      router,
       pageChange,
       ...toRefs(data),
     };

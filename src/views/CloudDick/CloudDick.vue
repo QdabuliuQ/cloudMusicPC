@@ -28,7 +28,14 @@
     <emptyContent v-else-if="total == 0"></emptyContent>
     <musicList v-else :download="true" :data="songList" :columns="columns">
       <template v-slot:songName="{ content }">
-        {{ content.songName }}
+        <div style="display: flex; align-items: center">
+          {{ content.songName }}
+          <targetList
+            :mv="content.simpleSong.mv"
+            :sq="content.simpleSong.sq"
+            :vip="content.simpleSong.fee == 1"
+          ></targetList>
+        </div>
       </template>
       <template v-slot:artist="{ content }">
         <div class="tItem">
@@ -92,6 +99,7 @@ import { getCloudSongs, deleteCloudSongs } from "@/network/CloudDick/cloudDick";
 import loading from "@/components/common/loading.vue";
 import emptyContent from "@/components/common/emptyContent.vue";
 import musicList from "@/components/common/musicList.vue";
+import targetList from "@/components/common/targetList.vue";
 import { ElNotification, ElLoading } from "element-plus";
 import axios from "axios";
 
@@ -101,6 +109,7 @@ export default defineComponent({
     musicList,
     loading,
     emptyContent,
+    targetList,
   },
   setup() {
     const _this: any = getCurrentInstance();

@@ -1,15 +1,27 @@
 <template>
-  <div id="SearchSongs">
+  <div id="SingerSongs">
     <loading v-if="!songList.length && total != 0"></loading>
-    <emptyContent v-else-if="total == 0"></emptyContent>
+    <empty-content v-else-if="total == 0"></empty-content>
     <div v-else>
+      <div ref="navListRef" class="navList">
+        <span
+          @click="navChange(index)"
+          :class="[navIndex == index ? 'active' : '']"
+          v-for="(item, index) in navList"
+          :key="index"
+        >
+          {{ item.title }}
+        </span>
+      </div>
       <musicList :data="songList" :columns="columns" :download="true">
         <template v-slot:name="{ content }">
           <div class="songName">
-            <span v-html="$highKey(content.name, router.currentRoute.value.query.key)"></span>
-            <span v-for="(item, index) in content.alia" :key="index">
-              ({{ item }})&nbsp;&nbsp;
-            </span>
+            <div class="name">
+              {{ content.name }}
+              <span v-for="(item, index) in content.alia" :key="index">
+                ({{ item }})&nbsp;&nbsp;
+              </span>
+            </div>
             <targetList
               :mv="content.mv"
               :origin="content.originCoverType == 1"
@@ -23,12 +35,12 @@
             class="infoItem clickItem"
             v-for="item in content.ar"
             :key="item.id"
-            v-html="$highKey(item.name, router.currentRoute.value.query.key) + '&nbsp;&nbsp;'"
-            ></span
+            >{{ item.name }}&nbsp;&nbsp;</span
           >
         </template>
         <template v-slot:al="{ content }">
-          <div v-html="$highKey(content.al.name, router.currentRoute.value.query.key)" class="infoItem clickItem">
+          <div class="infoItem clickItem">
+            {{ content.al.name }}
           </div>
         </template>
         <template v-slot:dt="{ content }">
@@ -58,58 +70,59 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, reactive, onMounted, toRefs, watch } from "vue";
-import musicList from "@/components/common/musicList.vue";
+import { defineComponent, reactive, toRefs, ref } from "vue";
 import loading from "@/components/common/loading.vue";
 import emptyContent from "@/components/common/emptyContent.vue";
-import { getSearchData } from "@/network/SearchResult/searchResult";
-import { useRouter } from "vue-router";
-import { InitData } from "@/types/SearchResult/SearchSongs";
+import musicList from "@/components/common/musicList.vue";
 import targetList from "@/components/common/targetList.vue";
+import { getSingerSongs } from "@/network/SingerDetail/singerDetail";
+import { useRouter } from "vue-router";
+import { InitData } from "@/types/SingerDetail/SingerSongs";
+import useToPoint from "@/hooks/useToPoint";
 
 export default defineComponent({
-  name: "SearchSongs",
+  name: "SingerSongs",
   components: {
     musicList,
-    loading,
     emptyContent,
+    loading,
     targetList,
   },
   setup() {
+    const navListRef = ref()
     const router = useRouter();
     const data = reactive(new InitData());
+    data.id = router.currentRoute.value.query.id as string;
 
-    // 滚动刷新
+    const navChange = (e: number) => {
+      data.navIndex = e
+      data.offset = 1
+      getData()
+    }
     const pageChange = (e: number) => {
       data.offset = e
-      window.scrollTo(0, 0)
-      getData();
-    };
-
-    // 获取数据
+      getData()
+      useToPoint(navListRef.value, -15)
+    }
     const getData = () => {
-      getSearchData({
-        keywords: router.currentRoute.value.query.key as string,
+      getSingerSongs({
+        id: data.id,
         limit: 30,
         offset: (data.offset - 1) * 30,
-        type: 1,
+        order: data.navList[data.navIndex].type,
       }).then((res: any) => {
-        data.total = res.data.result.songCount;
-        data.songList = res.data.result.songs;
+        console.log(res);
+
+        data.total = res.data.total;
+        data.songList = res.data.songs;
       });
     };
-
     getData();
-    
-    watch(() => router.currentRoute.value.query.key, () => {
-      data.offset = 1
-      getData();
-    })
 
-    onMounted(() => {});
     return {
-      router,
       pageChange,
+      navChange,
+      navListRef,
       ...toRefs(data),
     };
   },
@@ -117,26 +130,38 @@ export default defineComponent({
 </script>
 
 <style lang='less'>
-#SearchSongs {
-  .songName {
-    width: 400px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+#SingerSongs {
+  .navList {
     display: flex;
     align-items: center;
+    margin-bottom: 10px;
+    .active {
+      color: @themeColor !important;
+      font-weight: bold;
+    }
+    span {
+      color: @fontColor;
+      font-size: 13px;
+      margin-right: 25px;
+      cursor: pointer;
+    }
+  }
+  .songName {
+    display: flex;
+    align-items: center;
+    .name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 70%;
+    }
     span {
       color: @fontColor;
     }
   }
   .infoItem {
-    width: 200px;
     color: @fontColor;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  .clickItem {
+    cursor: pointer;
     &:hover {
       color: #fff;
     }

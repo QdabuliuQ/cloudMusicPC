@@ -1,4 +1,5 @@
 import $http from '../http'
+let cookie = localStorage.getItem('cookie')
 
 export function getBanner(data: {type: number}) {
   return $http({
@@ -9,8 +10,20 @@ export function getBanner(data: {type: number}) {
 
 export function getRecommendSheet(data: {limit: number}) {
   return $http({
-    url: '/personalized',
-    params: data
+    url: cookie ? '/recommend/resource' : '/personalized',
+    params: {
+      ...data,
+      cookie
+    }
+  })
+}
+
+export function getRecommendSongs() {
+  return $http({
+    url: '/recommend/songs',
+    params: {
+      cookie
+    }
   })
 }
 

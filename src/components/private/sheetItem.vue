@@ -1,7 +1,14 @@
 <template>
   <div @click="toPage" class="sheetItem">
     <!--  :style="{ height: imgHeight }" -->
-    <div class="sheetImage">
+    <div v-if="recommend" class="sheetImage recommendSheet">
+      <img class="bgImage" src="~images/recommend/bgImage.png" alt="">
+      <div class="maskBox">
+        <img class="calIcon" src="~images/recommend/calendar.png" alt="">
+        <span>{{day}}</span>
+      </div>
+    </div>
+    <div v-else class="sheetImage">
       <div class="mask"></div>
       <div v-if="sum" class="count">
         <img src="~images/recommend/playLine.png" alt="" />
@@ -15,6 +22,7 @@
         :src="imageUrl"
       />
     </div>
+    
     <div class="sheetTitle">
       {{ title }}
     </div>
@@ -25,11 +33,11 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
 
 export default defineComponent({
-  props: ["imageUrl", "title", "sum", "artist", "artId", "type", "id"],
+  props: ["imageUrl", "title", "sum", "artist", "artId", "type", "id", "recommend"],
   name: "sheetItem",
   setup(props) {
     const router = useRouter()
@@ -38,8 +46,11 @@ export default defineComponent({
         router.push('/SheetDetail?id='+props.id)
       }
     }
+    let day = ref<any>(0)
+    day = new Date().getDate() as number
 
     return {
+      day,
       toPage
     };
   },
@@ -55,6 +66,42 @@ export default defineComponent({
   margin-bottom: 5px;
   &:hover .icon {
     opacity: 1 !important;
+  }
+  .recommendSheet {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    .maskBox {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      z-index: 2;
+      background-color: rgba(0, 0, 0, 0.518);
+      .calIcon {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 120px;
+      }
+      span {
+        position: absolute;
+        top: 58%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-weight: bold;
+        font-size: 35px;
+      }
+    }
+    .bgImage {
+      filter: blur(13px);
+      position: absolute;
+      width: 150%;
+      height: 150%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
   }
   .sheetImage {
     width: 100%;
@@ -115,6 +162,9 @@ export default defineComponent({
     font-size: 12px;
     color: @fontColor;
     margin-top: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     &:hover {
       color: #fff;
     }

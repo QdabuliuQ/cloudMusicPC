@@ -1,18 +1,18 @@
 <template>
   <div id="UserFollow">
     <div v-if="userInfo" class="title">{{ userInfo.nickname }}的关注</div>
-    <loading v-if="!userList.length && total != 0"></loading>
-    <emptyContent v-else-if="total == 0"></emptyContent>
+    <!-- <loading v-if="!userList.length"></loading> -->
+    <emptyContent v-if="!userList.length"></emptyContent>
     <div v-else class="userContainer">
       <userItem
+        v-for="item in userList"
+        :key="item.userId"
         @click="router.push('/UserDetail?id=' + item.userId)"
         :avatarUrl="item.avatarUrl"
         :nickname="item.nickname"
         :signature="item.signature"
         :playlistCount="item.playlistCount"
         :followeds="item.followeds"
-        v-for="item in userList"
-        :key="item.userId"
       ></userItem>
     </div>
     <div

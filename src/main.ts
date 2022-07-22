@@ -33,6 +33,10 @@ app.config.globalProperties.$countFormat = function (num: string | number) {
   }
 }
 
+app.config.globalProperties.$highKey = function (str: string, key: string) {
+  return str.replace(key, `<b style="color: #75aeff">${key}</b>`);
+}
+
 app.config.globalProperties.$formatTime = function (msTime: number) {
   let time = msTime / 1000
   let day = Math.floor(time / 60 / 60 / 24);

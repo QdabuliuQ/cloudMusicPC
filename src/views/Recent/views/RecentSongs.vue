@@ -4,7 +4,14 @@
     <emptyContent v-else-if="total == 0"></emptyContent>
     <musicList v-else :data="songList" :columns="columns">
       <template v-slot:name="{ content }">
-        {{ content.name }}
+        <div style="display: flex; align-items: center">
+          {{ content.name }}
+          <targetList
+            :mv="content.mv"
+            :sq="content.sq"
+            :vip="content.fee == 1"
+          ></targetList>
+        </div>
       </template>
       <template v-slot:ar="{ content }">
         <span v-for="item in content.ar" :key="item.id">
@@ -27,13 +34,15 @@ import { InitData } from "@/types/Recent/RecentSongs";
 import { getRecentSongs } from "@/network/Recent/recent";
 import loading from "@/components/common/loading.vue";
 import emptyContent from "@/components/common/emptyContent.vue";
+import targetList from "@/components/common/targetList.vue";
 
 export default defineComponent({
   name: "RecentSongs",
   components: {
     musicList,
     loading,
-    emptyContent
+    emptyContent,
+    targetList
   },
   setup() {
     const data = reactive(new InitData());

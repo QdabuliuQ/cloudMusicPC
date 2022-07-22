@@ -183,6 +183,7 @@ export default defineComponent({
         }).then((res: any) => {
           localStorage.setItem("data",window.btoa(window.encodeURIComponent(JSON.stringify(res.data.profile))))
           bus.emit("loginStatus");
+          location.reload()
         });
       });
     };

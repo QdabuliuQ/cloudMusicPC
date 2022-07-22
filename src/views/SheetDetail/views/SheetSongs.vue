@@ -21,6 +21,11 @@
           <span v-for="(item, index) in content.alia" :key="index">
             ({{ item }})&nbsp;&nbsp;
           </span>
+          <targetList
+            :mv="content.mv"
+            :sq="content.sq"
+            :vip="content.fee == 1"
+          ></targetList>
         </div>
       </template>
       <template v-slot:ar="{ content }">
@@ -54,6 +59,7 @@ import { InitData } from "@/types/SheetDetail/SheetSongs";
 import loading from "@/components/common/loading.vue";
 import emptyContent from "@/components/common/emptyContent.vue";
 import musicList from "@/components/common/musicList.vue";
+import targetList from "@/components/common/targetList.vue";
 
 export default defineComponent({
   name: "SheetSongs",
@@ -61,6 +67,7 @@ export default defineComponent({
     loading,
     emptyContent,
     musicList,
+    targetList,
   },
   setup() {
     const data = reactive(new InitData());
@@ -113,6 +120,8 @@ export default defineComponent({
 #SheetSongs {
   width: 100%;
   .songName {
+    display: flex;
+    align-items: center;
     width: 400px;
     overflow: hidden;
     text-overflow: ellipsis;

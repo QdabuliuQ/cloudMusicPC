@@ -19,8 +19,7 @@
       </div>
       <img id="coverImage" class="image" :src="imageUrl" alt="" />
     </div>
-    <div class="videoTitle">
-      {{ title }}
+    <div v-html="title" class="videoTitle">
     </div>
     <div v-if="artists" class="videoArtists">
       <!-- <label v-if="index != artists.length && index != 0"> / </label
