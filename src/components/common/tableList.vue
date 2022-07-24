@@ -14,7 +14,7 @@
             :key="i2"
           >
             <div class="tableItem">
-              <slot :content="item" :name="att" />
+              <slot :content="item"  :index='i1+1 < 10 ? "0"+(i1+1) : i1+1' :name="att" />
             </div>
           </td>
         </tr>

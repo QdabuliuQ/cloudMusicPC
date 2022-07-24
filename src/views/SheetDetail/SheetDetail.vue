@@ -89,6 +89,7 @@ export default defineComponent({
       () => router.currentRoute.value.query.id,
       (n) => {
         data.routerId = n as string
+        data.sheetInfo.coverImgUrl = ''
         getData()
       },
       { immediate: true }

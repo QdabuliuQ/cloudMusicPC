@@ -3,10 +3,13 @@
     <div class="progressContainer">
       <div class="leftMusicInfo">
         <div class="musicInfo">
-          <div class="musicImage"></div>
+          <div class="musicImage">
+            <img v-if="musicInfo.id" :src="musicInfo.al.picUrl" alt="">
+            <img v-else src="~images/shareDialog/musicEvent.png" alt="">
+          </div>
           <div class="musicDetail">
-            <div class="musicName">歌曲名称</div>
-            <div class="musicUser">创作者</div>
+            <div class="musicName">{{musicInfo.id ? musicInfo.name : '歌曲名称'}}</div>
+            <div class="musicUser">{{musicInfo.id ? musicInfo.ar[0].name : '创作者'}}</div>
           </div>
         </div>
       </div>
@@ -71,6 +74,8 @@
 
 <script lang='ts'>
 import { defineComponent, reactive, onMounted, toRefs } from "vue";
+import bus from "vue3-eventbus";
+
 export default defineComponent({
   name: "",
   setup() {
@@ -78,6 +83,7 @@ export default defineComponent({
       isPlay: false,
       musicProgress: 0,
       volume: 0,
+      musicInfo: <any>{}
     });
     const methods = {
       toPlayMusic(e: boolean) {
@@ -88,7 +94,12 @@ export default defineComponent({
         data.isPlay = e;
       },
     };
-    onMounted(() => {});
+    
+    bus.on('playMusic', (e: any) => {
+      console.log(e);
+      data.musicInfo = e
+    })
+
     return {
       ...toRefs(data),
       ...methods,
@@ -139,13 +150,24 @@ export default defineComponent({
       .musicImage {
         width: 50px;
         height: 50px;
-        background-color: #fff;
         border-radius: 6px;
+        object-fit: contain;
+        img {
+          width: 100%;
+          height: 100%;
+        }
       }
       .musicDetail {
         color: #fff;
         font-size: 14px;
         margin-left: 10px;
+        .musicName {
+          max-width: 200px;
+          min-width: 150px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
         .musicUser {
           font-size: 12px;
           margin-top: 3px;

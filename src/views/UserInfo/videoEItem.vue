@@ -7,6 +7,7 @@
       :time="time"
       :msg="msg"
       :target="target"
+      :uid="uid"
     ></eventHead>
     <div @click="toVideoPage" class="videoContent">
       <img class="cover" :src="info.video.coverUrl" alt="">

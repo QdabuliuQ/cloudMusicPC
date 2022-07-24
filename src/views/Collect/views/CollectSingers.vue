@@ -3,7 +3,7 @@
     <loading v-if="singerList.length == 0 && total != 0"></loading>
     <emptyContent v-else-if="total == 0"></emptyContent>
     <div v-else>
-      <div v-for="item in singerList" :key="item.id" class="collectItem">
+      <div @click="router.push('/SingerDetail?id='+item.id)" v-for="item in singerList" :key="item.id" class="collectItem">
         <el-avatar
           shape="square"
           :size="70"
@@ -40,6 +40,7 @@ import { getCollectSingers } from "@/network/Collect/collect";
 import { InitData } from "@/types/Collect/CollectSingers";
 import loading from "@/components/common/loading.vue";
 import emptyContent from "@/components/common/emptyContent.vue";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "CollectSingers",
@@ -48,6 +49,7 @@ export default defineComponent({
     emptyContent,
   },
   setup() {
+    const router = useRouter()
     const data = reactive(new InitData());
     const pageChange = (e: number) => {
       data.offset = e
@@ -70,6 +72,7 @@ export default defineComponent({
       getData();
     });
     return {
+      router,
       pageChange,
       ...toRefs(data),
     };

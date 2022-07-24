@@ -100,7 +100,7 @@ export default defineComponent({
     "count",
     "playCount",
   ],
-  emits: ["shareEvent"],
+  emits: ["shareEvent", "collectEvent"],
   name: "detailPanel",
   setup(props, context) {
     const router = useRouter();
@@ -111,7 +111,7 @@ export default defineComponent({
 
     const collectEvent = () => {
       if (useLogin()) {
-        if (data.id != props.userId) {
+        if (data.id != props.userId && props.target == '歌单') {
           collectSheet({
             t: props.subed ? 2 : 1,
             id: router.currentRoute.value.query.id as string,
@@ -121,6 +121,8 @@ export default defineComponent({
               data.isCollect = props.subed ? false : true;
             }
           });
+        } else if (props.target == '播客') {
+          
         }
       }
     };

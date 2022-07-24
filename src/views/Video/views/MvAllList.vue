@@ -51,6 +51,8 @@
       <videoItem
         v-for="item in mvList"
         :key="item.id"
+        :type="'mv'"
+        :id="item.id"
         :title="item.name"
         :artists="item.artists"
         :imageUrl="item.cover"

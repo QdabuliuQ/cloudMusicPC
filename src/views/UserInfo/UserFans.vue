@@ -1,7 +1,7 @@
 <template>
   <div id="UserFans">
     <div v-if="userInfo" class="title">{{ userInfo.nickname }}的粉丝</div>
-    <loading v-if="!userList.length"></loading>
+    <loading v-if="!userList.length && size != 0"></loading>
     <emptyContent v-else-if="size == 0"></emptyContent>
     <div v-else class="userContainer">
       <userItem

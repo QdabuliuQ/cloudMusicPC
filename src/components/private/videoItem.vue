@@ -1,5 +1,5 @@
 <template>
-  <div class="videoItem">
+  <div @click="toPage" class="videoItem">
     <!--  :style="{ height: itemHeight }" -->
     <div :style="{aspectRatio: ratio ? ratio : '2/.9'}" class="videoImage">
       <div class="mask"></div>
@@ -36,6 +36,7 @@
 
 <script lang='ts'>
 import { defineComponent } from "vue";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   props: {
@@ -48,11 +49,23 @@ export default defineComponent({
     artId: String,
     duration: Number,
     centerIcon: Boolean,
-    ratio: String
+    ratio: String,
+    id: String,
+    type: String
   },
   name: "videoItem",
-  setup() {
-    return {};
+  setup(props) {
+    const router = useRouter()
+    const toPage = () => {
+      if (props.type == 'video') {
+        router.push('/VideoPlay?id='+props.id+'&type=video')
+      } else if (props.type == 'mv') {
+        router.push('/MvPlay?id='+props.id)
+      }
+    }
+    return {
+      toPage
+    };
   },
 });
 </script>
@@ -137,7 +150,8 @@ export default defineComponent({
     }
   }
   .videoTitle {
-    margin-top: 4px;
+    padding: 4px 0;
+    line-height: 20px;
     color: #fff;
     text-overflow: -o-ellipsis-lastline;
     overflow: hidden;

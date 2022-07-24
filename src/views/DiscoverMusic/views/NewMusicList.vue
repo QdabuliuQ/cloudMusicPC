@@ -10,33 +10,42 @@
       >
     </div>
     <loading v-if="!newSongList.length"></loading>
-    <table v-else class="listTable">
-      <tbody>
-        <tr v-for="(item, index) in newSongList" :key="item.id">
-          <td class="musicIndex" style="width: 3%">{{ index+1<10?'0'+(index+1):index+1 }}</td>
-          <td style="width: 50%" class="musicInfo">
-            <div class="image">
-              <img :src="item.album.blurPicUrl" alt="" />
-            </div>
-            <div class="name">
-              {{ item.name }}
-            </div>
-          </td>
-          <td style="width: 20%; margin-right: 8px" class="musicArtist">
-            <span class="textFlow" v-for="art,i in item.artists" :key="art.name">
-              <label v-if="i != item.length && i != 0">&nbsp;/&nbsp;</label>
-              {{ art.name }}
-            </span>
-          </td>
-          <td class="textFlow musicAlbum" style="width: 20%">
-            {{item.album.name}}
-          </td>
-          <td style="text-align: right; width: 7%">
-            {{$formatTime(item.duration)}}
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <tableList :columns="columns" :data="newSongList">
+      <template v-slot:index="{ index }">
+        <span style="font-weight:bold;">{{index}}</span>
+      </template>
+      <template v-slot:blurPicUrl="{ content }">
+        <div class="songImage">
+          <el-avatar shape="square" :size="60" :fit="'contain'" :src="content.album.blurPicUrl" />
+        </div>
+      </template>
+      <template v-slot:name="{ content }">
+        <div class="songName">
+          {{ content.name }}
+          <targetList
+            :mv="content.mv"
+            :sq="content.sq"
+            :vip="content.fee == 1"
+          ></targetList>
+        </div>
+      </template>
+      <template v-slot:artists="{ content }">
+        <span
+          class="infoItem clickItem"
+          v-for="item in content.artists"
+          :key="item.name"
+          >{{ item.name }}&nbsp;&nbsp;</span
+        >
+      </template>
+      <template v-slot:album="{ content }">
+        <div class="infoItem clickItem">
+          {{ content.album.name }}
+        </div>
+      </template>
+      <template v-slot:duration="{ content }">
+        <span style="text-align:right" class="infoItem">{{ $formatTime(content.duration) }}</span>
+      </template>
+    </tableList>
   </div>
 </template>
 
@@ -45,11 +54,15 @@ import { defineComponent, reactive, onMounted, toRefs } from "vue";
 import { InitData } from "@/types/DiscoverMusic/NewMusicList";
 import { getNewSongs } from "@/network/DiscoverMusic/newMusicList";
 import loading from "@/components/common/loading.vue"
+import tableList from "@/components/common/tableList.vue";
+import targetList from "@/components/common/targetList.vue";
 
 export default defineComponent({
   name: "NewMusicList",
   components: {
-    loading
+    loading,
+    tableList,
+    targetList
   },
   setup() {
     const data = reactive(new InitData());
@@ -95,66 +108,16 @@ export default defineComponent({
       font-weight: bold;
     }
   }
-  .listTable {
-    width: 100%;
-    .textFlow {
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      word-break: break-all;
-    }
-    tr {
-      display: flex;
-      align-items: center;
-      margin-bottom: 10px;
-      cursor: pointer;
-      padding: 0 15px;
-      color: @fontColor;
-      font-size: 13px;
-      border-radius: 8px;
-      &:hover {
-        background-color: rgba(255, 255, 255, 0.068);
-      }
-    }
-    .musicIndex {
-      color: @fontColor;
-      font-size: 13px;
-    }
-    .musicInfo {
-      display: flex;
-      align-items: center;
-      .image {
-        width: 4vw;
-        min-height: 4vw;
-        background: @loadColor;
-        margin-right: 10px;
-        display: flex;
-        align-items: center;
-        border-radius: 8px;
-        img {
-          width: 100%;
-          border-radius: 8px;
-        }
-      }
-      .name {
-        font-size: 13px;
-        color: #fff;
-      }
-    }
-
-    .musicArtist {
-      display: flex;
-      align-items: center;
-      
-      .image {
-        width: 1vw;
-        border-radius: 50%;
-      }
-    }
-    .musicAlbum {
-      color: @fontColor;
-      font-size: 13px;
-    }
+  .songName {
+    display: flex;
+    align-items: center;
+  }
+  .songImage {
+    display: flex;
+    align-items: center;
+  }
+  .infoItem {
+    color: @fontColor;
   }
 }
 </style>

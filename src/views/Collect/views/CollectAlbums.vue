@@ -3,7 +3,12 @@
     <loading v-if="albumList.length == 0 && total != 0"></loading>
     <emptyContent v-else-if="total == 0"></emptyContent>
     <div v-else>
-      <div v-for="item in albumList" :key="item.id" class="collectItem">
+      <div
+        @click="router.push('/AlbumDetail?id=' + item.id)"
+        v-for="item in albumList"
+        :key="item.id"
+        class="collectItem"
+      >
         <el-avatar
           shape="square"
           :size="70"
@@ -44,6 +49,7 @@ import { getCollectAlbums } from "@/network/Collect/collect";
 import { InitData } from "@/types/Collect/CollectAlbums";
 import loading from "@/components/common/loading.vue";
 import emptyContent from "@/components/common/emptyContent.vue";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "CollectAlbums",
@@ -52,28 +58,30 @@ export default defineComponent({
     emptyContent,
   },
   setup() {
+    const router = useRouter();
     const data = reactive(new InitData());
 
     const pageChange = (e: number) => {
-      data.offset = e
-      getData()
-    }
+      data.offset = e;
+      getData();
+    };
     const getData = () => {
       getCollectAlbums({
         limit: data.limit,
         offset: (data.offset - 1) * data.limit,
       }).then((res: any) => {
         if (res.data.count) {
-            data.total = res.data.count;
+          data.total = res.data.count;
         }
         data.albumList = res.data.data;
       });
-    }
+    };
 
     onMounted(() => {
-      getData()
+      getData();
     });
     return {
+      router,
       ...toRefs(data),
       pageChange,
     };

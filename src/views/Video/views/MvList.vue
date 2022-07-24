@@ -6,6 +6,8 @@
       <videoItem
         v-for="item in newMvList"
         :key="item.id"
+        :type="'mv'"
+        :id="item.id"
         :imageUrl="item.cover"
         :title="item.name"
         :artists="item.artists"
@@ -20,6 +22,8 @@
       <videoItem
         v-for="item in hotMvList"
         :key="item.id"
+        :type="'mv'"
+        :id="item.id"
         :imageUrl="item.cover"
         :title="item.name"
         :artists="item.artists"
@@ -34,6 +38,8 @@
       <videoItem
         v-for="item in wyMvList"
         :key="item.id"
+        :type="'mv'"
+        :id="item.id"
         :imageUrl="item.cover"
         :title="item.name"
         :artists="item.artists"
@@ -53,6 +59,7 @@
         class="mvRankItem"
         v-for="(item, index) in rankMvList"
         :key="item.id"
+        @click="router.push('/MvPlay?id='+item.id)"
       >
         <div class="itemIndex">
           <div>
@@ -102,6 +109,7 @@ import videoItem from "@/components/private/videoItem.vue";
 import { getNewMv, getMvList, getMvRank } from "@/network/Video/mvList";
 import { InitData } from "@/types/Video/MvList";
 import loading from "@/components/common/loading.vue";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "MvList",
@@ -111,6 +119,7 @@ export default defineComponent({
     loading,
   },
   setup() {
+    const router = useRouter()
     const data = reactive(new InitData());
     // 切换排行榜
     const toggleItem = (e: number) => {
@@ -158,6 +167,7 @@ export default defineComponent({
       getRankData()
     });
     return {
+      router,
       ...toRefs(data),
       toggleItem
     };
@@ -196,6 +206,7 @@ export default defineComponent({
     grid-template-columns: 1fr 1fr;
     grid-gap: 20px;
     .mvRankItem {
+      cursor: pointer;
       display: flex;
       .itemIndex {
         width: 10%;

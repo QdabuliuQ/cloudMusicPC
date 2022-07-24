@@ -6,6 +6,7 @@
       class="targetIcon originTarget"
       style="margin-right: 8px"
       v-if="mv"
+      @click="toMvDetail"
     >
       MV
     </div>
@@ -35,16 +36,19 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, reactive, onMounted, toRefs } from "vue";
+import { defineComponent } from "vue";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "targetList",
   props: ["sq", "origin", "mv", "vip"],
-  setup() {
-    const data = reactive({});
-    onMounted(() => {});
+  setup(props) {
+    const router = useRouter()
+    const toMvDetail = () => {
+      router.push('/MvPlay?id='+props.mv)
+    }
     return {
-      ...toRefs(data),
+      toMvDetail
     };
   },
 });

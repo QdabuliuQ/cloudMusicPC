@@ -6,6 +6,7 @@
         <div class="searchContainer">
           <img src="~images/musicNavBar/search.png" alt="" />
           <el-popover
+            ref="searchPopoverRef"
             popper-class="dialogPopperClass"
             placement="bottom"
             :offset="25"
@@ -18,6 +19,7 @@
                 @keyup.enter="toSearch"
                 :placeholder="searchDefault"
                 @input="searchChange"
+                @focus="searchChange"
                 v-model="searchText"
                 type="text"
               />
@@ -29,7 +31,8 @@
                   class="hotListContainer"
                 >
                   <div class="title">热搜榜</div>
-                  <div
+                  <div 
+                    @click="clickSearch(item.searchWord)"
                     v-for="(item, index) in searchList"
                     :key="item.score"
                     class="searchItem"
@@ -99,7 +102,7 @@
                       />
                       {{ recommendType(item.type) }}
                     </div>
-                    <div v-for="i in item.children" :key="i.id" class="item">
+                    <div @click="toDetail(i.id, item.type)" v-for="i in item.children" :key="i.id" class="item">
                       {{ i.name }}
                     </div>
                   </div>
@@ -220,6 +223,7 @@ import {
   toRefs,
   getCurrentInstance,
   ref,
+  watch
 } from "vue";
 import bus from "vue3-eventbus";
 import { getUserDetail, loginOut } from "@/network/LoginDialog/loginDialog";
@@ -239,6 +243,7 @@ export default defineComponent({
     const _this: any = getCurrentInstance();
     const router = useRouter();
     const userInfoPopoverRef = ref();
+    const searchPopoverRef = ref();
     const data = reactive({
       userInfo: <any>{
         userId: 0,
@@ -253,8 +258,27 @@ export default defineComponent({
       isSearch: false,
     });
 
+    const toDetail = (e: any, t: string) => {
+      searchPopoverRef.value.hide()
+      switch(t) {
+        case "songs":
+          return "歌曲";
+        case "artists":
+          return router.push('/SingerDetail?id='+e);
+        case "albums":
+          return "专辑";
+        case "playlists":
+          return router.push('/SheetDetail?id='+e);;
+      }
+    }
+    const clickSearch = (key: string) => {
+      searchPopoverRef.value.hide()
+      data.searchText = key
+      router.push('/SearchResult?key='+key)
+    }
     const toSearch = () => {
       if (data.searchText != '') {
+        searchPopoverRef.value.hide()
         router.push('/SearchResult?key='+data.searchText.trim())
       }
     }
@@ -294,7 +318,6 @@ export default defineComponent({
             }
           }
         }
-        console.log(data.searchRecommentList);
       });
     };
 
@@ -365,6 +388,9 @@ export default defineComponent({
       });
     };
 
+    watch(() => router.currentRoute.value.query.key, (n) => {
+      data.searchText = n as string
+    })
     onMounted(() => {
       bus.on("loginStatus", () => {
         getData();
@@ -383,12 +409,15 @@ export default defineComponent({
     return {
       ...toRefs(data),
       toSearch,
+      clickSearch,
       loginOutEvent,
       toLogin,
       toDetailPage,
       searchChange,
+      toDetail,
       recommendType,
       userInfoPopoverRef,
+      searchPopoverRef,
       router,
     };
   },

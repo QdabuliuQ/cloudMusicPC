@@ -6,8 +6,14 @@
       <videoItem
         v-for="item in mvList"
         :key="item.vid"
+        :id="item.vid"
+        :type="item.type==0?'mv':'video'"
         :imageUrl="item.coverUrl"
-        :title="item.title"
+        :title="
+          item.type == 0
+            ? `<span style='font-size:12px;font-weight:bold;padding:5px 10px 7px;border:1px solid #ec4141; zoom: 0.6; margin-right: 10px; color: #ec4141'>MV</span>${item.title}`
+            : item.title
+        "
         :centerIcon="true"
         :playCount="item.playTime"
         :duration="item.durationms"
@@ -19,38 +25,41 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, reactive, onMounted, toRefs } from 'vue'
+import { defineComponent, reactive, onMounted, toRefs } from "vue";
 import videoItem from "@/components/private/videoItem.vue";
 import loading from "@/components/common/loading.vue";
 import emptyContent from "@/components/common/emptyContent.vue";
 import { InitData } from "@/types/Collect/CollectMvs";
 import { getCollectMvs } from "@/network/Collect/collect";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
-  name: 'CollectMvs',
+  name: "CollectMvs",
   components: {
     videoItem,
     loading,
     emptyContent,
   },
   setup() {
-    const data = reactive(new InitData())
+    const router = useRouter();
+    const data = reactive(new InitData());
+
     const getData = () => {
       getCollectMvs({
         limit: 999,
-        offset: (data.offset - 1) * 999
+        offset: (data.offset - 1) * 999,
       }).then((res: any) => {
-        data.mvList = res.data.data
-      })
-    }
+        data.mvList = res.data.data;
+      });
+    };
     onMounted(() => {
-      getData()
-    })
+      getData();
+    });
     return {
       ...toRefs(data),
-    }
-  }
-})
+    };
+  },
+});
 </script>
 
 <style lang='less'>

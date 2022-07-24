@@ -44,6 +44,8 @@ export default defineComponent({
     const toPage = () => {
       if (props.type == 'sheet') {
         router.push('/SheetDetail?id='+props.id)
+      } else if (props.type == 'album') {
+        router.push('/AlbumDetail?id='+props.id)
       }
     }
     let day = ref<any>(0)

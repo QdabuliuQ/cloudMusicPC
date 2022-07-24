@@ -160,5 +160,10 @@ export default defineComponent({
 <style lang='less'>
 #SheetComment {
   padding: 0 30px 30px;
+  .title {
+    margin-bottom: 10px;
+    font-size: 14px;
+    font-weight: bold;
+  }
 }
 </style>

@@ -6,6 +6,8 @@
       <videoItem
         v-for="item in videoList"
         :key="item.resourceId"
+        :id="item.resourceId"
+        :type="item.resourceType=='MV'?'mv':'video'"
         :imageUrl="item.data.coverUrl"
         :title="item.data.name ? item.data.name : item.data.title"
         :duration="item.data.duration"

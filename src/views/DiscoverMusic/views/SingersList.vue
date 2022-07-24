@@ -50,11 +50,14 @@
       class="singersContainer"
     >
       <div
+        @click="router.push('/SingerDetail?id='+item.id)"
         class="singerItem"
         v-for="(item, index) in singerList"
         :key="item.id"
       >
-        <el-avatar style="border-radius: 12px;width: 100%;height: 11vw" shape="square" :fit="'cover'" :src="item.img1v1Url" />
+        <div style="width: 100%; aspect-ratio: 1/1;">
+          <el-avatar style="border-radius: 12px;width: 100%;height: 100%" shape="square" :fit="'cover'" :src="item.img1v1Url" />
+        </div>
         <div style="margin-top: 3px">{{ item.name }}</div>
       </div>
     </div>
@@ -66,10 +69,12 @@ import { defineComponent, reactive, onMounted, toRefs } from "vue";
 import { InitData } from "@/types/DiscoverMusic/SingersList";
 import { getSingerList } from "@/network/DiscoverMusic/singersList";
 import loading from "@/components/common/loading.vue"
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "SingersList",
   setup() {
+    const router = useRouter()
     const data = reactive(new InitData());
     // 获取歌手列表
     const singersList = (
@@ -134,6 +139,7 @@ export default defineComponent({
       );
     });
     return {
+      router,
       ...toRefs(data),
       loadMoreData,
       ItemClick,

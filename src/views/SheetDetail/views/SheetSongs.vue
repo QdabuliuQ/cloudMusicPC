@@ -33,11 +33,12 @@
           class="infoItem clickItem"
           v-for="item in content.ar"
           :key="item.id"
+          @click="router.push('/SingerDetail?id='+item.id)"
           >{{ item.name }}&nbsp;&nbsp;</span
         >
       </template>
       <template v-slot:al="{ content }">
-        <div class="infoItem clickItem">
+        <div @click="router.push('/AlbumDetail?id='+content.al.id)" class="infoItem clickItem">
           {{ content.al.name }}
         </div>
       </template>
@@ -109,6 +110,7 @@ export default defineComponent({
       });
     });
     return {
+      router,
       ...toRefs(data),
       loadData,
     };

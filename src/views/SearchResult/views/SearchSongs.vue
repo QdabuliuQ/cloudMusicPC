@@ -6,7 +6,11 @@
       <musicList :data="songList" :columns="columns" :download="true">
         <template v-slot:name="{ content }">
           <div class="songName">
-            <span v-html="$highKey(content.name, router.currentRoute.value.query.key)"></span>
+            <span
+              v-html="
+                $highKey(content.name, router.currentRoute.value.query.key)
+              "
+            ></span>
             <span v-for="(item, index) in content.alia" :key="index">
               ({{ item }})&nbsp;&nbsp;
             </span>
@@ -19,17 +23,26 @@
           </div>
         </template>
         <template v-slot:ar="{ content }">
-          <span
-            class="infoItem clickItem"
-            v-for="item in content.ar"
-            :key="item.id"
-            v-html="$highKey(item.name, router.currentRoute.value.query.key) + '&nbsp;&nbsp;'"
-            ></span
-          >
+          <div class="singerNameList">
+            <span
+              @click="router.push('/SingerDetail?id='+item.id)"
+              class="infoItem clickItem"
+              v-for="item in content.ar"
+              :key="item.id"
+              v-html="
+                $highKey(item.name, router.currentRoute.value.query.key) +
+                '&nbsp;&nbsp;'
+              "
+            ></span>
+          </div>
         </template>
         <template v-slot:al="{ content }">
-          <div v-html="$highKey(content.al.name, router.currentRoute.value.query.key)" class="infoItem clickItem">
-          </div>
+          <div
+            v-html="
+              $highKey(content.al.name, router.currentRoute.value.query.key)
+            "
+            class="infoItem clickItem"
+          ></div>
         </template>
         <template v-slot:dt="{ content }">
           <span class="infoItem">{{ $formatTime(content.dt) }}</span>
@@ -81,8 +94,8 @@ export default defineComponent({
 
     // 滚动刷新
     const pageChange = (e: number) => {
-      data.offset = e
-      window.scrollTo(0, 0)
+      data.offset = e;
+      window.scrollTo(0, 0);
       getData();
     };
 
@@ -100,11 +113,14 @@ export default defineComponent({
     };
 
     getData();
-    
-    watch(() => router.currentRoute.value.query.key, () => {
-      data.offset = 1
-      getData();
-    })
+
+    watch(
+      () => router.currentRoute.value.query.key,
+      () => {
+        data.offset = 1;
+        getData();
+      }
+    );
 
     onMounted(() => {});
     return {
@@ -128,6 +144,13 @@ export default defineComponent({
     span {
       color: @fontColor;
     }
+  }
+  .singerNameList {
+    max-width: 300px;
+    min-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   .infoItem {
     width: 200px;

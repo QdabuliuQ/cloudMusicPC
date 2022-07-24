@@ -11,6 +11,8 @@
       <videoItem
         v-for="item in mvList"
         :key="item.id"
+        :id='item.id'
+        :type='"mv"'
         :imageUrl="item.imgurl16v9"
         :title="item.name"
         :playCount="item.playCount"

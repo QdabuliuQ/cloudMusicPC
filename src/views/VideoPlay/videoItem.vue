@@ -16,8 +16,8 @@
           {{title}}
         </div>
         <div class="infoCreator">
-          by <span v-for="item in creator">
-            {{item.userName}}&nbsp;&nbsp;
+          by <span @click.stop="creatorClick(item.userId?item.userId:item.id)" v-for="item in creator">
+            {{item.userName?item.userName:item.name}}&nbsp;&nbsp;
           </span>
         </div>
       </div>
@@ -26,16 +26,18 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, reactive, onMounted, toRefs } from "vue";
+import { defineComponent } from "vue";
 export default defineComponent({
   name: "videoItem",
+  emits: ['creatorClick'],
   props: ["coverUrl", "durationms", "title", "vid", "creator", "userId", "playTime"],
-  setup() {
-    const data = reactive({});
-    onMounted(() => {});
+  setup(props, context) {
+    const creatorClick = (e: number) => {
+      context.emit('creatorClick', e)
+    }
     return {
-      ...toRefs(data),
-    };
+      creatorClick
+    }
   },
 });
 </script>
@@ -46,6 +48,7 @@ export default defineComponent({
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
+  cursor: pointer;
   .leftInfo {
     width: 55%;
     aspect-ratio: 2/1.1;

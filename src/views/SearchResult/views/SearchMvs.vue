@@ -7,6 +7,8 @@
         v-for="item in mvList"
         :key="item.id"
         :imageUrl="item.cover"
+        :type="'mv'"
+        :id="item.id"
         :title="$highKey(item.name, router.currentRoute.value.query.key)"
         :artists="item.artists"
         :playCount="item.playCount"

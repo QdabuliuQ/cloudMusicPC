@@ -31,12 +31,14 @@
           </div>
         </template>
         <template v-slot:ar="{ content }">
-          <span
-            class="infoItem clickItem"
-            v-for="item in content.ar"
-            :key="item.id"
-            >{{ item.name }}&nbsp;&nbsp;</span
-          >
+          <div class="singerNameList">
+            <span
+              class="infoItem clickItem"
+              v-for="item in content.ar"
+              :key="item.id"
+              >{{ item.name }}&nbsp;&nbsp;</span
+            >
+          </div>
         </template>
         <template v-slot:al="{ content }">
           <div class="infoItem clickItem">
@@ -89,21 +91,21 @@ export default defineComponent({
     targetList,
   },
   setup() {
-    const navListRef = ref()
+    const navListRef = ref();
     const router = useRouter();
     const data = reactive(new InitData());
     data.id = router.currentRoute.value.query.id as string;
 
     const navChange = (e: number) => {
-      data.navIndex = e
-      data.offset = 1
-      getData()
-    }
+      data.navIndex = e;
+      data.offset = 1;
+      getData();
+    };
     const pageChange = (e: number) => {
-      data.offset = e
-      getData()
-      useToPoint(navListRef.value, -15)
-    }
+      data.offset = e;
+      getData();
+      useToPoint(navListRef.value, -15);
+    };
     const getData = () => {
       getSingerSongs({
         id: data.id,
@@ -131,6 +133,13 @@ export default defineComponent({
 
 <style lang='less'>
 #SingerSongs {
+  .singerNameList {
+    max-width: 180px;
+    min-width: 130px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
   .navList {
     display: flex;
     align-items: center;

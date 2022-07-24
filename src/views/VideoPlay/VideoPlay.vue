@@ -5,14 +5,14 @@
       <div ref="playContainer" class="playContainer">
         <mediaPlay :miniModel="miniModel" :src="url"></mediaPlay>
       </div>
-      <div v-if="videoInfo.creator.avatarUrl != ''" class="creatorInfo">
+      <div @click="router.push('/UserDetail?id='+videoInfo.creator.userId)" v-if="videoInfo.creator.avatarUrl != ''" class="creatorInfo">
         <div class="leftInfo">
           <el-avatar :size="50" :src="videoInfo.creator.avatarUrl" />
           <span style="margin-left: 15px">{{
             videoInfo.creator.nickname
           }}</span>
         </div>
-        <div class="rightBtn">
+        <div @click.stop="toFollow" class="rightBtn">
           <followBtn :isFollow="videoInfo.creator.followed"></followBtn>
         </div>
       </div>
@@ -124,6 +124,8 @@
       <pageNav :title="'相关视频'" :icon="false"></pageNav>
       <div class="videoList">
         <videoItem
+          @creatorClick='creatorClick'
+          @click="router.push('/VideoPlay?id='+item.vid+'&type=video')"
           v-for="item in relateVideoList"
           :key="item.vid"
           :coverUrl="item.coverUrl"
@@ -144,7 +146,7 @@ import {
   onMounted,
   toRefs,
   ref,
-  getCurrentInstance,
+  watch
 } from "vue";
 import pageNav from "@/components/private/pageNav.vue";
 import { useRouter } from "vue-router";
@@ -157,6 +159,7 @@ import {
   getVideoData,
   likeResource,
 } from "@/network/VideoPlay/videoPlay";
+import { followUser } from "@/network/AccountDetail/UserDetail";
 import followBtn from "@/components/private/followBtn.vue";
 import commentItem from "@/components/private/commentItem.vue";
 import videoItem from "./videoItem.vue";
@@ -183,6 +186,21 @@ export default defineComponent({
     const title = ref();
     const playContainer = ref();
 
+    const toFollow = () => {
+      if (useLogin()) {
+        followUser({
+          id: data.videoInfo.creator.userId+'',
+          t: data.videoInfo.creator.followed ? 0 : 1
+        }).then((res: any) => {
+          if (res.data.code == 200) {
+            data.videoInfo.creator.followed = !data.videoInfo.creator.followed
+          }
+        })
+      }
+    }
+    const creatorClick = (e: number) => {
+      router.push('/UserDetail?id='+e)
+    }
     // 评论回调
     const commentEvent = (e: { content: string; cid: number }) => {
       if (e.cid) {
@@ -301,13 +319,22 @@ export default defineComponent({
         }
       );
       observer.observe(playContainer.value);
+
+      watch(() => router.currentRoute.value.query.id, () => {
+        if (router.currentRoute.value.name == 'VideoPlay') {
+          location.reload()
+        }
+      })
     });
     return {
       ...toRefs(data),
       pageChange,
       likeEvent,
       commentEvent,
+      creatorClick,
+      toFollow,
       title,
+      router,
       playContainer,
     };
   },
@@ -332,6 +359,7 @@ export default defineComponent({
       display: flex;
       justify-content: space-between;
       margin-bottom: 20px;
+      cursor: pointer;
       .leftInfo {
         display: flex;
         align-items: center;

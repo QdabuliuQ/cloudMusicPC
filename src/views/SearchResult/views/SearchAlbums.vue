@@ -2,7 +2,7 @@
   <div id="SearchAlbums">
     <loading v-if="!albumList.length && total != 0"></loading>
     <emptyContent v-else-if="total == 0"></emptyContent>
-    <tableList :columns="columns" :data="albumList" v-else>
+    <tableList @itemClick="itemClick" :columns="columns" :data="albumList" v-else>
       <template v-slot:picUrl="{ content }">
         <div class="albumImage">
           <el-avatar
@@ -69,6 +69,9 @@ export default defineComponent({
     const router = useRouter()
     const data = reactive(new InitData())
 
+    const itemClick = (e: any) => {
+      router.push('/AlbumDetail?id='+e.id)
+    }
     const pageChange = (e: number) => {
       window.scrollTo(0,0)
       data.offset = e
@@ -90,7 +93,8 @@ export default defineComponent({
     return {
       router,
       ...toRefs(data),
-      pageChange
+      pageChange,
+      itemClick,
     }
   }
 })
@@ -98,6 +102,10 @@ export default defineComponent({
 
 <style lang='less'>
 #SearchAlbums {
+  .albumImage {
+    display: flex;
+    align-items: center;
+  }
   .albumName {
     display: flex;
     align-items: center;

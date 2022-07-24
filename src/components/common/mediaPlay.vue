@@ -6,7 +6,10 @@
     @mouseleave="leaveEvent"
   >
     <!-- @mouseenter="" -->
-    <div :class="[miniModel ? 'miniModel' : '']">
+    <div
+      style="object-fit: contain; width: 100%; height: 100%; text-align: center"
+      :class="[miniModel ? 'miniModel' : '']"
+    >
       <video
         muted="muted"
         ref="videoRef"
@@ -109,7 +112,15 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, reactive, onMounted, toRefs, ref, watch, onUnmounted } from "vue";
+import {
+  defineComponent,
+  reactive,
+  onMounted,
+  toRefs,
+  ref,
+  watch,
+  onUnmounted,
+} from "vue";
 export default defineComponent({
   name: "mediaPlay",
   props: ["src", "miniModel"],
@@ -138,21 +149,21 @@ export default defineComponent({
     let timer: any = null;
     let maxOffset: number = 0;
     let offset: number = 0;
-    let moveTimer: any = null
+    let moveTimer: any = null;
 
     // 鼠标移入播放器事件
     const moveEvent = () => {
       if (!props.miniModel && !data.isShowControl) {
-        data.isShowControl = true
-      } else if(!props.miniModel && data.isShowControl){
+        data.isShowControl = true;
+      } else if (!props.miniModel && data.isShowControl) {
         if (moveTimer) {
-          clearTimeout(moveTimer)
+          clearTimeout(moveTimer);
         }
         moveTimer = setTimeout(() => {
           data.isShowControl = false;
         }, 1000);
       }
-    }
+    };
 
     const leaveEvent = () => {
       if (!props.miniModel) {
@@ -352,9 +363,9 @@ export default defineComponent({
 
     onUnmounted(() => {
       if (timer) {
-        clearInterval(timer)
+        clearInterval(timer);
       }
-    })
+    });
 
     return {
       ...toRefs(data),
@@ -389,8 +400,8 @@ export default defineComponent({
 
   .miniModel {
     position: fixed;
-    width: 400px;
-    height: 200px;
+    width: 400px !important;
+    height: 200px !important;
     bottom: 40px;
     right: 40px;
     z-index: 10;

@@ -1,8 +1,9 @@
 <template>
   <div id="detailPanel">
-    <div class="leftImage">
+    <div v-if="img" class="leftImage">
       <el-avatar :fill='"cover"' :size='200' :src="img" />
     </div>
+    <slot name="img" />
     <div class="rightInfo">
       <slot></slot>
     </div>

@@ -13,6 +13,7 @@
       <sheetItem
         v-for="item in albumList"
         :key="item.id"
+        :id='item.id'
         :imageUrl="item.blurPicUrl"
         :title="item.name"
         :artist="getName(item.artists)"

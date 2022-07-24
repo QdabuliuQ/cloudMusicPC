@@ -16,7 +16,7 @@
               >{{ item }}</span
             >
           </div>
-          <div class="btnList">
+          <div v-if="singerInfo.user" class="btnList">
             <div @click="followEvent" class="follow btnItem">
               <!-- singerInfo.user.followed -->
               <img
@@ -92,6 +92,9 @@ export default defineComponent({
         id: data.id,
       }).then((res: any) => {
         data.singerInfo = res.data.data;
+        console.log(data.singerInfo, '---------');
+        console.log(data.singerInfo.user);
+        
         data.navList.push(
           {
             name: `单曲(${data.singerInfo.artist.musicSize})`,

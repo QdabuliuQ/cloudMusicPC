@@ -7,6 +7,7 @@
       :time="time"
       :msg="msg"
       :target="target"
+      :uid="uid"
     ></eventHead>
     <div @click="toAudioPage()" class="eventContent">
       <div style="display: flex; align-items: center">

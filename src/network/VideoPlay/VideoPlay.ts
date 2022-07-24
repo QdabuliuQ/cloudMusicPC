@@ -21,6 +21,7 @@ export function getVideoDetail(data: {
     url: '/video/detail',
     params: {
       ...data,
+      timestamp: Date.now(),
       cookie: localStorage.getItem('cookie')
     }
   })
@@ -94,3 +95,4 @@ export function commentLike(data: {
     }
   })
 }
+

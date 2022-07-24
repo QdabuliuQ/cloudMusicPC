@@ -2,9 +2,9 @@
   <div id="SearchSheets">
     <loading v-if="!sheetList.length && total != 0"></loading>
     <emptyContent v-else-if="total == 0"></emptyContent>
-    <tableList :columns="columns" :data="sheetList" v-else>
+    <tableList @itemClick='itemClick' :columns="columns" :data="sheetList" v-else>
       <template v-slot:coverImgUrl="{ content }">
-        <div class="sheetImage">
+        <div style="display:flex;align-items:center" class="sheetImage">
           <el-avatar
             shape="square"
             :size="60"
@@ -68,6 +68,9 @@ export default defineComponent({
     const router = useRouter();
     const data = reactive(new InitData())
 
+    const itemClick = (e: any) => {
+      router.push('/SheetDetail?id='+e.id)
+    }
     const pageChange = (e: number) => {
       window.scrollTo(0,0)
       data.offset = e
@@ -88,6 +91,7 @@ export default defineComponent({
 
     return {
       router,
+      itemClick,
       pageChange,
       ...toRefs(data),
     }

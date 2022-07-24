@@ -1,10 +1,10 @@
 <template>
   <div class="eventHead">
-    <div v-if="avatarUrl" class="leftImage">
+    <div @click="router.push('/UserDetail?id='+uid)" v-if="avatarUrl" class="leftImage">
       <el-avatar :size='45' :src="avatarUrl"/>
     </div>
     <div class="rightInfo">
-      <div class="name"><span class="nameSpan">{{nickname}}</span> <span>{{text}}</span></div>
+      <div class="name"><span @click="router.push('/UserDetail?id='+uid)" class="nameSpan">{{nickname}}</span> <span>{{text}}</span></div>
       <div class="time">{{$getTime(time)}}</div>
       <div class="msg">
         <span v-if="target && target.length" v-for="item in target" :key="item.id">
@@ -21,7 +21,7 @@ import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: 'eventHead',
-  props: ['avatarUrl','nickname','time', 'text', 'msg', 'target'],
+  props: ['avatarUrl','nickname','time', 'text', 'msg', 'target', 'uid'],
   setup() {
     const router = useRouter()
     return {
@@ -37,6 +37,7 @@ export default defineComponent({
   margin-bottom: 15px;
   .leftImage {
     display: flex;
+    cursor: pointer;
   }
   .rightInfo {
     margin-left: 15px;
@@ -44,6 +45,7 @@ export default defineComponent({
     .name {
       margin-top: 3px;
       color: @fontColor;
+      cursor: pointer;
       .nameSpan {
         color: @nameColor;
         margin-right: 10px;

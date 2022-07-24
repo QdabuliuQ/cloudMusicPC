@@ -6,6 +6,8 @@
       <videoItem
         v-for="item in videoList"
         :key="item.vid"
+        :type="'video'"
+        :id='item.vid'
         :imageUrl="item.coverUrl"
         :title="$highKey(item.title, router.currentRoute.value.query.key)"
         :artists="item.creator"

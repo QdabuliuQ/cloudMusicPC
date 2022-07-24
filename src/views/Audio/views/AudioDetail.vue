@@ -10,6 +10,7 @@
       :avatarUrl="audioDetail.dj.avatarUrl"
       :nickname="audioDetail.dj.nickname"
       :subed="audioDetail.subed"
+      :userId="audioDetail.dj.userId"
       :subCount="audioDetail.subCount"
       :shareCount="audioDetail.shareCount"
       :category="audioDetail.category"

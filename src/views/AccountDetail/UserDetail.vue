@@ -1,8 +1,9 @@
 <template>
   <div id="UserDetail">
+    <loading style="margin-bottom: 30px" v-if="!userInfo"></loading>
     <detailPanel
       style="margin-bottom: 30px"
-      v-if="userInfo"
+      v-else
       :img="userInfo.profile.avatarUrl"
     >
       <template #default>
@@ -129,12 +130,14 @@ import detailNav from "@/components/common/detailNav.vue";
 import useLogin from "@/hooks/useLogin";
 import { followUser } from "@/network/AccountDetail/UserDetail";
 import { ElNotification } from "element-plus";
+import loading from "@/components/common/loading.vue";
 
 export default defineComponent({
   name: "UserDetail",
   components: {
     detailNav,
     detailPanel,
+    loading,
   },
   setup() {
     const router = useRouter();

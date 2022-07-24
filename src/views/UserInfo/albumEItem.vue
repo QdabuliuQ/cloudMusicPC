@@ -7,9 +7,10 @@
       :time="time"
       :msg="msg"
       :target="target"
+      :uid="uid"
     ></eventHead>
     <div class="eventContent">
-      <div style="display: flex; align-items: center">
+      <div @click="router.push('/AlbumDetail?id='+info.album.id)" style="display: flex; align-items: center">
         <div style="display: flex; align-items: center">
           <el-avatar
             shape="square"
@@ -51,10 +52,11 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, reactive, onMounted, toRefs, watch } from 'vue'
+import { defineComponent, reactive, toRefs, watch } from 'vue'
 import eventHead from "./eventHead.vue";
 import eventOperate from "./eventOperate.vue";
 import eventPics from "./eventPics.vue";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: 'albumEItem',
@@ -79,6 +81,7 @@ export default defineComponent({
     eventPics
   },
   setup(props) {
+    const router = useRouter()
     const data = reactive({
       info: null,
       msg: ''
@@ -87,15 +90,16 @@ export default defineComponent({
     watch(()=>props.infoJson, (n) => {
       if (n) {
         data.info = JSON.parse(n)
+        console.log(data.info, '-----');
+        
         data.msg = JSON.parse(n)
             .msg.replaceAll(/#[^#]*#/g, "")
             .trim();
       }
     }, {immediate: true})
 
-    onMounted(() => {
-    })
     return {
+      router,
       ...toRefs(data),
     }
   }

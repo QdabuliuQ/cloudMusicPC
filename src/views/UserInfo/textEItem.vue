@@ -7,6 +7,7 @@
       :time="time"
       :msg="msg"
       :target="target"
+      :uid="uid"
     ></eventHead>
     <eventPics :pics="pics"></eventPics>
     <eventOperate

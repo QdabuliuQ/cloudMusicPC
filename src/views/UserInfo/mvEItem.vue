@@ -7,8 +7,9 @@
       :time="time"
       :msg="msg"
       :target="target"
+      :uid="uid"
     ></eventHead>
-    <div class="mvContent">
+    <div @click="router.push('/MvPlay?id='+info.mv.id)" class="mvContent">
       <div class="topMask">
         <span style="margin-left:15px">{{info.mv.name}}</span>
       </div>
@@ -40,6 +41,7 @@ import { defineComponent, reactive, toRefs, watch } from "vue";
 import eventHead from "./eventHead.vue";
 import eventOperate from "./eventOperate.vue";
 import eventPics from "./eventPics.vue";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "mvEItem",
@@ -64,6 +66,7 @@ export default defineComponent({
     "uid"
   ],
   setup(props) {
+    const router = useRouter()
     const data = reactive({
       info: null,
       msg: "",
@@ -75,6 +78,7 @@ export default defineComponent({
       (n) => {
         if (n) {
           data.info = JSON.parse(n);
+          
           // data.id = JSON.parse(n).djRadio.id
           data.msg = JSON.parse(n)
             .msg.replaceAll(/#[^#]*#/g, "")
@@ -85,6 +89,7 @@ export default defineComponent({
     );
 
     return {
+      router,
       ...toRefs(data),
     };
   },
@@ -124,7 +129,7 @@ export default defineComponent({
       top: 0;
       width: 100%;
       height: 40px;
-      background-image: linear-gradient(#000, transparent);
+      background-image: linear-gradient(rgba(0, 0, 0, 0.571), transparent);
     }
     .mask {
       position: absolute;
@@ -136,7 +141,7 @@ export default defineComponent({
       align-items: center;
       justify-content: space-between;
       font-size: 13.5px;
-      background-image: linear-gradient(transparent, #000);
+      background-image: linear-gradient(transparent, rgba(0, 0, 0, 0.571));
     }
   }
 }

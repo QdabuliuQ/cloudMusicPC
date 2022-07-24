@@ -6,6 +6,7 @@
       :nickname="nickname"
       :time="time"
       :msg="msg"
+      :uid="uid"
     ></eventHead>
     <div class="replyEventContent">
       <songEItem

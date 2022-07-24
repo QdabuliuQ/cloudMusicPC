@@ -23,6 +23,7 @@ const AudioSongs = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Au
 const AudioCollect = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Audio/views/AudioCollect.vue')
 
 const VideoPlay = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/VideoPlay/VideoPlay.vue')
+const MvPlay = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/MvPlay/MvPlay.vue')
 
 const SheetDetail = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/SheetDetail/SheetDetail.vue')
 const SheetSongs = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/SheetDetail/views/SheetSongs.vue')
@@ -77,6 +78,11 @@ const SingerInfo = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Si
 const SingerMvs = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/SingerDetail/views/SingerMvs.vue')
 const SingerAlbums = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/SingerDetail/views/SingerAlbums.vue')
 const SingerSimilar = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/SingerDetail/views/SingerSimilar.vue')
+
+const AlbumDetail = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/AlbumDetail/AlbumDetail.vue')
+const AlbumSongs = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/AlbumDetail/views/AlbumSongs.vue')
+const AlbumComments = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/AlbumDetail/views/AlbumComments.vue')
+const AlbumInfo = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/AlbumDetail/views/AlbumInfo.vue')
 
 const routes: Array<RouteRecordRaw> = [
   { path: '/', redirect: '/HomePage' },
@@ -534,6 +540,41 @@ const routes: Array<RouteRecordRaw> = [
             component: SingerSimilar,
           },
         ]
+      },
+      {
+        path: '/AlbumDetail',
+        name: 'AlbumDetail',
+        component: AlbumDetail,
+        children: [
+          {
+            path: '/AlbumDetail',
+            redirect: '/AlbumSongs'
+          }, 
+          {
+            path: '/AlbumSongs',
+            name: 'AlbumSongs',
+            meta: {
+              albumIndex: 0
+            },
+            component: AlbumSongs
+          },
+          {
+            path: '/AlbumComments',
+            name: 'AlbumComments',
+            meta: {
+              albumIndex: 1
+            },
+            component: AlbumComments
+          },
+          {
+            path: '/AlbumInfo',
+            name: 'AlbumInfo',
+            meta: {
+              albumIndex: 2
+            },
+            component: AlbumInfo
+          },
+        ]
       }
     ]
   },
@@ -541,6 +582,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/VideoPlay',
     name: 'VideoPlay',
     component: VideoPlay
+  },
+  {
+    path: '/MvPlay',
+    name: 'MvPlay',
+    component: MvPlay
   },
 ]
 
