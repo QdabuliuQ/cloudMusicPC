@@ -19,12 +19,14 @@ import { defineComponent, reactive, onMounted, toRefs } from "vue";
 import menusList from "components/common/menusList.vue";
 import bus from "vue3-eventbus";
 import musicNav from "components/common/musicNav.vue";
+import songDetail from "@/components/private/songDetail.vue";
 
 export default defineComponent({
   name: "HomePage",
   components: {
     menusList,
     musicNav,
+    songDetail,
   },
   setup() {
     const data = reactive({
@@ -62,6 +64,7 @@ export default defineComponent({
 
 <style lang='less'>
 #HomePage {
+  position: relative;
   .centerContainer {
     margin-top: 55px;
     margin-bottom: 70px;

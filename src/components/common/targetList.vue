@@ -64,6 +64,7 @@ export default defineComponent({
     margin-right: 4px;
   }
   .targetIcon {
+    cursor: pointer;
     border: 1px solid @themeColor;
     padding: 3px 10px;
     color: @themeColor;

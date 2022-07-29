@@ -70,7 +70,6 @@ export default defineComponent({
         offset: (data.offset - 1) * 36,
         type: 1004,
       }).then((res: any) => {
-        console.log(res.data.result);
         data.total = res.data.result.mvCount;
         data.mvList = res.data.result.mvs;
       });

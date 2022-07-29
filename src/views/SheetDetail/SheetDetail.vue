@@ -18,6 +18,7 @@
         :count="sheetInfo.trackCount"
         :playCount="sheetInfo.playCount"
         :userId="sheetInfo.userId"
+        :rid="routerId"
         @shareEvent="shareEvent"
       ></detailPanel>
       <detailNav :watch="true" :routerKey="'sheetIndex'" :list="navList"></detailNav>
@@ -56,10 +57,12 @@ export default defineComponent({
     const data = reactive(new InitData());
     const router = useRouter();
     const _this: any = getCurrentInstance();
-
+    data.routerId = router.currentRoute.value.query.id as string
+    console.log(data.routerId);
+    
     const shareEvent = () => {
       _this.proxy.$toShare(
-        router.currentRoute.value.query.id,
+        data.routerId,
         "playlist",
         data.sheetInfo.name,
         data.sheetInfo.coverImgUrl
@@ -96,7 +99,7 @@ export default defineComponent({
     );
 
     onMounted(() => {
-      data.routerId = router.currentRoute.value.query.id as string
+      
       getData()
       
       bus.on('updateCount', (n: number) => {
@@ -107,6 +110,7 @@ export default defineComponent({
       })
     });
     return {
+      router,
       ...toRefs(data),
       shareEvent,
     };

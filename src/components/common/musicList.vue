@@ -16,7 +16,7 @@
       </thead>
       <tbody v-if="songList && columnSlot">
         <tr
-          @dblclick="toPlayMusic(item)"
+          @dblclick="toPlayMusic(i1)"
           v-contextmenu:songContextRef
           :data-index="i1"
           class="songItem"
@@ -141,8 +141,11 @@ export default defineComponent({
       songList: <any>[],
     });
 
-    const toPlayMusic = (e: any) => {
-      bus.emit('playMusic', e)
+    const toPlayMusic = (e: number) => {
+      bus.emit('playMusic', {
+        data: props.data,
+        index: e
+      })
     }
     // 创建新歌单
     const createNewSheet = () => {

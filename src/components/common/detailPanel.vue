@@ -43,7 +43,7 @@
             <span v-if="tags.length" v-for="item in tags" :key="item">
               {{ item }}
             </span>
-            <span v-else-if="id == userId">添加标签</span>
+            <span @click="router.push('/EditSheet?id='+rid)" v-else-if="id == userId">添加标签</span>
             <span class="noData" v-else>暂无标签</span>
           </div>
         </div>
@@ -59,7 +59,7 @@
           <div :title="desc" class="infoTitle overTwoLine">
             简介:&nbsp;
             <span v-if="desc">{{ desc }}</span>
-            <span class="addDesc" v-else-if="id == userId"> 添加简介 </span>
+            <span @click="router.push('/EditSheet?id='+rid)" class="addDesc" v-else-if="id == userId"> 添加简介 </span>
             <span v-else>暂无简介</span>
           </div>
         </div>
@@ -99,6 +99,7 @@ export default defineComponent({
     "tags",
     "count",
     "playCount",
+    "rid"
   ],
   emits: ["shareEvent", "collectEvent"],
   name: "detailPanel",

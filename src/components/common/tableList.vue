@@ -3,7 +3,7 @@
     <table>
       <tbody v-if="data && columnSlot">
         <tr
-          @click="itemClick(item)"
+          @click="itemClick(item, i1)"
           class="item"
           v-for="(item, i1) in data"
           :key="i1"
@@ -26,7 +26,7 @@
 <script lang='ts'>
 import { defineComponent, reactive, computed, toRefs } from "vue";
 export default defineComponent({
-  props: ["columns", "data"],
+  props: ["columns", "data", "flag"],
   emits: ['itemClick'],
   name: "tableList",
   setup(props,context) {
@@ -34,8 +34,15 @@ export default defineComponent({
       columnSlot: <any>[],
     });
 
-    const itemClick = (e:any) => {
-      context.emit('itemClick',e)
+    const itemClick = (e:any, i: number) => {
+      if (props.flag) {
+        context.emit('itemClick',{
+          data: e,
+          index: i
+        })
+      } else {
+        context.emit('itemClick',e)
+      } 
     }
     data.columnSlot = computed(() => {
       const filterColumns =

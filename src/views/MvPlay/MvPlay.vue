@@ -360,7 +360,7 @@ export default defineComponent({
     width: 70%;
     .playContainer {
       width: 100%;
-      height: 400px;
+      aspect-ratio: 2/1.1;
       background-color: #000;
       margin-bottom: 25px;
     }

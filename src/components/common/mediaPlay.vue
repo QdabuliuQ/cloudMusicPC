@@ -11,7 +11,6 @@
       :class="[miniModel ? 'miniModel' : '']"
     >
       <video
-        muted="muted"
         ref="videoRef"
         @canplay="canplayEvent"
         @ended="endedEvent"
@@ -302,6 +301,7 @@ export default defineComponent({
       let t = Math.floor(data.value * valuePer);
       videoRef.value.currentTime = t;
       getTime(t, "new");
+      
       if (videoRef.value.pause) {
         videoRef.value.play();
         data.isPlay = true;
@@ -331,6 +331,8 @@ export default defineComponent({
       () => data.volumeValue,
       (n) => {
         videoRef.value.volume = n / 100;
+        console.log(videoRef.value.volume);
+        
       }
     );
 

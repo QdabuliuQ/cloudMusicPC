@@ -43,7 +43,7 @@ app.config.globalProperties.$formatTime = function (msTime: number) {
   let hour = Math.floor(time / 60 / 60) % 24;
   let minute = Math.floor(time / 60) % 60;
   let second = Math.floor(time) % 60;
-  return `${minute < 10 ? '0' + minute : minute}: ${second < 10 ? '0' + second : second}`
+  return `${minute < 10 ? '0' + minute : minute}:${second < 10 ? '0' + second : second}`
 }
 
 app.config.globalProperties.$getTime = function (timer: number, h?:boolean) {
