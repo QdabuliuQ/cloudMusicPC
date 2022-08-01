@@ -60,7 +60,7 @@
             </div>
             <div
               style="margin-bottom: 20px"
-              v-if="musicInfo.ar && musicList[activeIndex].ar.length"
+              v-if="musicList[activeIndex] && musicList[activeIndex].ar.length"
               class="songSinger"
             >
               <span
@@ -72,7 +72,7 @@
               </span>
               -
               <span @click="toAlbum(musicList[activeIndex].al.id)">{{
-                musicInfo.al.name
+                musicList[activeIndex].al.name
               }}</span>
             </div>
             <el-scrollbar ref="lyricListRef" height="400px">
@@ -131,7 +131,7 @@
                 :userId="item.user.userId"
                 :beReplied="item.beReplied"
                 :liked="item.liked"
-                :id="musicInfo.id"
+                :id="musicList[activeIndex].id"
                 :cid="item.commentId"
                 :type="0"
               ></commentItem>
@@ -230,7 +230,7 @@
             </div>
             <div class="btnContainer">
               <img
-                @click="toggleMusic('last')"
+                @click="toggleMusic('last', --activeIndex)"
                 style="width: 30px"
                 src="~images/common/last.png"
                 alt=""
@@ -254,7 +254,7 @@
             </div>
             <div class="btnContainer">
               <img
-                @click="toggleMusic('next')"
+                @click="toggleMusic('next', ++activeIndex)"
                 style="width: 30px"
                 src="~images/common/next.png"
                 alt=""
@@ -390,10 +390,13 @@
     </el-scrollbar>
   </el-drawer>
   <teleport to="body">
-    <div class="lyricFloatPanel" v-if="lyricDialog && lyricList.length">
+    <div
+      class="lyricFloatPanel"
+      v-if="lyricDialog && lyricList.length && lyricIndex != -1"
+    >
       <div class="lyricActiveItem">
         <div class="lyricContent">
-          {{lyricList[lyricIndex].c}}
+          {{ lyricList[lyricIndex].c }}
         </div>
       </div>
     </div>
@@ -418,6 +421,7 @@ import {
   getSongLyric,
   getSongComment,
   getSongUrl,
+  checkMusic,
 } from "@/network/SongDetail/songDetail";
 import { ElNotification } from "element-plus";
 import { commentResource } from "@/network/UserInfo/userEvents";
@@ -439,6 +443,7 @@ let aPer: any;
 let domList: any;
 let time: number = 0;
 let timer: any;
+let intervalList: number[] = [];
 
 export default defineComponent({
   name: "musicNav",
@@ -461,7 +466,6 @@ export default defineComponent({
       isPlay: false,
       musicProgress: 0,
       volume: 100,
-      musicInfo: <any>{},
       mid: "", // 音乐id
       show: false, // 是否显示panel
       similarSongList: <any>[], // 相似歌曲
@@ -487,9 +491,33 @@ export default defineComponent({
         { title: "操作", width: "8%", key: "ope", slot: "ope" },
       ],
       mode: 1, // 歌曲播放模式
-      lyricDialog: true,
+      lyricDialog: false, // 是否开启歌词
     });
 
+    function checkSong(res?: any, index?: number): Promise<any> {
+      let d = res ? res : data.musicList;
+      let i = index != undefined ? index : data.activeIndex;
+      return new Promise((resolve, reject) => {
+        checkMusic({
+          id: d[i].id,
+        })
+          .then((res: any) => {
+            if (res.data.success) {
+              resolve(true);
+            } else {
+              resolve(false);
+            }
+          })
+          .catch(() => {
+            ElNotification({
+              message: `歌曲：${d[i].name} 暂无版权哦~`,
+              type: "warning",
+              customClass: "darkNotice",
+            });
+            resolve(false);
+          });
+      });
+    }
     // 滚动位置
     const scrollLyric = () => {
       let t: number = domList[data.lyricIndex].offsetTop;
@@ -553,6 +581,7 @@ export default defineComponent({
         return a.t - b.t;
       });
       data.lyricList = oLRC;
+
       nextTick(() => {
         domList = document.querySelectorAll(".lyricItem");
       });
@@ -638,27 +667,44 @@ export default defineComponent({
       deleteMusic(e: number) {
         data.musicList.splice(e - 1, 1);
         cleanData();
-        getData(true);
+        checkSong(data.musicList, data.activeIndex).then((res: any) => {
+          if (res) {
+            getData(true);
+          } else {
+            methods.toggleMusic("next", ++data.activeIndex);
+          }
+        });
       },
 
       // 切换歌曲
-      toggleMusic(type: string) {
+      toggleMusic(type: string, i: number) {
         if (data.musicList.length) {
-          if (type == "last") {
-            if (data.activeIndex == 0) {
-              data.activeIndex = data.musicList.length - 1;
-            } else {
-              data.activeIndex--;
-            }
-          } else if (type == "next") {
-            if (data.activeIndex == data.musicList.length - 1) {
-              data.activeIndex = 0;
-            } else {
-              data.activeIndex++;
-            }
+          if (i < 0) {
+            i = data.musicList.length - 1;
+          } else if (i > data.musicList.length - 1) {
+            i = 0;
           }
-          cleanData();
-          getData(true);
+          if (type == "last") {
+            checkSong(data.musicList, i).then((res: any) => {
+              if (res) {
+                cleanData();
+                data.activeIndex = i;
+                getData(true);
+              } else {
+                methods.toggleMusic("last", --i);
+              }
+            });
+          } else if (type == "next") {
+            checkSong(data.musicList, i).then((res: any) => {
+              if (res) {
+                cleanData();
+                data.activeIndex = i;
+                getData(true);
+              } else {
+                methods.toggleMusic("next", ++i);
+              }
+            });
+          }
         }
       },
 
@@ -667,9 +713,13 @@ export default defineComponent({
         data.showDrawer = false;
         data.activeIndex = e.index;
         cleanData();
-        setTimeout(() => {
-          getData(true);
-        }, 300);
+        checkSong(data.musicList, data.activeIndex).then((res: any) => {
+          if (res) {
+            getData(true);
+          } else {
+            methods.toggleMusic("next", ++data.activeIndex);
+          }
+        });
       },
       // 相似音乐
       similarMusicClick(e: number) {
@@ -744,7 +794,7 @@ export default defineComponent({
         switch (data.mode) {
           // 列表循环
           case 1:
-            methods.toggleMusic("next");
+            methods.toggleMusic("next", ++data.activeIndex);
             break;
           // 单曲循环
           case 2:
@@ -759,7 +809,13 @@ export default defineComponent({
               r = Math.floor(Math.random() * data.musicList.length);
             }
             data.activeIndex = r;
-            getData(true);
+            checkSong().then((res: any) => {
+              if (res) {
+                getData(true);
+              } else {
+                methods.toggleMusic("next", ++data.activeIndex);
+              }
+            });
         }
       },
 
@@ -774,8 +830,6 @@ export default defineComponent({
         let count = 5;
 
         timer = setInterval(function () {
-          console.log(555);
-
           if (
             audioRef.value.currentTime >
               data.lyricList[data.lyricScrollIndex]?.t &&
@@ -869,14 +923,25 @@ export default defineComponent({
 
     bus.on("playMusic", (e: any) => {
       if (e.data.length) {
-        data.musicList = e.data;
-        data.activeIndex = e.index;
-        cleanData();
-        data.lyricList.length = 0;
-        data.commentList.length = 0;
-        getData(true);
-        data.musicProgress = 0;
-        data.isPlay = true;
+        checkSong(e.data, e.index).then((res: any) => {
+          if (res) {
+            data.musicList = e.data;
+            data.activeIndex = e.index;
+            cleanData();
+            data.lyricList.length = 0;
+            data.commentList.length = 0;
+            getData(true);
+            data.musicProgress = 0;
+            data.isPlay = true;
+          }
+        });
+        // if () {
+        //   console.log(22);
+
+        //   setTimeout(() => {
+        //
+        //   }, 0);
+        // }
       }
     });
 
@@ -935,10 +1000,10 @@ export default defineComponent({
 .lyricFloatPanel {
   width: 700px;
   position: fixed;
+  z-index: 102;
   left: 50%;
   transform: translateX(-50%);
   bottom: 100px;
-  text-align: center;
   border-radius: 12px;
   &:hover {
     background-color: rgba(0, 0, 0, 0.47);
@@ -947,6 +1012,7 @@ export default defineComponent({
     padding: 24px 60px;
     font-size: 31px;
     .lyricContent {
+      text-align: center;
       width: 100%;
       background-image: linear-gradient(white, @themeColor);
       -webkit-background-clip: text;

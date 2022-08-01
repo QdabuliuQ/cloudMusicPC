@@ -62,3 +62,15 @@ export function getSongUrl(data: {
     }
   })
 }
+
+// 检查是否可用
+export function checkMusic(data: {
+  id: string
+}) {
+  return $http({
+    url: '/check/music',
+    params: {
+      ...data,
+    }
+  })
+}

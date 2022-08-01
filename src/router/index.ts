@@ -60,6 +60,7 @@ const UserDetail = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Ac
 const UserSheet = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/AccountDetail/views/UserSheet.vue')
 
 const CommentDetail = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/CommentDetail/CommentDetail.vue')
+const CommentList = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/CommentDetail/CommentList.vue')
 
 const SearchResult = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/SearchResult/SearchResult.vue')
 const SearchSongs = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/SearchResult/views/SearchSongs.vue')
@@ -83,6 +84,9 @@ const AlbumDetail = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/A
 const AlbumSongs = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/AlbumDetail/views/AlbumSongs.vue')
 const AlbumComments = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/AlbumDetail/views/AlbumComments.vue')
 const AlbumInfo = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/AlbumDetail/views/AlbumInfo.vue')
+
+const Message = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Message/Message.vue')
+const PrivateMessage = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Message/views/PrivateMessage.vue')
 
 const routes: Array<RouteRecordRaw> = [
   { path: '/', redirect: '/HomePage' },
@@ -411,6 +415,11 @@ const routes: Array<RouteRecordRaw> = [
         component: CommentDetail
       },
       {
+        path: '/CommentList',
+        name: 'CommentList',
+        component: CommentList
+      },
+      {
         path: '/SearchResult',
         name: 'SearchResult',
         component: SearchResult,
@@ -574,6 +583,24 @@ const routes: Array<RouteRecordRaw> = [
             },
             component: AlbumInfo
           },
+        ]
+      },
+      {
+        path: '/Message',
+        name: 'Message',
+        component: Message,
+        children: [
+          {
+            path: '/Message', redirect:'/PrivateMessage'
+          },
+          {
+            path: '/PrivateMessage',
+            name: 'PrivateMessage',
+            meta: {
+              messageIndex: 0
+            },
+            component: PrivateMessage
+          }
         ]
       }
     ]

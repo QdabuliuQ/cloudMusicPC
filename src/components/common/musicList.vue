@@ -50,7 +50,7 @@
     </table>
   </div>
   <v-contextmenu @show="menuOpenEvent" ref="songContextRef">
-    <v-contextmenu-item>
+    <v-contextmenu-item @click="commentList">
       <div class="contextItem">
         <img class="contextIcon" src="~images/common/comment.png" alt="" />
         查看评论
@@ -213,6 +213,11 @@ export default defineComponent({
         );
       }
     };
+    // 查看评论
+    const commentList = () => {
+      router.push(`/commentList?id=${data.songList[data.index].id}&type=song`)
+    }
+
     const getData = () => {
       data.userSheet = [];
       let _id = decodeURIComponent(
@@ -261,6 +266,7 @@ export default defineComponent({
 
     return {
       songContextRef,
+      commentList,
       toPlayMusic,
       createNewSheet,
       menuOpenEvent,

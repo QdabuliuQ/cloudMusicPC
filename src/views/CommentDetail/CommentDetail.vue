@@ -83,7 +83,7 @@ export default defineComponent({
         parentCommentId: data.cid as string,
         id: data.id as string,
         type: data.type,
-        limit: 10,
+        limit: 30,
         time: data.time,
       }).then((res: any) => {
         if (type == "all") {

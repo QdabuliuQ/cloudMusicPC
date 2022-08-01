@@ -140,7 +140,7 @@
               :hide-after="50"
             >
               <template #reference>
-                <span style="display:flex;align-items:center">
+                <span class="userName" style="display:flex;align-items:center">
                   {{ userInfo.nickname }}
                   <el-icon style="margin-left: 5px"><CaretBottom /></el-icon>
                 </span>
@@ -208,6 +208,10 @@
                 </div>
               </div>
             </el-popover>
+          </div>
+          <div @click="router.push('/Message')" class="dataBox">
+            <img style="width: 20px; margin-right: 5px" src="~images/common/message.png" alt="">
+            <div>消息</div>
           </div>
         </div>
       </div>
@@ -609,7 +613,7 @@ export default defineComponent({
       font-weight: bold;
     }
     .centerSearch {
-      flex: 6;
+      flex: 5;
       display: flex;
       .searchContainer {
         display: flex;
@@ -636,7 +640,7 @@ export default defineComponent({
       }
     }
     .rightInfo {
-      flex: 2;
+      flex: 3;
       display: flex;
       justify-content: flex-end;
       .userInfo {
@@ -659,6 +663,21 @@ export default defineComponent({
           align-items: center;
           font-size: 13px;
           cursor: pointer;
+          color: @fontColor;
+          &:not(:last-child) {
+            margin-right: 25px;
+          }
+          &:hover {
+            color: #fff;
+          }
+          img {
+            opacity: 0.6;
+          }
+          .userName {
+            &:hover {
+              color: #fff;
+            }
+          }
         }
       }
     }
