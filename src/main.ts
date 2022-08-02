@@ -39,8 +39,6 @@ app.config.globalProperties.$highKey = function (str: string, key: string) {
 
 app.config.globalProperties.$formatTime = function (msTime: number) {
   let time = msTime / 1000
-  let day = Math.floor(time / 60 / 60 / 24);
-  let hour = Math.floor(time / 60 / 60) % 24;
   let minute = Math.floor(time / 60) % 60;
   let second = Math.floor(time) % 60;
   return `${minute < 10 ? '0' + minute : minute}:${second < 10 ? '0' + second : second}`

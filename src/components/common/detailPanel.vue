@@ -14,7 +14,10 @@
         <span class="target">{{ target }}</span>
         <div class="name">{{ name }}</div>
       </div>
-      <div @click="router.push('/UserDetail?id='+userId)" class="infoCreator infoItem">
+      <div
+        @click="router.push('/UserDetail?id=' + userId)"
+        class="infoCreator infoItem"
+      >
         <el-avatar style="margin-right: 7px" :size="30" :src="avatarUrl" />
         {{ nickname }}
       </div>
@@ -43,7 +46,11 @@
             <span v-if="tags.length" v-for="item in tags" :key="item">
               {{ item }}
             </span>
-            <span @click="router.push('/EditSheet?id='+rid)" v-else-if="id == userId">添加标签</span>
+            <span
+              @click="router.push('/EditSheet?id=' + rid)"
+              v-else-if="id == userId"
+              >添加标签</span
+            >
             <span class="noData" v-else>暂无标签</span>
           </div>
         </div>
@@ -59,15 +66,19 @@
           <div :title="desc" class="infoTitle overTwoLine">
             简介:&nbsp;
             <span v-if="desc">{{ desc }}</span>
-            <span @click="router.push('/EditSheet?id='+rid)" class="addDesc" v-else-if="id == userId"> 添加简介 </span>
+            <span
+              @click="router.push('/EditSheet?id=' + rid)"
+              class="addDesc"
+              v-else-if="id == userId"
+            >
+              添加简介
+            </span>
             <span v-else>暂无简介</span>
           </div>
         </div>
       </div>
       <div v-else class="infoDesc">
-        <div>
-          <span class="target">{{ category }}</span>
-        </div>
+        <span class="target">{{ category }}</span>
         <div :title="desc" class="desc">
           {{ desc }}
         </div>
@@ -99,7 +110,7 @@ export default defineComponent({
     "tags",
     "count",
     "playCount",
-    "rid"
+    "rid",
   ],
   emits: ["shareEvent", "collectEvent"],
   name: "detailPanel",
@@ -112,7 +123,7 @@ export default defineComponent({
 
     const collectEvent = () => {
       if (useLogin()) {
-        if (data.id != props.userId && props.target == '歌单') {
+        if (data.id != props.userId && props.target == "歌单") {
           collectSheet({
             t: props.subed ? 2 : 1,
             id: router.currentRoute.value.query.id as string,
@@ -122,8 +133,7 @@ export default defineComponent({
               data.isCollect = props.subed ? false : true;
             }
           });
-        } else if (props.target == '播客') {
-          
+        } else if (props.target == "播客") {
         }
       }
     };
@@ -165,10 +175,10 @@ export default defineComponent({
     .target {
       display: inline-block;
       font-size: 14px;
-      padding: 4px 8px 6px;
+      padding: 3px 10px 3px;
       color: @themeColor;
       border: 1px solid @themeColor;
-      transform: scale(0.8);
+      zoom: 0.8;
       margin-right: 7px;
     }
     .infoItem {
@@ -226,12 +236,11 @@ export default defineComponent({
       line-height: 25px;
       color: #d5d5d5;
       .desc {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        word-break: break-all;
+        width: 700px;
+        
+overflow: hidden;
+text-overflow:ellipsis;
+white-space: nowrap;
       }
     }
     .infoDesc2 {
