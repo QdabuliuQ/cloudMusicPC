@@ -30,3 +30,17 @@ export function getChatList(data: {
     }
   })
 }
+
+// 发送私信
+export function sendMessage(data: {
+  user_ids: string
+  msg: string
+}) {
+  return $http({
+    url: '/send/text',
+    params: {
+      ...data,
+      cookie: localStorage.getItem('cookie')
+    }
+  })
+}

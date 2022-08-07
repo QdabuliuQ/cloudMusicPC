@@ -11,7 +11,7 @@ import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import vue3PreviewImage from 'vue3-preview-image'
 import contextmenu from "v-contextmenu";
 import "v-contextmenu/dist/themes/default.css";
-
+import { VueMasonryPlugin } from 'vue-masonry'
 
 const app = createApp(App)
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
@@ -44,7 +44,7 @@ app.config.globalProperties.$formatTime = function (msTime: number) {
   return `${minute < 10 ? '0' + minute : minute}:${second < 10 ? '0' + second : second}`
 }
 
-app.config.globalProperties.$getTime = function (timer: number, h?:boolean) {
+app.config.globalProperties.$getTime = function (timer: number, h?: boolean) {
   var time = new Date(timer);
   var year = time.getFullYear();//年
   var mon = time.getMonth() + 1;//0 
@@ -78,4 +78,4 @@ app.config.globalProperties.$fileType = function (fileName: any) {  // 判断文
   if (result) return 'radio';
 }
 
-app.use(store).use(router).use(ElementPlus).use(contextmenu).use(vue3PreviewImage).use(eventBus).mount('#app')
+app.use(store).use(router).use(ElementPlus).use(contextmenu).use(vue3PreviewImage).use(eventBus).use(VueMasonryPlugin).mount('#app')

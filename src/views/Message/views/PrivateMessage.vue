@@ -1,38 +1,64 @@
 <template>
-  <div id="PrivateMessage">
+  <loading v-if="!objectList.length && more" />
+  <empty-content v-else-if="!objectList.length && !more" />
+  <div v-else id="PrivateMessage">
     <div class="leftObjectList">
       <el-scrollbar style="width: 100%" height="100%">
         <div
-          @click="toggleObject(index)"
-          :class="[
-            activeIndex == index ? 'activeObjectItem' : '',
-            'objectItem',
-          ]"
-          v-for="(item, index) in objectList"
-          :key="item.lastMsgId"
+          :infinite-scroll-immediate="false"
+          :infinite-scroll-delay="700"
+          :infinite-scroll-disabled="!more"
+          v-infinite-scroll="loadData"
         >
-          <el-badge
-            :hidden="item.newMsgCount ? false : true"
-            :value="item.newMsgCount"
+          <div
+            @click="toggleObject(index)"
+            :class="[
+              activeIndex == index ? 'activeObjectItem' : '',
+              'objectItem',
+            ]"
+            v-for="(item, index) in objectList"
+            :key="item.lastMsgId"
           >
-            <el-avatar
-              :size="40"
-              :fit="'contain'"
-              :src="item.fromUser.avatarUrl"
-            />
-          </el-badge>
-          <div style="margin-left: 10px" class="objectInfoData">
-            <div class="objectName">{{ item.fromUser.nickname }}</div>
-            <div class="objectData">{{ item.lastMsg }}</div>
+            <el-badge
+              :hidden="item.newMsgCount ? false : true"
+              :value="item.newMsgCount"
+            >
+              <el-avatar
+                :size="40"
+                :fit="'contain'"
+                :src="item.fromUser.avatarUrl"
+              />
+            </el-badge>
+            <div style="margin-left: 10px" class="objectInfoData">
+              <div class="objectName">{{ item.fromUser.nickname }}</div>
+              <div class="objectData">{{ item.lastMsg }}</div>
+            </div>
           </div>
         </div>
       </el-scrollbar>
     </div>
-    <div v-if="objectList.length" class="rightMessageInfo">
+    <div
+      v-if="objectList.length"
+      element-loading-background="#000000a8"
+      v-loading="loading"
+      class="rightMessageInfo"
+    >
       <div class="chatContainer">
         <div class="chatList">
-          <el-scrollbar style="padding: 0 15px" height="100%">
-            <div class="messageItem" v-for="item,index in messageList" :key="item.id">
+          <el-scrollbar
+            ref="chatScrollContainerRef"
+            style="padding: 0 15px"
+            height="100%"
+          >
+            <div v-if="moreChat" class="loadMoreData">
+              <div @click="loadMoreData" class="moreBtn">加载更多</div>
+            </div>
+            <div
+              class="messageItem"
+              v-for="(item, index) in messageList"
+              :id="'item' + item.time"
+              :key="item.id"
+            >
               <popoverImage
                 v-if="item.msg.type == 16"
                 :userInfo="item.fromUser"
@@ -79,17 +105,58 @@
                 :msg="item.msg"
               />
               <popoverVoice
-                :index='index'
-                :activeVoiceIndex='activeVoiceIndex'
+                :index="index"
+                :activeVoiceIndex="activeVoiceIndex"
                 @controlVoice="controlVoice"
                 v-else-if="item.msg.type == 1018"
+                :userInfo="item.fromUser"
+                :msg="item.msg"
+              />
+              <popoverNotice
+                v-else-if="item.msg.type == 12"
+                :userInfo="item.fromUser"
+                :msg="item.msg"
+              />
+              <popoverTopic
+                v-else-if="item.msg.type == 8"
                 :userInfo="item.fromUser"
                 :msg="item.msg"
               />
             </div>
           </el-scrollbar>
         </div>
-        <div class="textarea"></div>
+        <div class="textarea">
+          <div style="">
+            <div class="inputContainer">
+              <textarea maxlength="200" v-model="text"></textarea>
+            </div>
+            <div class="btnContainer">
+              <el-popover
+                ref="emojiPopoverRef"
+                placement="top"
+                :width="300"
+                trigger="click"
+                popper-class="dialogPopperClass"
+                :hide-after="0"
+              >
+                <template #reference>
+                  <img src="~images/shareDialog/emoji.png" alt="" />
+                </template>
+                <div class="emojiContainer">
+                  <div
+                    @click="emojiClick(item)"
+                    v-for="(item, index) in emoji"
+                    :key="index"
+                    class="emojiItem"
+                  >
+                    {{ item }}
+                  </div>
+                </div>
+              </el-popover>
+              <div @click="sendEvent" class="sendBtn">发送</div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="userPanel">
         <div class="userInfoBox">
@@ -143,43 +210,54 @@ import {
   toRefs,
   ref,
   defineAsyncComponent,
+  nextTick,
 } from "vue";
 import {
   getPrivateMessageList,
   getChatList,
+  sendMessage,
 } from "@/network/Message/privateMessage";
 import { InitData } from "@/types/Message/PrivateMessage";
 import { useRouter } from "vue-router";
-import bus from "vue3-eventbus";
+import { ElNotification } from "element-plus";
+import emoji from "@/static/emoji";
+import loading from "@/components/common/loading.vue";
+import emptyContent from "@/components/common/emptyContent.vue";
 const popoverImage = defineAsyncComponent(
-  () => import("@/components/private/popoverImage.vue")
+  () => import("./popoverImage.vue")
 );
 const popoverText = defineAsyncComponent(
-  () => import("@/components/private/popoverText.vue")
+  () => import("./popoverText.vue")
 );
 const popoverAlbum = defineAsyncComponent(
-  () => import("@/components/private/popoverAlbum.vue")
+  () => import("./popoverAlbum.vue")
 );
 const popoverSong = defineAsyncComponent(
-  () => import("@/components/private/popoverSong.vue")
+  () => import("./popoverSong.vue")
 );
 const popoverSheet = defineAsyncComponent(
-  () => import("@/components/private/popoverSheet.vue")
+  () => import("./popoverSheet.vue")
 );
 const popoverComment = defineAsyncComponent(
-  () => import("@/components/private/popoverComment.vue")
+  () => import("./popoverComment.vue")
 );
 const popoverProgram = defineAsyncComponent(
-  () => import("@/components/private/popoverProgram.vue")
+  () => import("./popoverProgram.vue")
 );
 const popoverMv = defineAsyncComponent(
-  () => import("@/components/private/popoverMv.vue")
+  () => import("./popoverMv.vue")
 );
 const popoverAudio = defineAsyncComponent(
-  () => import("@/components/private/popoverAudio.vue")
+  () => import("./popoverAudio.vue")
 );
 const popoverVoice = defineAsyncComponent(
-  () => import("@/components/private/popoverVoice.vue")
+  () => import("./popoverVoice.vue")
+);
+const popoverNotice = defineAsyncComponent(
+  () => import("./popoverNotice.vue")
+);
+const popoverTopic = defineAsyncComponent(
+  () => import("./popoverTopic.vue")
 );
 
 export default defineComponent({
@@ -195,51 +273,146 @@ export default defineComponent({
     popoverMv,
     popoverAudio,
     popoverVoice,
+    popoverNotice,
+    popoverTopic,
+    loading,
+    emptyContent,
   },
   setup() {
+    const emojiPopoverRef = ref();
+    const chatScrollContainerRef = ref();
     const messageVoiceRef = ref();
     const router = useRouter();
     const data = reactive(new InitData());
 
+    // 加载聊天
+    const loadMoreData = () => {
+      data.loading = true;
+      getChatContent(false);
+    };
+    // 发送消息
+    const sendEvent = () => {
+      if (data.text != "") {
+        sendMessage({
+          user_ids:
+            data.objectList[data.activeIndex].fromUser.userId.toString(),
+          msg: data.text,
+        })
+          .then((res: any) => {
+            if (res.data.code != 200) {
+              ElNotification({
+                message: "发送过于频繁，晚点再试试吧",
+                type: "warning",
+                customClass: "darkNotice",
+              });
+            }
+          })
+          .catch(() => {
+            ElNotification({
+              message: "发送过于频繁，晚点再试试吧",
+              type: "warning",
+              customClass: "darkNotice",
+            });
+          });
+      }
+    };
+    // 点击表情
+    const emojiClick = (i: string) => {
+      data.text += i;
+      emojiPopoverRef.value.hide();
+    };
+    // 滚动到底部
+    const scrollBottom = () => {
+      chatScrollContainerRef.value.setScrollTop(
+        chatScrollContainerRef.value.wrap$.scrollHeight
+      );
+    };
     // 获取聊天内容
-    const getChatContent = () => {
+    const getChatContent = (scroll: boolean) => {
       getChatList({
         uid: data.objectList[data.activeIndex].fromUser.userId.toString(),
-        limit: 20,
+        limit: 10,
         before: data.before,
       }).then((res: any) => {
+        data.before = res.data.msgs[res.data.msgs.length - 1].time;
+        data.moreChat = res.data.more;
         for (const item of res.data.msgs) {
           item.msg = JSON.parse(item.msg);
         }
         res.data.msgs.reverse();
+        if (!data.scrollTime) {
+          data.scrollTime = res.data.msgs[0].time;
+        }
+
         data.messageList = [...res.data.msgs, ...data.messageList];
-        console.log(data.messageList);
+
+        if (scroll) {
+          // 滚动至底部
+          setTimeout(() => {
+            data.loading = false;
+            nextTick(() => {
+              console.log(66);
+              
+              scrollBottom();
+            });
+          }, 100);
+        } else {
+          setTimeout(() => {
+            nextTick(() => {
+              let target = document.getElementById("item" + data.scrollTime);
+              let container = chatScrollContainerRef.value.wrap$;
+              let result =
+                (target?.getBoundingClientRect().top as number) -
+                container.getBoundingClientRect().top;
+              chatScrollContainerRef.value.setScrollTop(result);
+              data.loading = false;
+              data.scrollTime = res.data.msgs[0].time;
+              console.log(data.scrollTime);
+              
+            });
+          }, 100);
+        }
       });
     };
     // 获取聊天列表
-    const getData = () => {
+    const getData = (loadList: boolean) => {
       getPrivateMessageList({
         offset: data.offset * 10,
         limit: 10,
       }).then((res: any) => {
+        data.more = res.data.more;
+        data.offset++;
         for (const item of res.data.msgs) {
           item.lastMsg = JSON.parse(item.lastMsg).msg;
         }
         data.objectList = [...data.objectList, ...res.data.msgs];
-        getChatContent();
+        data.objectList[0].newMsgCount = 0
+        if (loadList) {
+          getChatContent(true);
+        }
       });
     };
-    getData();
+    getData(true);
 
     // 切换聊天对象
     const toggleObject = (e: number) => {
+      data.before = -1;
+      data.moreChat = true;
+      data.loading = true;
       data.activeIndex = e;
+      if (data.objectList[data.activeIndex].newMsgCount) {
+        data.objectList[data.activeIndex].newMsgCount = 0;
+      }
       data.messageList = [];
-      getChatContent();
+      getChatContent(true);
+    };
+    // 加载聊天房间
+    const loadData = () => {
+      getData(false);
     };
     // 播放语音
     const controlVoice = (e: any) => {
-      data.activeVoiceIndex = e.i
+      data.activeVoiceIndex = e.i;
       // 不同音频
       if (data.voiceUrl == "") {
         // 直接播放
@@ -267,13 +440,20 @@ export default defineComponent({
     };
     // 语音播放结束
     const voiceEndEvent = () => {
-      data.activeVoiceIndex = -1
+      data.activeVoiceIndex = -1;
       data.voiceUrl = "";
     };
 
     return {
+      emojiPopoverRef,
+      emoji,
+      chatScrollContainerRef,
       messageVoiceRef,
       router,
+      loadMoreData,
+      sendEvent,
+      emojiClick,
+      loadData,
       voiceEndEvent,
       controlVoice,
       toggleObject,
@@ -293,6 +473,7 @@ export default defineComponent({
     position: absolute;
     top: -9999px;
     // display: none;
+    // color: #000000a8;
   }
   .leftObjectList {
     width: 260px;
@@ -344,17 +525,30 @@ export default defineComponent({
       flex: 1;
       .chatList {
         width: 100%;
-        height: 70%;
+        height: 68%;
         .el-scrollbar {
           width: calc(100% - 30px);
         }
+        .loadMoreData {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-top: 20px;
+          .moreBtn {
+            font-size: 12px;
+            padding: 5px 15px 7px 17px;
+            border-radius: 8px;
+            background-color: #585858;
+            cursor: pointer;
+          }
+        }
         .messageItem {
-          margin: 15px 0;
+          padding: 7.5px 0;
           &:first-child {
-            margin-top: 30px;
+            padding-top: 30px;
           }
           &:last-child {
-            margin-bottom: 30px;
+            padding-bottom: 30px;
           }
           .popoverInfoContainer {
             padding: 0 14px;
@@ -390,9 +584,43 @@ export default defineComponent({
       }
       .textarea {
         width: 100%;
-        height: 30%;
+        height: 32%;
         box-sizing: border-box;
         border-top: 1px solid #535252;
+        .inputContainer {
+          padding: 10px;
+          textarea {
+            width: 100%;
+            height: 85px;
+            background-color: transparent;
+            border: 0;
+            outline: none;
+            resize: none;
+            color: #fff;
+            font-size: 14px;
+          }
+        }
+        .btnContainer {
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+          img {
+            margin-left: 10px;
+            cursor: pointer;
+            width: 30px;
+          }
+          .sendBtn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 15px;
+            font-size: 12px;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 6px;
+            background-color: @themeColor;
+          }
+        }
       }
     }
     .userPanel {

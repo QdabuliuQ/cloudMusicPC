@@ -21,7 +21,7 @@
           <div class="otherInfo">
             <div class="title">
               <span class="target">{{ msg.djRadio.category }}</span
-              >{{ msg.album.name }}
+              >{{ msg.djRadio.name }}
             </div>
             <div class="artists">
               by

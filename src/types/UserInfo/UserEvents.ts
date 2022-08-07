@@ -1,4 +1,4 @@
-interface eventInt {
+export interface eventInt {
   type: number,
   user: {avatarUrl: string, nickname: string, userId: number},
   id: number,

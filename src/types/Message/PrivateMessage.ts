@@ -33,8 +33,13 @@ export class InitData {
   objectList: ObjectInt[] = []
   activeIndex: number = 0
   before: number = -1
-
+  more: boolean = true
   messageList: MsgInt[] = []
   voiceUrl: string = ''
   activeVoiceIndex: number = -1
+  loading: boolean = true
+
+  text: string = ''
+  moreChat: boolean = true
+  scrollTime: number = 0
 }

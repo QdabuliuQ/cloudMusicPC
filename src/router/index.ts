@@ -87,6 +87,9 @@ const AlbumInfo = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Alb
 
 const Message = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Message/Message.vue')
 const PrivateMessage = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Message/views/PrivateMessage.vue')
+const CommentMessage = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Message/views/CommentMessage.vue')
+const AiteMessage = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Message/views/AiteMessage.vue')
+const NoticeMessage = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Message/views/NoticeMessage.vue')
 
 const routes: Array<RouteRecordRaw> = [
   { path: '/', redirect: '/HomePage' },
@@ -588,6 +591,9 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: '/Message',
         name: 'Message',
+        meta: {
+          login: true
+        },
         component: Message,
         children: [
           {
@@ -600,7 +606,31 @@ const routes: Array<RouteRecordRaw> = [
               messageIndex: 0
             },
             component: PrivateMessage
-          }
+          },
+          {
+            path: '/CommentMessage',
+            name: 'CommentMessage',
+            meta: {
+              messageIndex: 1
+            },
+            component: CommentMessage
+          },
+          {
+            path: '/AiteMessage',
+            name: 'AiteMessage',
+            meta: {
+              messageIndex: 2
+            },
+            component: AiteMessage
+          },
+          {
+            path: '/NoticeMessage',
+            name: 'NoticeMessage',
+            meta: {
+              messageIndex: 3
+            },
+            component: NoticeMessage
+          },
         ]
       }
     ]
