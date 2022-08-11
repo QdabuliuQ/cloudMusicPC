@@ -16,7 +16,11 @@
             shape="square"
             :size="40"
             :fit="'cover'"
-            :src="info.song.img80x80 ? info.song.img80x80 : info.song.album.blurPicUrl"
+            :src="
+              info.song.img80x80
+                ? info.song.img80x80
+                : info.song.album.blurPicUrl
+            "
           />
         </div>
         <div style="margin-left: 10px">
@@ -31,14 +35,17 @@
             </span>
           </div>
           <div class="songArt">
-            <span v-for="item in info.song.artists" :key="item.id"
+            <span
+              @click.stop="router.push('/SingerDetail?id='+item.id)"
+              v-for="item in info.song.artists"
+              :key="item.id"
               >{{ item.name }}&nbsp;&nbsp;</span
             >
           </div>
         </div>
       </div>
     </div>
-    <eventPics :pics='pics'></eventPics>
+    <eventPics :pics="pics"></eventPics>
     <eventOperate
       v-if="!disableOpe"
       :liked="liked"
@@ -56,6 +63,7 @@ import { defineComponent, reactive, toRefs, watch } from "vue";
 import eventHead from "./eventHead.vue";
 import eventOperate from "./eventOperate.vue";
 import eventPics from "./eventPics.vue";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   props: [
@@ -71,15 +79,16 @@ export default defineComponent({
     "shareCount",
     "pics",
     "disableOpe",
-    "uid"
+    "uid",
   ],
   name: "songEItem",
   components: {
     eventHead,
     eventOperate,
-    eventPics
+    eventPics,
   },
   setup(props) {
+    const router = useRouter()
     const data = reactive({
       info: null,
       msg: "",
@@ -90,8 +99,6 @@ export default defineComponent({
       (n) => {
         if (n) {
           data.info = JSON.parse(n);
-          console.log(data.info);
-          
           data.msg = JSON.parse(n)
             .msg.replaceAll(/#[^#]*#/g, "")
             .trim();
@@ -101,6 +108,7 @@ export default defineComponent({
     );
 
     return {
+      router,
       ...toRefs(data),
     };
   },

@@ -19,7 +19,11 @@
           />
           {{ commentSum }}
         </div>
-        <div @click="shareEvent" :style="{marginRight: id == uid ? '30px' : '0'}" class="opeItem">
+        <div
+          @click="shareEvent"
+          :style="{ marginRight: id == uid ? '30px' : '0' }"
+          class="opeItem"
+        >
           <img src="~images/common/share.png" alt="" />
           {{ shareCount }}
         </div>
@@ -101,8 +105,13 @@
 <script lang='ts'>
 import { watch, defineComponent, reactive, onMounted, toRefs } from "vue";
 import commentItem from "@/components/private/commentItem.vue";
-import { getEventComment, praiseResource, commentResource } from "@/network/UserInfo/userEvents";
+import {
+  getEventComment,
+  praiseResource,
+  commentResource,
+} from "@/network/UserInfo/userEvents";
 import bus from "vue3-eventbus";
+import useLogin from "@/hooks/useLogin";
 let timer: any;
 
 export default defineComponent({
@@ -110,7 +119,14 @@ export default defineComponent({
   components: {
     commentItem,
   },
-  props: ["threadId", "liked", "likedCount", "commentCount", "shareCount", "uid"],
+  props: [
+    "threadId",
+    "liked",
+    "likedCount",
+    "commentCount",
+    "shareCount",
+    "uid",
+  ],
   setup(props) {
     const data = reactive({
       comment: "",
@@ -120,7 +136,7 @@ export default defineComponent({
       isLike: false,
       likeSum: 0,
       commentSum: 0,
-      id: decodeURIComponent(window.atob(localStorage.getItem('id') as string))
+      id: decodeURIComponent(window.atob(localStorage.getItem("id") as string)),
     });
 
     watch(
@@ -149,51 +165,59 @@ export default defineComponent({
 
     // 删除动态
     const confirmDelete = () => {
-      bus.emit("deleteEvent", props.threadId);
+      if (useLogin()) {
+        bus.emit("deleteEvent", props.threadId);
+      }
     };
 
     // 转发动态
     const shareEvent = () => {
-      bus.emit("shareEvent", props.threadId)
-    }
+      if (useLogin()) {
+        bus.emit("shareEvent", props.threadId);
+      }
+    };
 
     // 点赞动态
     const praiseEvent = () => {
-      data.isLike = !data.isLike;
-      if (timer) {
-        clearTimeout(timer);
+      if (useLogin()) {
+        data.isLike = !data.isLike;
+        if (timer) {
+          clearTimeout(timer);
+        }
+        timer = setTimeout(() => {
+          praiseResource({
+            t: data.isLike ? 1 : 0,
+            type: 6,
+            threadId: props.threadId,
+          }).then((res: any) => {
+            if (res.data.code == 200) {
+              data.isLike ? data.likeSum++ : data.likeSum--;
+            }
+          });
+        }, 500);
       }
-      timer = setTimeout(() => {
-        praiseResource({
-          t: data.isLike ? 1 : 0,
-          type: 6,
-          threadId: props.threadId,
-        }).then((res: any) => {
-          if (res.data.code == 200) {
-            data.isLike ? data.likeSum++ : data.likeSum--;
-          }
-        });
-      }, 500);
     };
 
     // 发表评论
     const pushComment = () => {
-      if (data.comment != '') {
-        commentResource({
-          t: 1,
-          type: 6,
-          threadId: props.threadId,
-          content: data.comment
-        }).then((res: any) => {
-          if (res.data.code == 200) {
-            res.data.comment.likedCount = 0
-            data.commentList.unshift(res.data.comment)
-            data.commentSum ++
-            data.comment = ''
-          }
-        })
+      if (useLogin()) {
+        if (data.comment.trim() != "") {
+          commentResource({
+            t: 1,
+            type: 6,
+            threadId: props.threadId,
+            content: data.comment.trim(),
+          }).then((res: any) => {
+            if (res.data.code == 200) {
+              res.data.comment.likedCount = 0;
+              data.commentList.unshift(res.data.comment);
+              data.commentSum++;
+              data.comment = "";
+            }
+          });
+        }
       }
-    }
+    };
 
     const eventComment = () => {
       data.showComment = !data.showComment;
@@ -229,7 +253,6 @@ export default defineComponent({
 </script>
 
 <style lang='less'>
-
 .operationContainer {
   width: 100%;
   margin: 20px 0 0;

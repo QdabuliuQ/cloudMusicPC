@@ -26,13 +26,13 @@
     <loading v-if="!categoryData.length"></loading>
     <div v-else class="categoryContent">
       <sheetItem
+        ref="sheetItemRef"
         :type="'sheet'"
         :id="item.id"
         v-for="(item, index) in categoryData"
         :imageUrl="item.coverImgUrl"
         :title="item.name"
         :sum="item.playCount"
-        :imgHeight="'13vw'"
       ></sheetItem>
     </div>
     <div class="paginationContainer">
@@ -48,11 +48,12 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, reactive, onMounted, toRefs } from "vue";
+import { defineComponent, reactive, onMounted, toRefs, ref } from "vue";
 import { getSheetCaregory, getSheetList } from "@/network/DiscoverMusic/songSheet";
 import { InitData } from "@/types/DiscoverMusic/SongSheet";
 import sheetItem from "@/components/private/sheetItem.vue";
 import loading from "@/components/common/loading.vue"
+import useToPoint from "@/hooks/useToPoint";
 
 export default defineComponent({
   name: "SongSheet",
@@ -61,14 +62,15 @@ export default defineComponent({
     loading
   },
   setup() {
+    const sheetItemRef = ref()
     const data = reactive(new InitData());
     // 获取歌单信息
     const getSheetData = (pageIndex: number, i: number, j: number) => {
       getSheetList({
         cat:
           i != -1 && j != -1 ? data.categoryList[i].cateList[j].name : "全部",
-        limit: 15,
-        offset: pageIndex,
+        limit: 30,
+        offset: pageIndex * 30,
       }).then((res: any) => {
         data.total = res.data.total;
         data.categoryData = res.data.playlists;
@@ -77,6 +79,9 @@ export default defineComponent({
     const pageChange = (e: number) => {
       data.pageIndex = e
       getSheetData(data.pageIndex - 1, data.i, data.j)
+      setTimeout(() => {
+        useToPoint(sheetItemRef.value[0], -15)
+      }, 100);
     }
 
     // 切换类型
@@ -124,6 +129,7 @@ export default defineComponent({
     });
     return {
       ...toRefs(data),
+      sheetItemRef,
       categoryClick,
       pageChange,
     };

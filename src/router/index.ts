@@ -245,11 +245,14 @@ const routes: Array<RouteRecordRaw> = [
         path: '/SheetDetail',
         name: 'SheetDetail',
         component: SheetDetail,
+        meta: {
+          login: false
+        },
         children: [
           { path: '/SheetDetail', redirect: '/SheetSongs' },
-          { path: '/SheetSongs', meta: { sheetIndex: 0 }, name: 'SheetSongs', component: SheetSongs },
-          { path: '/SheetComment', meta: { sheetIndex: 1 }, name: 'SheetComment', component: SheetComment },
-          { path: '/SheetCollect', meta: { sheetIndex: 2 }, name: 'SheetCollect', component: SheetCollect },
+          { path: '/SheetSongs', meta: { login: false, sheetIndex: 0 }, name: 'SheetSongs', component: SheetSongs },
+          { path: '/SheetComment', meta: { login: false, sheetIndex: 1 }, name: 'SheetComment', component: SheetComment },
+          { path: '/SheetCollect', meta: { login: false, sheetIndex: 2 }, name: 'SheetCollect', component: SheetCollect },
         ]
       },
       {
@@ -359,25 +362,33 @@ const routes: Array<RouteRecordRaw> = [
         component: Collect,
         children: [
           { path: '/Collect', redirect: '/CollectAlbums' },
-          { path: '/CollectAlbums', name: 'CollectAlbums', meta: {
-            collectIndex: 0
-          }, component: CollectAlbums },
-          { path: '/CollectSingers', name: 'CollectSingers', meta: {
-            collectIndex: 1
-          }, component: CollectSingers },
-          { path: '/CollectMvs', name: 'CollectMvs', meta: {
-            collectIndex: 2
-          }, component: CollectMvs },
-          { path: '/CollectArticles', name: 'CollectArticles', meta: {
-            collectIndex: 3
-          }, component: CollectArticles },
+          {
+            path: '/CollectAlbums', name: 'CollectAlbums', meta: {
+              collectIndex: 0
+            }, component: CollectAlbums
+          },
+          {
+            path: '/CollectSingers', name: 'CollectSingers', meta: {
+              collectIndex: 1
+            }, component: CollectSingers
+          },
+          {
+            path: '/CollectMvs', name: 'CollectMvs', meta: {
+              collectIndex: 2
+            }, component: CollectMvs
+          },
+          {
+            path: '/CollectArticles', name: 'CollectArticles', meta: {
+              collectIndex: 3
+            }, component: CollectArticles
+          },
         ]
       },
       {
         path: '/MySheet',
         name: 'MySheet',
         meta: {
-          login: true
+          // login: true
         },
         component: SheetDetail,
         children: [
@@ -394,22 +405,32 @@ const routes: Array<RouteRecordRaw> = [
         },
         component: UserDetail,
         children: [
-          {path: '/UserDetail', redirect: '/UserSheet'},
-          {path: '/UserSheet', name: 'UserSheet', meta: {
-            userInfoIndex: 0
-          }, component: UserSheet},
-          {path: '/UserCollect', name: 'UserCollect', meta: {
-            userInfoIndex: 1
-          }, component: UserSheet},
-          {path: '/UserEventList', name: 'UserEventList', meta: {
-            userInfoIndex: 2
-          }, component: UserEvents},
-          {path: '/UserFollowList', name: 'UserFollowList', meta: {
-            userInfoIndex: 3
-          }, component: UserFollow},
-          {path: '/UserFansList', name: 'UserFansList', meta: {
-            userInfoIndex: 4
-          }, component: UserFans},
+          { path: '/UserDetail', redirect: '/UserSheet' },
+          {
+            path: '/UserSheet', name: 'UserSheet', meta: {
+              userInfoIndex: 0
+            }, component: UserSheet
+          },
+          {
+            path: '/UserCollect', name: 'UserCollect', meta: {
+              userInfoIndex: 1
+            }, component: UserSheet
+          },
+          {
+            path: '/UserEventList', name: 'UserEventList', meta: {
+              userInfoIndex: 2
+            }, component: UserEvents
+          },
+          {
+            path: '/UserFollowList', name: 'UserFollowList', meta: {
+              userInfoIndex: 3
+            }, component: UserFollow
+          },
+          {
+            path: '/UserFansList', name: 'UserFansList', meta: {
+              userInfoIndex: 4
+            }, component: UserFans
+          },
         ]
       },
       {
@@ -428,7 +449,7 @@ const routes: Array<RouteRecordRaw> = [
         component: SearchResult,
         children: [
           { path: '/SearchResult', redirect: '/SearchSongs' },
-          { 
+          {
             path: '/SearchSongs',
             name: 'SearchSongs',
             meta: {
@@ -436,7 +457,7 @@ const routes: Array<RouteRecordRaw> = [
             },
             component: SearchSongs
           },
-          { 
+          {
             path: '/SearchSingers',
             name: 'SearchSingers',
             meta: {
@@ -444,7 +465,7 @@ const routes: Array<RouteRecordRaw> = [
             },
             component: SearchSingers
           },
-          { 
+          {
             path: '/SearchAlbums',
             name: 'SearchAlbums',
             meta: {
@@ -452,7 +473,7 @@ const routes: Array<RouteRecordRaw> = [
             },
             component: SearchAlbums
           },
-          { 
+          {
             path: '/SearchVideos',
             name: 'SearchVideos',
             meta: {
@@ -460,7 +481,7 @@ const routes: Array<RouteRecordRaw> = [
             },
             component: SearchVideos
           },
-          { 
+          {
             path: '/SearchMvs',
             name: 'SearchMvs',
             meta: {
@@ -468,7 +489,7 @@ const routes: Array<RouteRecordRaw> = [
             },
             component: SearchMvs
           },
-          { 
+          {
             path: '/SearchSheets',
             name: 'SearchSheets',
             meta: {
@@ -476,7 +497,7 @@ const routes: Array<RouteRecordRaw> = [
             },
             component: SearchSheets
           },
-          { 
+          {
             path: '/SearchTexts',
             name: 'SearchTexts',
             meta: {
@@ -484,7 +505,7 @@ const routes: Array<RouteRecordRaw> = [
             },
             component: SearchTexts
           },
-          { 
+          {
             path: '/SearchAudios',
             name: 'SearchAudios',
             meta: {
@@ -492,7 +513,7 @@ const routes: Array<RouteRecordRaw> = [
             },
             component: SearchAudios
           },
-          { 
+          {
             path: '/SearchUsers',
             name: 'SearchUsers',
             meta: {
@@ -561,7 +582,7 @@ const routes: Array<RouteRecordRaw> = [
           {
             path: '/AlbumDetail',
             redirect: '/AlbumSongs'
-          }, 
+          },
           {
             path: '/AlbumSongs',
             name: 'AlbumSongs',
@@ -597,7 +618,7 @@ const routes: Array<RouteRecordRaw> = [
         component: Message,
         children: [
           {
-            path: '/Message', redirect:'/PrivateMessage'
+            path: '/Message', redirect: '/PrivateMessage'
           },
           {
             path: '/PrivateMessage',
@@ -660,16 +681,20 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-	// 判断有没有登录
-	if (to.meta.login) {
+  // 判断有没有登录
+  console.log(to);
+
+  if (to.meta.login) {
     if (useLogin(false)) {
       next();
     } else {
       useLogin(true)
     }
-	} else {
-		next();
-	}
+  } else {
+    console.log(222);
+
+    next();
+  }
 });
 
 export default router

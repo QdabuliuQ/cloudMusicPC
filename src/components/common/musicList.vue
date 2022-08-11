@@ -42,7 +42,7 @@
             :key="i2"
           >
             <div class="tableItem">
-              <slot :content="item" :index='i1' :name="att" />
+              <slot :content="item" :index="i1" :name="att" />
             </div>
           </td>
         </tr>
@@ -56,7 +56,7 @@
         查看评论
       </div>
     </v-contextmenu-item>
-    <v-contextmenu-submenu v-if="useLogin(false)" title="">
+    <v-contextmenu-submenu v-if="isLogin" title="">
       <template v-slot:title>
         <div class="contextItem">
           <img class="contextIcon" src="~images/menuList/sheet.png" alt="" />
@@ -94,6 +94,31 @@
         </v-contextmenu-item>
       </el-scrollbar>
     </v-contextmenu-submenu>
+    <v-contextmenu-submenu v-if="isLogin" title="">
+      <template v-slot:title>
+        <div class="contextItem">
+          <img class="contextIcon" src="~images/common/chat.png" alt="" />
+          分享给好友
+        </div>
+      </template>
+      <el-scrollbar height="200px">
+        <v-contextmenu-item
+          v-if="contactorList.length"
+          @click="userItemClick(index)"
+          v-for="(item, index) in contactorList"
+          :key="item.id"
+        >
+          <div class="contextItem">
+            <img
+              style="width: 25px; border-radius: 50%; margin-right: 5px"
+              :src="item.avatarUrl"
+              alt=""
+            />
+            {{ item.nickname }}
+          </div>
+        </v-contextmenu-item>
+      </el-scrollbar>
+    </v-contextmenu-submenu>
     <v-contextmenu-item v-if="isMe" @click="menuItemClick('del')">
       <div class="contextItem">
         <img class="contextIcon" src="~images/common/delete.png" alt="" />
@@ -103,7 +128,7 @@
     <v-contextmenu-item @click="menuItemShare">
       <div class="contextItem">
         <img class="contextIcon" src="~images/common/share.png" alt="" />
-        分享歌曲
+        分享到动态
       </div>
     </v-contextmenu-item>
   </v-contextmenu>
@@ -126,6 +151,7 @@ import { setSheetSong } from "@/network/SheetDetail/sheetDetail";
 import { useRouter } from "vue-router";
 import bus from "vue3-eventbus";
 import { ElNotification } from "element-plus";
+import { getRecentContractor } from "@/network/Message/privateMessage";
 
 export default defineComponent({
   props: ["columns", "data", "like", "download", "isMe"],
@@ -139,14 +165,30 @@ export default defineComponent({
       index: 0,
       userSheet: <any>[],
       songList: <any>[],
+      contactorList: <any>[],
+      isLogin: useLogin(false),
     });
 
+    // 私信分享
+    const userItemClick = (e: number) => {
+      if (useLogin()) {
+        _this.proxy.$toMessage(
+          data.songList[data.index].id,
+          "song",
+          data.songList[data.index].name,
+          data.songList[data.index].al.picUrl,
+          data.contactorList[e].userId,
+          data.contactorList[e].nickname
+        );
+      }
+    };
+    // 播放音乐
     const toPlayMusic = (e: number) => {
-      bus.emit('playMusic', {
+      bus.emit("playMusic", {
         data: props.data,
-        index: e
-      })
-    }
+        index: e,
+      });
+    };
     // 创建新歌单
     const createNewSheet = () => {
       bus.emit("createSheet");
@@ -215,8 +257,8 @@ export default defineComponent({
     };
     // 查看评论
     const commentList = () => {
-      router.push(`/commentList?id=${data.songList[data.index].id}&type=song`)
-    }
+      router.push(`/commentList?id=${data.songList[data.index].id}&type=song`);
+    };
 
     const getData = () => {
       data.userSheet = [];
@@ -236,6 +278,17 @@ export default defineComponent({
       });
     };
 
+    const onDrop = (e: any) => {
+      console.log(e);
+      
+    }
+
+    if (data.isLogin) {
+      getRecentContractor().then((res: any) => {
+        data.contactorList = res.data.data.follow;
+      });
+    }
+
     data.columnSlot = computed(() => {
       const filterColumns =
         props.columns.length &&
@@ -254,7 +307,7 @@ export default defineComponent({
     );
 
     onMounted(() => {
-      if (useLogin(false)) {
+      if (data.isLogin) {
         getData();
       }
 
@@ -266,6 +319,8 @@ export default defineComponent({
 
     return {
       songContextRef,
+      onDrop,
+      userItemClick,
       commentList,
       toPlayMusic,
       createNewSheet,

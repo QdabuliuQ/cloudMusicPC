@@ -223,42 +223,22 @@ import { ElNotification } from "element-plus";
 import emoji from "@/static/emoji";
 import loading from "@/components/common/loading.vue";
 import emptyContent from "@/components/common/emptyContent.vue";
-const popoverImage = defineAsyncComponent(
-  () => import("./popoverImage.vue")
-);
-const popoverText = defineAsyncComponent(
-  () => import("./popoverText.vue")
-);
-const popoverAlbum = defineAsyncComponent(
-  () => import("./popoverAlbum.vue")
-);
-const popoverSong = defineAsyncComponent(
-  () => import("./popoverSong.vue")
-);
-const popoverSheet = defineAsyncComponent(
-  () => import("./popoverSheet.vue")
-);
+const popoverImage = defineAsyncComponent(() => import("./popoverImage.vue"));
+const popoverText = defineAsyncComponent(() => import("./popoverText.vue"));
+const popoverAlbum = defineAsyncComponent(() => import("./popoverAlbum.vue"));
+const popoverSong = defineAsyncComponent(() => import("./popoverSong.vue"));
+const popoverSheet = defineAsyncComponent(() => import("./popoverSheet.vue"));
 const popoverComment = defineAsyncComponent(
   () => import("./popoverComment.vue")
 );
 const popoverProgram = defineAsyncComponent(
   () => import("./popoverProgram.vue")
 );
-const popoverMv = defineAsyncComponent(
-  () => import("./popoverMv.vue")
-);
-const popoverAudio = defineAsyncComponent(
-  () => import("./popoverAudio.vue")
-);
-const popoverVoice = defineAsyncComponent(
-  () => import("./popoverVoice.vue")
-);
-const popoverNotice = defineAsyncComponent(
-  () => import("./popoverNotice.vue")
-);
-const popoverTopic = defineAsyncComponent(
-  () => import("./popoverTopic.vue")
-);
+const popoverMv = defineAsyncComponent(() => import("./popoverMv.vue"));
+const popoverAudio = defineAsyncComponent(() => import("./popoverAudio.vue"));
+const popoverVoice = defineAsyncComponent(() => import("./popoverVoice.vue"));
+const popoverNotice = defineAsyncComponent(() => import("./popoverNotice.vue"));
+const popoverTopic = defineAsyncComponent(() => import("./popoverTopic.vue"));
 
 export default defineComponent({
   name: "PrivateMessage",
@@ -331,7 +311,7 @@ export default defineComponent({
     const getChatContent = (scroll: boolean) => {
       getChatList({
         uid: data.objectList[data.activeIndex].fromUser.userId.toString(),
-        limit: 10,
+        limit: 30,
         before: data.before,
       }).then((res: any) => {
         data.before = res.data.msgs[res.data.msgs.length - 1].time;
@@ -352,7 +332,7 @@ export default defineComponent({
             data.loading = false;
             nextTick(() => {
               console.log(66);
-              
+
               scrollBottom();
             });
           }, 100);
@@ -368,7 +348,6 @@ export default defineComponent({
               data.loading = false;
               data.scrollTime = res.data.msgs[0].time;
               console.log(data.scrollTime);
-              
             });
           }, 100);
         }
@@ -378,7 +357,7 @@ export default defineComponent({
     const getData = (loadList: boolean) => {
       getPrivateMessageList({
         offset: data.offset * 10,
-        limit: 10,
+        limit: 30,
       }).then((res: any) => {
         data.more = res.data.more;
         data.offset++;
@@ -386,7 +365,7 @@ export default defineComponent({
           item.lastMsg = JSON.parse(item.lastMsg).msg;
         }
         data.objectList = [...data.objectList, ...res.data.msgs];
-        data.objectList[0].newMsgCount = 0
+        data.objectList[0].newMsgCount = 0;
         if (loadList) {
           getChatContent(true);
         }
@@ -396,15 +375,17 @@ export default defineComponent({
 
     // 切换聊天对象
     const toggleObject = (e: number) => {
-      data.before = -1;
-      data.moreChat = true;
-      data.loading = true;
-      data.activeIndex = e;
-      if (data.objectList[data.activeIndex].newMsgCount) {
-        data.objectList[data.activeIndex].newMsgCount = 0;
+      if (e != data.activeIndex) {
+        data.before = -1;
+        data.moreChat = true;
+        data.loading = true;
+        data.activeIndex = e;
+        if (data.objectList[data.activeIndex].newMsgCount) {
+          data.objectList[data.activeIndex].newMsgCount = 0;
+        }
+        data.messageList = [];
+        getChatContent(true);
       }
-      data.messageList = [];
-      getChatContent(true);
     };
     // 加载聊天房间
     const loadData = () => {

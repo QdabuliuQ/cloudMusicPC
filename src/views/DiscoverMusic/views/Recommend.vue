@@ -51,7 +51,9 @@
     <loading v-if="!newSongsList.length"></loading>
     <div v-else class="newSongContainer">
       <newMusicItem
-        v-for="item in newSongsList"
+        v-for="item,index in newSongsList"
+        @playMusic='playMusic'
+        :index='index'
         :key="item.id"
         :imageUrl="item.picUrl"
         :musicName="item.name"
@@ -144,6 +146,7 @@ export default defineComponent({
 
     data.login = useLogin(false);
 
+    // 页面跳转
     const toRecommend = () => {
       router.push("/RecommendSongs");
     };
@@ -162,6 +165,15 @@ export default defineComponent({
         }
       });
     };
+
+    // 播放音乐
+    const playMusic = (e: number) => {
+      let newData = data.newSongsList.map(item => item.song)
+      bus.emit('playMusic', {
+        data: newData,
+        index: e
+      })
+    }
 
     getSheet()
 
@@ -199,6 +211,7 @@ export default defineComponent({
     return {
       ...toRefs(data),
       bannerRef,
+      playMusic,
       toRecommend,
       toSheetDetail,
     };

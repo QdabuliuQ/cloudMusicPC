@@ -7,6 +7,7 @@ import 'element-plus/dist/index.css'
 import eventBus from 'vue3-eventbus'
 import loginDialog from "@/components/loginDialog"
 import shareDialog from "@/components/shareDialog"
+import messageDialog from "@/components/messageDialog"
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import vue3PreviewImage from 'vue3-preview-image'
 import contextmenu from "v-contextmenu";
@@ -20,6 +21,7 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 
 app.config.globalProperties.$toLogin = loginDialog
 app.config.globalProperties.$toShare = shareDialog
+app.config.globalProperties.$toMessage = messageDialog
 
 app.config.globalProperties.$countFormat = function (num: string | number) {
   // 此处为防止字符串形式的数值进来，因为toFixed方法只能用于数值型数

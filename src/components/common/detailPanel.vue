@@ -38,6 +38,39 @@
           <img src="~images/common/share.png" alt="" />
           分享({{ shareCount }})
         </div>
+        <el-popover
+          v-if="target == '歌单' && useLogin(false)"
+          placement="bottom"
+          popper-class="dialogPopperClass"
+          :width="170"
+          trigger="click"
+        >
+          <template #reference>
+            <div class="btnItem">
+              <img src="~images/common/chat.png" alt="" />
+              私信
+            </div>
+          </template>
+          <div class="userListContainer">
+            <el-scrollbar height="250px">
+              <div
+                @click="userClick(index)"
+                v-for="(item, index) in contactorList"
+                :key="item.userId"
+                class="userItem"
+              >
+                <el-avatar
+                  style="margin-right: 5px"
+                  :size="30"
+                  :src="item.avatarUrl"
+                />
+                <div class="name">
+                  {{ item.nickname }}
+                </div>
+              </div>
+            </el-scrollbar>
+          </div>
+        </el-popover>
       </div>
       <div v-if="target == '歌单'" class="infoDesc2">
         <div class="infoItem2">
@@ -93,6 +126,7 @@ import { collectSheet } from "@/network/DetailPanel/detailPanel";
 import { useRouter } from "vue-router";
 import bus from "vue3-eventbus";
 import useLogin from "@/hooks/useLogin";
+import { getRecentContractor } from "@/network/Message/privateMessage";
 
 export default defineComponent({
   props: [
@@ -112,13 +146,14 @@ export default defineComponent({
     "playCount",
     "rid",
   ],
-  emits: ["shareEvent", "collectEvent"],
+  emits: ["shareEvent", "collectEvent", "sendMessageEvent"],
   name: "detailPanel",
   setup(props, context) {
     const router = useRouter();
     const data = reactive({
       id: decodeURIComponent(window.atob(localStorage.getItem("id") as string)),
       isCollect: false,
+      contactorList: <any>[]
     });
 
     const collectEvent = () => {
@@ -142,6 +177,19 @@ export default defineComponent({
         context.emit("shareEvent");
       }
     };
+    const userClick = (e: number) => {
+      if (useLogin()) {
+        context.emit("sendMessageEvent", {
+          nickname: data.contactorList[e].nickname,
+          id: data.contactorList[e].userId
+        });
+      }
+    };
+    if (useLogin(false)) {
+      getRecentContractor().then((res: any) => {
+        data.contactorList = res.data.data.follow;
+      });
+    }
 
     watch(
       () => props.subed,
@@ -153,6 +201,8 @@ export default defineComponent({
 
     return {
       ...toRefs(data),
+      useLogin,
+      userClick,
       shareResource,
       collectEvent,
       router,
@@ -237,10 +287,10 @@ export default defineComponent({
       color: #d5d5d5;
       .desc {
         width: 700px;
-        
-overflow: hidden;
-text-overflow:ellipsis;
-white-space: nowrap;
+
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
     }
     .infoDesc2 {
@@ -269,6 +319,21 @@ white-space: nowrap;
             color: @nameColor;
             cursor: pointer;
           }
+        }
+      }
+    }
+    .userListContainer {
+      .userItem {
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        padding: 6px 0;
+        cursor: pointer;
+        .name {
+          margin-left: 8px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
       }
     }

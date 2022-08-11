@@ -18,7 +18,18 @@ export default defineComponent({
 
 <style lang="less">
 @import (css) "./assets/less/elementStyle.less";
-
+.el-select {
+  --el-select-border-color-hover: @themeColor !important;
+  --el-select-font-size: 13px !important;
+  --el-select-input-focus-border-color: @themeColor !important;
+  .el-input__wrapper {
+    background-color: #424242;
+    box-shadow: 0 0 0 0;
+    .el-input__inner {
+      font-size: 13px;
+    }
+  }
+}
 html,
 body {
   margin: 0;

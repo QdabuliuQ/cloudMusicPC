@@ -43,7 +43,13 @@ export default defineComponent({
     const router = useRouter()
     const toPage = () => {
       if (props.type == 'sheet') {
-        router.push('/SheetDetail?id='+props.id)
+        router.push({
+          path: '/SheetDetail',
+          query: {
+            id: props.id
+          },
+          name: 'SheetDetail'
+        })
       } else if (props.type == 'album') {
         router.push('/AlbumDetail?id='+props.id)
       }

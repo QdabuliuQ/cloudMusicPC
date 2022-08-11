@@ -30,7 +30,13 @@
               />
             </div>
             <div class="btnList">
-              <div @click="router.push('/SingerDetail?id='+userInfo.profile.artistId)" v-if="userInfo.profile.userType == 2" class="btnItem">
+              <div
+                @click="
+                  router.push('/SingerDetail?id=' + userInfo.profile.artistId)
+                "
+                v-if="userInfo.profile.userType == 2"
+                class="btnItem"
+              >
                 <img src="~images/musicNavBar/singer.png" alt="" />
                 歌手主页
               </div>
@@ -108,7 +114,7 @@
       </template>
     </detailPanel>
     <detailNav
-      :watch='true'
+      :watch="true"
       style="margin-bottom: 20px"
       :routerKey="'userInfoIndex'"
       :list="navList"
@@ -174,30 +180,32 @@ export default defineComponent({
         }
       );
     };
-    refreshNav()
+    refreshNav();
 
     const followEvent = () => {
-      followUser({
-        id: data.id.toString(),
-        t: data.userInfo.profile.followed ? 0 : 1,
-      }).then((res: any) => {
-        if (res.data.code == 200) {
-          data.userInfo.profile.followed = !data.userInfo.profile.followed;
-          ElNotification({
-            message: data.userInfo.profile.followed
-              ? "关注用户成功"
-              : "取消关注用户成功",
-            type: "success",
-            customClass: "darkNotice",
-          });
-        } else {
-          ElNotification({
-            message: "操作失败，请重试",
-            type: "error",
-            customClass: "darkNotice",
-          });
-        }
-      });
+      if (useLogin()) {
+        followUser({
+          id: data.id.toString(),
+          t: data.userInfo.profile.followed ? 0 : 1,
+        }).then((res: any) => {
+          if (res.data.code == 200) {
+            data.userInfo.profile.followed = !data.userInfo.profile.followed;
+            ElNotification({
+              message: data.userInfo.profile.followed
+                ? "关注用户成功"
+                : "取消关注用户成功",
+              type: "success",
+              customClass: "darkNotice",
+            });
+          } else {
+            ElNotification({
+              message: "操作失败，请重试",
+              type: "error",
+              customClass: "darkNotice",
+            });
+          }
+        });
+      }
     };
     const getData = () => {
       getUserDetail({
@@ -232,7 +240,7 @@ export default defineComponent({
         }
 
         data.id = parseInt(n as string);
-        refreshNav()
+        refreshNav();
         getData();
       }
       // { immediate: true }

@@ -20,6 +20,7 @@
         :userId="sheetInfo.userId"
         :rid="routerId"
         @shareEvent="shareEvent"
+        @sendMessageEvent='sendMessageEvent'
       ></detailPanel>
       <detailNav :watch="true" :routerKey="'sheetIndex'" :list="navList"></detailNav>
     </div>
@@ -58,8 +59,19 @@ export default defineComponent({
     const router = useRouter();
     const _this: any = getCurrentInstance();
     data.routerId = router.currentRoute.value.query.id as string
-    console.log(data.routerId);
     
+    // 分享给好友
+    const sendMessageEvent = (e: any) => {
+      _this.proxy.$toMessage(
+        data.routerId,
+        'playlist',
+        data.sheetInfo.name,
+        data.sheetInfo.coverImgUrl,
+        e.id,
+        e.nickname,
+      )
+    }
+    // 分享到动态
     const shareEvent = () => {
       _this.proxy.$toShare(
         data.routerId,
@@ -112,6 +124,7 @@ export default defineComponent({
     return {
       router,
       ...toRefs(data),
+      sendMessageEvent,
       shareEvent,
     };
   },

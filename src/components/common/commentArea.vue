@@ -32,6 +32,7 @@
           </div>
         </el-popover>
         <el-popover
+          v-if="isLogin"
           ref="userPopoverRef"
           placement="bottom"
           :width="150"
@@ -49,6 +50,7 @@
           <div class="userListContainer">
             <el-scrollbar height="150px">
               <div
+                v-if="userList.length"
                 @click="userClick(item.nickname)"
                 v-for="item in userList"
                 :key="item.userId"
@@ -94,6 +96,7 @@ export default defineComponent({
       offset: 0,
       cid: 0,
       userList: <any>[],
+      isLogin: useLogin(false)
     });
 
     const commentEvent = () => {

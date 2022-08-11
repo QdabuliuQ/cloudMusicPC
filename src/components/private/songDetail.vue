@@ -182,7 +182,6 @@ export default defineComponent({
         return a.t - b.t;
       });
       data.lyricList = oLRC;
-      console.log(data.lyricList);
     };
     // 获取相关数据
     const getData = () => {

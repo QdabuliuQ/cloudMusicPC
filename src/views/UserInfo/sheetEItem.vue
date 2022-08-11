@@ -9,7 +9,7 @@
       :target="target"
       :uid="uid"
     ></eventHead>
-    <div @click="toSheetDetail" class="eventContent">
+    <div @click="router.push('/SheetDetail?id='+data.id)" class="eventContent">
       <div style="display: flex; align-items: center">
         <div style="display: flex; align-items: center">
           <el-avatar
@@ -24,7 +24,7 @@
             <span class="sheetCate">歌单</span>
             {{ info.playlist.name }}
           </div>
-          <div class="sheetArt">
+          <div @click.stop="router.push('/UserDetail?id='+ info.playlist.creator.userId)" class="sheetArt">
             <span>{{ info.playlist.creator.nickname }}</span>
           </div>
         </div>
@@ -80,10 +80,6 @@ export default defineComponent({
     });
     const router = useRouter()
 
-    const toSheetDetail = () => {
-      router.push('/SheetDetail?id='+data.id)
-    }
-
     watch(
       () => props.infoJson,
       (n) => {
@@ -99,7 +95,7 @@ export default defineComponent({
     );
     return {
       ...toRefs(data),
-      toSheetDetail
+      router,
     };
   },
 });

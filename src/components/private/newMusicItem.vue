@@ -1,5 +1,5 @@
 <template>
-  <div class="newMusicItem">
+  <div @dblclick="playMusic" class="newMusicItem">
     <div class="leftImage">
       <img class="icon" src="~images/common/sheetPlay.png" alt="" />
       <img class="image" :src="imageUrl" alt="" />
@@ -8,8 +8,15 @@
       <div class="musicInfo">
         <div class="musicName">{{ musicName }}</div>
         <div class="musicSinger">
-          <img v-if="mvid" class="mvIcon" src="~images/recommend/mvIcon.png" alt="">
-          <span v-for="item,index in musicSinger" :key="item.id"><label v-if="index != musicSinger.length && index != 0">&nbsp;/&nbsp;</label>{{item.name}}</span>
+          <img
+            v-if="mvid"
+            class="mvIcon"
+            src="~images/recommend/mvIcon.png"
+            alt=""
+          />
+          <span @click="router.push('/SingerDetail?id='+item.id)" v-for="(item, index) in musicSinger" :key="item.id"
+            >{{ item.name }}&nbsp;&nbsp;</span
+          >
         </div>
       </div>
     </div>
@@ -18,6 +25,7 @@
 
 <script lang='ts'>
 import { defineComponent } from "vue";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   props: {
@@ -25,9 +33,18 @@ export default defineComponent({
     musicName: String,
     musicSinger: Object,
     mvid: Number,
+    index: Number
   },
   name: "newMusicItem",
-  setup() {
+  setup(props, context) {
+    const router = useRouter()
+    const playMusic = () => {
+      context.emit('playMusic', props.index)
+    }
+    return {
+      playMusic,
+      router
+    }
   },
 });
 </script>
@@ -38,6 +55,7 @@ export default defineComponent({
   display: flex;
   align-items: center;
   border-radius: 8px;
+  cursor: pointer;
   &:hover {
     background-color: #ffffff1b;
   }
@@ -68,11 +86,16 @@ export default defineComponent({
       font-size: 13px;
       color: #fff;
       .musicSinger {
+        min-width: 150px;
+        max-width: 200px;
         font-size: 12px;
         margin-top: 4px;
         color: rgb(155, 155, 155);
         display: flex;
         align-items: center;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
         .mvIcon {
           width: 20px;
           margin-right: 8px;

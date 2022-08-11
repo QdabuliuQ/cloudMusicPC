@@ -60,7 +60,7 @@
             </div>
             <div
               style="margin-bottom: 20px"
-              v-if="musicList[activeIndex] && musicList[activeIndex].ar.length"
+              v-if="musicList[activeIndex]"
               class="songSinger"
             >
               <span
@@ -923,9 +923,26 @@ export default defineComponent({
 
     bus.on("playMusic", (e: any) => {
       if (e.data.length) {
-        checkSong(e.data, e.index).then((res: any) => {
+        let newData = JSON.parse(JSON.stringify(e.data))
+        for (const item of newData) {
+          if (item.album) {
+            item.al = item.album
+            delete item.album
+          }
+          if (item.artists) {
+            item.ar = item.artists
+            delete item.artists
+          }
+          if(item.duration) {
+            item.dt = item.duration
+            delete item.duration
+          }
+        }
+        
+        
+        checkSong(newData, e.index).then((res: any) => {
           if (res) {
-            data.musicList = e.data;
+            data.musicList = newData;
             data.activeIndex = e.index;
             cleanData();
             data.lyricList.length = 0;
@@ -935,13 +952,6 @@ export default defineComponent({
             data.isPlay = true;
           }
         });
-        // if () {
-        //   console.log(22);
-
-        //   setTimeout(() => {
-        //
-        //   }, 0);
-        // }
       }
     });
 

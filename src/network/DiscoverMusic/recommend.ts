@@ -56,3 +56,21 @@ export function getRecommendProgram() {
   })
 }
 
+// 获取可用日期
+export function getMusicDate() {
+  return $http({
+    url: '/history/recommend/songs',
+    params: {
+      cookie: localStorage.getItem('cookie')
+    }
+  })
+}
+
+export function getHistoryMusic(data: {
+  date: string
+}) {
+  return $http({
+    url: '/history/recommend/songs/detail',
+    params: data
+  })
+}

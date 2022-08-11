@@ -44,3 +44,58 @@ export function sendMessage(data: {
     }
   })
 }
+
+// 获取最近联系人
+export function getRecentContractor() {
+  return $http({
+    url: '/msg/recentcontact',
+    params: {
+      cookie: localStorage.getItem('cookie')
+    }
+  })
+}
+
+// 发送歌曲
+export function sendSongToContactor(data: {
+  user_ids: string
+  id: string,
+  msg: string
+}) {
+  return $http({
+    url: '/send/song',
+    params: {
+      ...data,
+      cookie: localStorage.getItem('cookie')
+    }
+  })
+}
+
+// 发送歌单
+export function sendSheetToContactor(data: {
+  user_ids: string
+  playlist: string,
+  msg: string
+}) {
+  return $http({
+    url: '/send/playlist',
+    params: {
+      ...data,
+      cookie: localStorage.getItem('cookie')
+    }
+  })
+}
+
+// 发送专辑
+export function sendAlbumToContactor(data: {
+  user_ids: string
+  id: string,
+  msg: string
+}) {
+  return $http({
+    url: '/send/album',
+    params: {
+      ...data,
+      cookie: localStorage.getItem('cookie')
+    }
+  })
+}

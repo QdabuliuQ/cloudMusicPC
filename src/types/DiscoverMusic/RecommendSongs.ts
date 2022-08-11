@@ -1,7 +1,9 @@
 import { columnInt } from "../CloudDick/CloudDick";
 import { songInt } from "../SheetDetail/SheetSongs";
 export class InitData {
+  date: string = ''
   day: number = new Date().getDate()
+  nowDate: string = ''
   total: number = -1
   songList: songInt[] = []
   columns: columnInt[] = [
@@ -10,4 +12,5 @@ export class InitData {
     {title: '专辑', width: '20%', key: 'al', slot: 'al'},
     {title: '时长', width: '15%', key: 'dt', slot: 'dt'},
   ]
+  options: {value: string, label: string}[] = []
 }

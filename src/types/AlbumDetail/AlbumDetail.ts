@@ -1,6 +1,9 @@
-export class InitData {
-  id: string = ''
+import useLogin from "@/hooks/useLogin";
 
+export class InitData {
+  isLogin: boolean = useLogin(false)
+  id: string = ''
+  contactorList = <any>[]
   dataInfo: any = null
   otherInfo: {
     isSub: boolean
