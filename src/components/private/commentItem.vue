@@ -1,13 +1,23 @@
 <template>
   <div v-if="show" class="commentItem">
     <div class="itemImage">
-      <el-avatar @click="toDetail(userId)" style="margin-top: 5px" :size="40" :src="avatarUrl" />
+      <el-avatar
+        @click="toDetail(userId)"
+        style="margin-top: 5px"
+        :size="40"
+        :src="avatarUrl"
+      />
     </div>
-    <div :style="{cursor: !disOperation ? 'pointer' : 'auto'}" @click="commentDetail(cid)" class="itemInfo">
+    <div
+      :style="{ cursor: !disOperation ? 'pointer' : 'auto' }"
+      @click="commentDetail(cid)"
+      class="itemInfo"
+    >
       <div class="infoBox">
         <div class="topInfo">
           <div class="infoName">
-            <span @click.stop="toDetail(userId)">{{ nickname }}</span>:<span class="infoContent">&nbsp;{{ content }}</span>
+            <span @click.stop="toDetail(userId)">{{ nickname }}</span
+            >:<span class="infoContent">&nbsp;{{ content }}</span>
           </div>
         </div>
         <div v-if="beReplied && beReplied.length" class="centerInfo">
@@ -17,7 +27,9 @@
             :key="item.beRepliedCommentId"
             class="listItem"
           >
-            <span @click.stop="toDetail(item.user.userId)">{{ item.user.nickname }}:</span>&nbsp;{{ item.content }}
+            <span @click.stop="toDetail(item.user.userId)"
+              >{{ item.user.nickname }}:</span
+            >&nbsp;{{ item.content }}
           </div>
         </div>
         <div class="bottomInfo">
@@ -33,8 +45,16 @@
               <img v-else src="~images/common/praise.png" alt="" />
               {{ count }}
             </div>
-            <div v-if="!disOperation" @click.stop="replyComment" class="dataItem">
-              <img style="margin-right: 0; position: relative; top: 1px" src="~images/common/comment.png" alt="" />
+            <div
+              v-if="!disOperation"
+              @click.stop="replyComment"
+              class="dataItem"
+            >
+              <img
+                style="margin-right: 0; position: relative; top: 1px"
+                src="~images/common/comment.png"
+                alt=""
+              />
             </div>
             <el-popconfirm
               v-if="!disOperation && useLogin(false) && uid == userId"
@@ -70,7 +90,7 @@ import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "commentItem",
-  emits: ['deleteCallback'],
+  emits: ["deleteCallback"],
   props: [
     "avatarUrl",
     "time",
@@ -84,19 +104,21 @@ export default defineComponent({
     "id",
     "cid",
     "threadId",
-    "disOperation"
+    "disOperation",
   ],
   setup(props, context) {
-    const router = useRouter()
+    const router = useRouter();
     const data = reactive({
       isLike: false,
       count: 0,
-      uid: '0',
-      show: true
+      uid: "0",
+      show: true,
     });
 
-    if (localStorage.getItem('id')) {
-      data.uid = decodeURIComponent(window.atob(localStorage.getItem('id') as string))
+    if (localStorage.getItem("id")) {
+      data.uid = decodeURIComponent(
+        window.atob(localStorage.getItem("id") as string)
+      );
     }
 
     watch(
@@ -113,27 +135,38 @@ export default defineComponent({
       },
       { immediate: true }
     );
-    
+
     // 评论详情
     const commentDetail = (e: number) => {
       if (!props.disOperation) {
-        router.push(`/CommentDetail?cid=${e}&id=${props.id}&type=${props.type}`)
+        if (
+          props.type == 0 ||
+          props.type == 1 ||
+          props.type == 2 ||
+          props.type == 3 ||
+          props.type == 4 ||
+          props.type == 5
+        ) {
+          router.push(
+            `/CommentDetail?cid=${e}&id=${props.id}&type=${props.type}`
+          );
+        }
       }
-    }
-    
+    };
+
     const toDetail = (e: number) => {
-      router.push(`/UserDetail?id=${e}`)
-    }
+      router.push(`/UserDetail?id=${e}`);
+    };
 
     // 回复评论
     const replyComment = () => {
       if (useLogin()) {
-        bus.emit('replyComment', {
-          id:  props.cid, 
-          name: props.nickname
-        })
+        bus.emit("replyComment", {
+          id: props.cid,
+          name: props.nickname,
+        });
       }
-    }
+    };
 
     // 删除评论
     const confirmDelete = () => {
@@ -142,15 +175,15 @@ export default defineComponent({
           t: 0,
           type: props.type,
           id: props.id,
-          content: '',
-          commentId: props.cid
+          content: "",
+          commentId: props.cid,
         }).then((res: any) => {
           if (res.data.code == 200) {
-            data.show = false
+            data.show = false;
           }
-        })
+        });
       }
-    }
+    };
 
     const praiseResource = () => {
       if (useLogin()) {

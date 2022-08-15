@@ -23,6 +23,7 @@
         :shareCount="event.info.shareCount"
         :pics="event.pics"
         :disableOpe="true"
+        :uid="event.user.userId"
       ></songEItem>
       <albumEItem
         class="eventItem"
@@ -38,6 +39,7 @@
         :shareCount="event.info.shareCount"
         :pics="event.pics"
         :disableOpe="true"
+        :uid="event.user.userId"
       ></albumEItem>
       <audioEItem
         class="eventItem"
@@ -53,6 +55,7 @@
         :shareCount="event.info.shareCount"
         :pics="event.pics"
         :disableOpe="true"
+        :uid="event.user.userId"
       ></audioEItem>
       <programEItem
         class="eventItem"
@@ -68,6 +71,7 @@
         :shareCount="event.info.shareCount"
         :pics="event.pics"
         :disableOpe="true"
+        :uid="event.user.userId"
       ></programEItem>
       <sheetEItem
         class="eventItem"
@@ -83,6 +87,7 @@
         :shareCount="event.info.shareCount"
         :pics="event.pics"
         :disableOpe="true"
+        :uid="event.user.userId"
       ></sheetEItem>
       <videoEItem
         class="eventItem"
@@ -98,6 +103,7 @@
         :shareCount="event.info.shareCount"
         :pics="event.pics"
         :disableOpe="true"
+        :uid="event.user.userId"
       ></videoEItem>
       <mvEItem
         class="eventItem"
@@ -113,6 +119,7 @@
         :shareCount="event.info.shareCount"
         :pics="event.pics"
         :disableOpe="true"
+        :uid="event.user.userId"
       ></mvEItem>
       <commentEItem
         class="eventItem"
@@ -128,6 +135,7 @@
         :shareCount="event.info.shareCount"
         :pics="event.pics"
         :disableOpe="true"
+        :uid="event.user.userId"
       ></commentEItem>
       <div v-else style="text-align: center; padding: 15px 0" class="unSupport">
         暂无支持显示该动态类型
@@ -238,6 +246,12 @@ export default defineComponent({
     .eventContent {
       margin-left: 0 !important;
       background: #333333 !important;
+    }
+    .mvContent {
+      margin-left: 0 !important;
+    }
+    .videoContent {
+      margin-left: 0 !important;
     }
     .eventPics {
       margin-left: 0 !important;

@@ -7,7 +7,8 @@
       :modal="false"
       draggable
     >
-      <div class="diglogTitle">分享给{{ uName }}(好友)</div>
+      <div v-if="type == 'text'" class="diglogTitle">发送给{{ uName }}</div>
+      <div v-else class="diglogTitle">分享给{{ uName }}(好友)</div>
       <div class="diglogTextBox">
         <textarea maxlength="200" v-model="comment"></textarea>
         <div class="functionList">
@@ -35,7 +36,7 @@
           </el-popover>
         </div>
       </div>
-      <div class="dialogInfoBox">
+      <div v-if="id != ''" class="dialogInfoBox">
         <el-avatar
           v-if="infoImage"
           style="margin-left: 7px"
@@ -50,7 +51,7 @@
         </div>
       </div>
       <div class="dialogBtnBox">
-        <div @click="shareContentEvent" class="shareBtn">分享</div>
+        <div @click="shareContentEvent" class="shareBtn">{{type == 'text' ? '发送' : '分享'}}</div>
       </div>
     </el-dialog>
   </div>
@@ -64,7 +65,6 @@ import {
   toRefs,
   ref,
   watch,
-  nextTick,
 } from "vue";
 import {
   ElDialog,
@@ -78,6 +78,9 @@ import {
   sendSongToContactor,
   sendSheetToContactor,
   sendAlbumToContactor,
+} from "@/network/Message/privateMessage";
+import {
+  sendMessage,
 } from "@/network/Message/privateMessage";
 import useLogin from "@/hooks/useLogin";
 
@@ -225,6 +228,26 @@ export default defineComponent({
                 });
               }
             });
+          } else if (data.type == 'text') {
+            sendMessage({
+              user_ids: data.uid,
+              msg: data.comment
+            }).then((res: any) => {
+              if (res.data.code == 200) { 
+                ElNotification({
+                  message: "发送消息成功",
+                  type: "success",
+                  customClass: "darkNotice",
+                });
+                data.visible = false;
+              } else {
+                ElNotification({
+                  message: "发送消息失败",
+                  type: "error",
+                  customClass: "darkNotice",
+                });
+              }
+            })
           }
         } else {
           ElNotification({

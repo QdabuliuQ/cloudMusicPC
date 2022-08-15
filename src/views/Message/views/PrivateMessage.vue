@@ -128,7 +128,7 @@
         <div class="textarea">
           <div style="">
             <div class="inputContainer">
-              <textarea maxlength="200" v-model="text"></textarea>
+              <textarea @keyup.enter="sendEvent" maxlength="200" v-model="text"></textarea>
             </div>
             <div class="btnContainer">
               <el-popover
@@ -271,7 +271,8 @@ export default defineComponent({
       getChatContent(false);
     };
     // 发送消息
-    const sendEvent = () => {
+    const sendEvent = (e: any) => {
+      e.preventDefault()
       if (data.text != "") {
         sendMessage({
           user_ids:
@@ -279,7 +280,15 @@ export default defineComponent({
           msg: data.text,
         })
           .then((res: any) => {
-            if (res.data.code != 200) {
+            if (res.data.code == 200) {
+              res.data.newMsgs[0].msg = JSON.parse(res.data.newMsgs[0].msg)
+              data.messageList.push(res.data.newMsgs[0])
+              data.objectList[data.activeIndex].lastMsg = data.text
+              nextTick(() => {
+                scrollBottom()
+              })
+              data.text = ''
+            } else {
               ElNotification({
                 message: "发送过于频繁，晚点再试试吧",
                 type: "warning",

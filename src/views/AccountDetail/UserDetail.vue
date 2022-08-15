@@ -40,7 +40,7 @@
                 <img src="~images/musicNavBar/singer.png" alt="" />
                 歌手主页
               </div>
-              <div v-if="uid != id" class="btnItem">
+              <div v-if="uid != id" @click="sendMessage" class="btnItem">
                 <img src="~images/common/chat.png" alt="" />
                 发私信
               </div>
@@ -126,7 +126,7 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, reactive, onMounted, toRefs, watch } from "vue";
+import { defineComponent, reactive, onMounted, toRefs, watch, getCurrentInstance } from "vue";
 import detailPanel from "./detailPanel.vue";
 import { InitData } from "@/types/AccountDetail/UserDetail";
 import { getUserDetail } from "@/network/LoginDialog/loginDialog";
@@ -146,6 +146,7 @@ export default defineComponent({
     loading,
   },
   setup() {
+    const _this: any = getCurrentInstance()
     const router = useRouter();
     const data = reactive(new InitData());
     data.id = parseInt(router.currentRoute.value.query.id as string);
@@ -155,6 +156,17 @@ export default defineComponent({
       );
     }
 
+    const sendMessage = () => {
+      _this.proxy.$toMessage(
+        '',
+        'text',
+        '',
+        '',
+        data.id,
+        data.userInfo.profile.nickname,
+      )
+    }
+    // 导航栏
     const refreshNav = () => {
       data.navList = [];
       data.navList.push(
@@ -181,7 +193,7 @@ export default defineComponent({
       );
     };
     refreshNav();
-
+    // 关注用户
     const followEvent = () => {
       if (useLogin()) {
         followUser({
@@ -247,6 +259,7 @@ export default defineComponent({
     );
 
     return {
+      sendMessage,
       followEvent,
       getCity,
       router,

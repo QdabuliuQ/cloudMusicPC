@@ -26,7 +26,9 @@ export default defineComponent({
 
     const itemToggle = (e: number) => {
       data.activeIndex = e;
-      router.push(props.list[e].path);
+      console.log(props);
+      
+      router.replace(props.list[e].path);
       content.emit("itemClick", e);
     };
 
@@ -44,6 +46,8 @@ export default defineComponent({
       data.activeIndex = router.currentRoute.value.meta[
         props.routerKey
       ] as number;
+
+      // itemToggle(0)
     });
     return {
       ...toRefs(data),

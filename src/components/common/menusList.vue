@@ -304,7 +304,7 @@ export default defineComponent({
       },
       toDetail(id: number, i: number) {
         data.activeIndex = id;
-        router.push(`/MySheet?id=${id}&like=${i == 0 ? 1 : 0}`);
+        router.push(`/SheetDetail?id=${id}`);
       },
       getData() {
         getUserSheet({

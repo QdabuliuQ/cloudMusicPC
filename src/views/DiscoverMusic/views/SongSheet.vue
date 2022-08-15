@@ -66,6 +66,7 @@ export default defineComponent({
     const data = reactive(new InitData());
     // 获取歌单信息
     const getSheetData = (pageIndex: number, i: number, j: number) => {
+      data.categoryData.length = 0
       getSheetList({
         cat:
           i != -1 && j != -1 ? data.categoryList[i].cateList[j].name : "全部",

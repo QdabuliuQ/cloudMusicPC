@@ -2,7 +2,7 @@
   <div id="UserEvents">
     <div v-if="userInfo" class="title">{{ userInfo.nickname }}的动态</div>
     <loading v-if="!eventList.length && size != 0"></loading>
-    <emptyContent v-else-if="size == 0"></emptyContent>
+    <emptyContent v-else-if="eventList.length == 0 && size == 0"></emptyContent>
     <div
       v-if="showContainer"
       :infinite-scroll-delay="700"
@@ -221,7 +221,9 @@ const mvEItem = defineAsyncComponent(() => import("./mvEItem.vue"));
 const replyEItem = defineAsyncComponent(() => import("./replyEItem.vue"));
 const commentEItem = defineAsyncComponent(() => import("./commentEItem.vue"));
 const textEItem = defineAsyncComponent(() => import("./textEItem.vue"));
-const unsupportEItem = defineAsyncComponent(() => import("./unsupportEItem.vue"));
+const unsupportEItem = defineAsyncComponent(
+  () => import("./unsupportEItem.vue")
+);
 
 export default defineComponent({
   name: "UserEvents",
@@ -269,7 +271,6 @@ export default defineComponent({
           }
           data.size = res.data.size;
           if (res.data.events.length) {
-            
             data.eventList = [...data.eventList, ...res.data.events];
             data.lasttime = res.data.lasttime;
           } else {
@@ -315,7 +316,6 @@ export default defineComponent({
     });
 
     onMounted(() => {
-
       bus.on("refreshData", () => {
         data.eventList = [];
         data.lasttime = -1;

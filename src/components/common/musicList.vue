@@ -15,37 +15,37 @@
         </tr>
       </thead>
       <tbody v-if="songList && columnSlot">
-        <tr
-          @dblclick="toPlayMusic(i1)"
-          v-contextmenu:songContextRef
-          :data-index="i1"
-          class="songItem"
-          v-for="(item, i1) in songList"
-          :key="i1"
-        >
-          <td style="width: 3%; text-align: center; color: #949494">
-            {{ i1 + 1 < 10 ? "0" + (i1 + 1) : i1 + 1 }}
-          </td>
-          <td style="width: 3%" v-if="like | download">
-            <div class="iconBox">
-              <img
-                v-if="download"
-                class="icon"
-                src="~images/common/download.png"
-                alt=""
-              />
-            </div>
-          </td>
-          <td
-            :style="{ width: columns[i2].width }"
-            v-for="(att, i2) in columnSlot"
-            :key="i2"
+          <tr
+            @dblclick="toPlayMusic(i1)"
+            v-contextmenu:songContextRef
+            :data-index="i1"
+            class="songItem"
+            v-for="(item, i1) in songList"
+            :key="i1"
           >
-            <div class="tableItem">
-              <slot :content="item" :index="i1" :name="att" />
-            </div>
-          </td>
-        </tr>
+            <td style="width: 3%; text-align: center; color: #949494">
+              {{ i1 + 1 < 10 ? "0" + (i1 + 1) : i1 + 1 }}
+            </td>
+            <td style="width: 3%" v-if="like | download">
+              <div class="iconBox">
+                <img
+                  v-if="download"
+                  class="icon"
+                  src="~images/common/download.png"
+                  alt=""
+                />
+              </div>
+            </td>
+            <td
+              :style="{ width: columns[i2].width }"
+              v-for="(att, i2) in columnSlot"
+              :key="i2"
+            >
+              <div class="tableItem">
+                <slot :content="item" :index="i1" :name="att" />
+              </div>
+            </td>
+          </tr>
       </tbody>
     </table>
   </div>
@@ -166,9 +166,9 @@ export default defineComponent({
       userSheet: <any>[],
       songList: <any>[],
       contactorList: <any>[],
+      list: <any>[],
       isLogin: useLogin(false),
     });
-
     // 私信分享
     const userItemClick = (e: number) => {
       if (useLogin()) {
@@ -278,11 +278,6 @@ export default defineComponent({
       });
     };
 
-    const onDrop = (e: any) => {
-      console.log(e);
-      
-    }
-
     if (data.isLogin) {
       getRecentContractor().then((res: any) => {
         data.contactorList = res.data.data.follow;
@@ -302,6 +297,14 @@ export default defineComponent({
       () => props.data,
       (n) => {
         data.songList = n;
+        data.list = [];
+        for (const item of n) {
+          data.list.push({
+            name: item.name,
+            id: item.id,
+          });
+        }
+        console.log(data.list);
       },
       { immediate: true }
     );
@@ -319,7 +322,6 @@ export default defineComponent({
 
     return {
       songContextRef,
-      onDrop,
       userItemClick,
       commentList,
       toPlayMusic,
@@ -353,6 +355,7 @@ export default defineComponent({
         background-color: #2c2c2c;
       }
       tr {
+        user-select: none;
         cursor: pointer;
         &:hover {
           background-color: @hoverColor !important;

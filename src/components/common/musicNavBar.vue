@@ -167,14 +167,14 @@
                   </div>
                 </div>
                 <div class="bottomContainer">
-                  <div class="item">
+                  <div @click="router.push('/UserLevel')" class="item">
                     <div class="itemTitle">
                       <el-icon style="margin-right: 5px" :size="22"
                         ><Notebook
                       /></el-icon>
                       等级
                     </div>
-                    <div>{{ level }}</div>
+                    <div style="display:flex; align-items:center">{{ level }}<el-icon style="margin-left: 5px"><ArrowRight /></el-icon></div>
                   </div>
                   <div class="item">
                     <div class="itemTitle">

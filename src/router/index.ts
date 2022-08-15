@@ -35,6 +35,7 @@ const UserFollow = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Us
 const UserFans = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/UserInfo/UserFans.vue')
 const UserEvents = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/UserInfo/UserEvents.vue')
 const UserInfoEdit = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/UserInfo/UserInfoEdit.vue')
+const UserLevel = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/UserInfo/UserLevel.vue')
 
 const Recent = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Recent/Recent.vue')
 const RecentSongs = () => import(/* webpackChunkName:"HomePageChunk" */ 'views/Recent/views/RecentSongs.vue')
@@ -288,6 +289,14 @@ const routes: Array<RouteRecordRaw> = [
         component: UserInfoEdit
       },
       {
+        path: '/UserLevel',
+        name: 'UserLevel',
+        meta: {
+          login: true
+        },
+        component: UserLevel
+      },
+      {
         path: '/Topic',
         name: 'Topic',
         component: Topic
@@ -382,20 +391,6 @@ const routes: Array<RouteRecordRaw> = [
               collectIndex: 3
             }, component: CollectArticles
           },
-        ]
-      },
-      {
-        path: '/MySheet',
-        name: 'MySheet',
-        meta: {
-          // login: true
-        },
-        component: SheetDetail,
-        children: [
-          { path: '/MySheet', redirect: '/SheetSongs' },
-          { path: '/SheetSongs', meta: { sheetIndex: 0 }, name: 'SheetSongs', component: SheetSongs },
-          { path: '/SheetComment', meta: { sheetIndex: 1 }, name: 'SheetComment', component: SheetComment },
-          { path: '/SheetCollect', meta: { sheetIndex: 2 }, name: 'SheetCollect', component: SheetCollect },
         ]
       },
       {

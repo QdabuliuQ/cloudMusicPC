@@ -562,6 +562,8 @@ export default defineComponent({
             bus.emit("refreshData");
             data.comment = "";
             data.visible = false;
+            console.log(data.visible, '------------');
+            
           } else {
             ElNotification({
               message: "分享动态失败",
