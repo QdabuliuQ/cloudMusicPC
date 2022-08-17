@@ -136,6 +136,7 @@ export default defineComponent({
       font-weight: bold;
       display: flex;
       align-items: center;
+      color: var(--textColor);
       span {
         font-size: 12px;
         margin-left: 15px;
@@ -145,6 +146,7 @@ export default defineComponent({
         cursor: pointer;
         display: flex;
         align-items: center;
+        color: #Fff;
         &:hover {
           background-color: @hoverTColor !important;
         }
@@ -172,8 +174,8 @@ export default defineComponent({
     width: 250px !important;
     min-height: calc(100vh - 55px - 70px);
     box-sizing: border-box;
-    border-left: 1px solid #595959;
-    background-color: #313134;
+    border-left: 1px solid var(--borderColor);
+    background-color: var(--bgColor);
     .userInfo {
       display: flex;
       align-items: center;
@@ -187,6 +189,7 @@ export default defineComponent({
           overflow: hidden; //超出的文本隐藏
           text-overflow: ellipsis; //溢出用省略号显示
           white-space: nowrap;
+          color: var(--textColor);
           img {
             width: 17px;
             margin-left: 7px;
@@ -211,8 +214,9 @@ export default defineComponent({
         padding: 10px 0;
         flex: 1;
         cursor: pointer;
+        color: var(--textColor);
         &:hover {
-          background-color: @hoverColor;
+          background-color: var(--hoverColor);
         }
         .data {
           font-weight: bold;
@@ -227,6 +231,7 @@ export default defineComponent({
     .hotTopic {
       margin-top: 15px;
       padding: 0 15px;
+      color: var(--textColor);
     }
     .topicTitle {
       margin-bottom: 10px;

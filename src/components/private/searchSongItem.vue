@@ -40,7 +40,7 @@ export default defineComponent({
   text-align: left;
   cursor: pointer;
   &:hover {
-    background-color: @hoverColor;
+    background-color: var(--hoverColor);
   }
   .index {
     width: 8%;

@@ -99,6 +99,7 @@ export default defineComponent({
     font-size: 19px;
     font-weight: bold;
     margin-bottom: 30px;
+    color: var(--textColor);
   }
   .userContainer {
     display: grid;

@@ -93,7 +93,7 @@ export default defineComponent({
   }
   .singerItem {
     &:hover {
-      color: #fff;
+      color: var(--textColor);
     }
   }
 }

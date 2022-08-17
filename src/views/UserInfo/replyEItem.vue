@@ -234,7 +234,7 @@ export default defineComponent({
   .replyEventContent {
     margin-left: 60px;
     padding: 8px 12px;
-    background: @eventBgc;
+    background: var(--eventBgc);
     border-radius: 8px;
     font-size: 13px;
     cursor: pointer;
@@ -245,7 +245,7 @@ export default defineComponent({
     }
     .eventContent {
       margin-left: 0 !important;
-      background: #333333 !important;
+      background: var(--replyContentBgc) !important;
     }
     .mvContent {
       margin-left: 0 !important;

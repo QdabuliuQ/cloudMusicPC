@@ -172,6 +172,7 @@ export default defineComponent({
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+      color: var(--textColor);
     }
     .sheetData {
       font-size: 12px;

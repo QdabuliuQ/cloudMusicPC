@@ -110,7 +110,7 @@ export default defineComponent({
     padding: 10px 0;
     cursor: pointer;
     &:hover {
-      background-color: @hoverColor;
+      background-color: var(--hoverColor);
     }
     .itemIndex {
       width: 3%;

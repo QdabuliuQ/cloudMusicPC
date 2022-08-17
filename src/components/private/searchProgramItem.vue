@@ -58,7 +58,7 @@ export default defineComponent({
   font-size: 12px;
   cursor: pointer;
   &:hover {
-    background-color: @hoverColor;
+    background-color: var(--hoverColor);
   }
   .index {
     width: 8%;

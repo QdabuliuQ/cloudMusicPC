@@ -156,7 +156,7 @@ export default defineComponent({
   .el-select-dropdown__item:hover {
     background-color: transparent;
     &:hover {
-      background-color: @hoverColor;
+      background-color: var(--hoverColor);
     }
   }
   .el-popper__arrow::before {
@@ -211,7 +211,7 @@ export default defineComponent({
   .tItem {
     color: @fontColor;
     &:hover {
-      color: #fff;
+      color: var(--textColor);
     }
   }
 }

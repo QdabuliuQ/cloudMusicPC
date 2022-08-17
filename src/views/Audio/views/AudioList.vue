@@ -90,7 +90,7 @@ export default defineComponent({
   .pageTitle {
     margin-bottom: 20px;
     font-weight: bold;
-    color: @fontColor;
+    color: var(--textColor);
     font-size: 22px;
   }
   .audioContainer {
@@ -104,7 +104,7 @@ export default defineComponent({
       border-radius: 8px;
       margin-bottom: 10px;
       &:hover {
-        background: @hoverColor;
+        background: var(--hoverColor);
       }
       .image {
         display: flex;
@@ -114,13 +114,14 @@ export default defineComponent({
         margin-left: 15px;
         .name {
           font-size: 13.5px;
+          color: var(--textColor);
         }
         .text {
           margin: 5px 0;
           font-size: 12.5px;
           color: @fontColor;
           &:hover {
-            color: #fff;
+            color: var(--textColor);
           }
         }
         .desc {

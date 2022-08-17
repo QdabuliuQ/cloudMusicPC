@@ -367,13 +367,14 @@ export default defineComponent({
     font-size: 19px;
     font-weight: bold;
     margin-bottom: 30px;
+    color: var(--textColor);
   }
   .eventItem {
     margin-bottom: 18px;
     .eventContent {
       margin-left: 60px;
       padding: 8px 12px;
-      background: @eventBgc;
+      background: var(--eventBgc);
       border-radius: 8px;
       font-size: 13px;
       cursor: pointer;

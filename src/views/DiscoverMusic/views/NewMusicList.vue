@@ -12,11 +12,16 @@
     <loading v-if="!newSongList.length"></loading>
     <tableList :columns="columns" :data="newSongList">
       <template v-slot:index="{ index }">
-        <span style="font-weight:bold;">{{index}}</span>
+        <span class="songIndex" style="font-weight: bold">{{ index }}</span>
       </template>
       <template v-slot:blurPicUrl="{ content }">
         <div class="songImage">
-          <el-avatar shape="square" :size="60" :fit="'contain'" :src="content.album.blurPicUrl" />
+          <el-avatar
+            shape="square"
+            :size="60"
+            :fit="'contain'"
+            :src="content.album.blurPicUrl"
+          />
         </div>
       </template>
       <template v-slot:name="{ content }">
@@ -30,12 +35,14 @@
         </div>
       </template>
       <template v-slot:artists="{ content }">
-        <span
-          class="infoItem clickItem"
-          v-for="item in content.artists"
-          :key="item.name"
-          >{{ item.name }}&nbsp;&nbsp;</span
-        >
+        <div class="songSinger">
+          <span
+            class="infoItem clickItem"
+            v-for="item in content.artists"
+            :key="item.name"
+            >{{ item.name }}&nbsp;&nbsp;</span
+          >
+        </div>
       </template>
       <template v-slot:album="{ content }">
         <div class="infoItem clickItem">
@@ -43,7 +50,9 @@
         </div>
       </template>
       <template v-slot:duration="{ content }">
-        <span style="text-align:right" class="infoItem">{{ $formatTime(content.duration) }}</span>
+        <span style="text-align: right" class="infoItem">{{
+          $formatTime(content.duration)
+        }}</span>
       </template>
     </tableList>
   </div>
@@ -53,7 +62,7 @@
 import { defineComponent, reactive, onMounted, toRefs } from "vue";
 import { InitData } from "@/types/DiscoverMusic/NewMusicList";
 import { getNewSongs } from "@/network/DiscoverMusic/newMusicList";
-import loading from "@/components/common/loading.vue"
+import loading from "@/components/common/loading.vue";
 import tableList from "@/components/common/tableList.vue";
 import targetList from "@/components/common/targetList.vue";
 
@@ -62,15 +71,15 @@ export default defineComponent({
   components: {
     loading,
     tableList,
-    targetList
+    targetList,
   },
   setup() {
     const data = reactive(new InitData());
     // 切换数据
     const itemToggle = (e: number) => {
       data.langIndex = e;
-      data.newSongList = []
-      newSongsData(data.languageList[data.langIndex].id)
+      data.newSongList = [];
+      newSongsData(data.languageList[data.langIndex].id);
     };
     // 获取数据
     const newSongsData = (type: string | number) => {
@@ -108,9 +117,24 @@ export default defineComponent({
       font-weight: bold;
     }
   }
+  .songSinger {
+    color: var(--textColor);
+    width: 200px;
+    text-overflow: -o-ellipsis-lastline;
+    overflow: hidden;				//溢出内容隐藏
+    text-overflow: ellipsis;		//文本溢出部分用省略号表示
+    display: -webkit-box;
+    -webkit-line-clamp: 2;			//行数
+    line-clamp: 2;					
+    -webkit-box-orient: vertical;
+  }
+  .songIndex {
+    color: var(--textColor);
+  }
   .songName {
     display: flex;
     align-items: center;
+    color: var(--textColor);
   }
   .songImage {
     display: flex;

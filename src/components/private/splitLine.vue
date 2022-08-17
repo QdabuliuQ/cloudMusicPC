@@ -29,7 +29,7 @@ export default defineComponent({
 .splitLine {
   font-size: 18px;
   font-weight: bold;
-  color: #fff;
+  color: var(--textColor);
   display: flex;
   align-items: center;
   margin-top: 25px;

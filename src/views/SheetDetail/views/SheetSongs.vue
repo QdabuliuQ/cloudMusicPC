@@ -128,6 +128,7 @@ export default defineComponent({
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    color: var(--textColor);
     span {
       color: @fontColor;
     }
@@ -141,7 +142,7 @@ export default defineComponent({
   }
   .clickItem {
     &:hover {
-      color: #fff;
+      color: var(--textColor);
     }
   }
 }

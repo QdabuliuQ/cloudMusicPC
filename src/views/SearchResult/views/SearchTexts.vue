@@ -170,7 +170,7 @@ export default defineComponent({
   .infoData {
     color: @fontColor;
     &:hover {
-      color: #fff;
+      color: var(--textColor);
     }
   }
   .textList {
@@ -179,7 +179,7 @@ export default defineComponent({
       margin: 5px 0;
     }
     b {
-      color: @nameColor;
+      color: var(--nameColor);
     }
   }
   .infoBtn {
@@ -192,7 +192,7 @@ export default defineComponent({
       border-radius: 30px;
       margin-right: 7px;
       &:hover {
-        background: @hoverColor;
+        background: var(--hoverColor);
       }
     }
   }

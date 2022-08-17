@@ -119,7 +119,6 @@
     </v-contextmenu-item>
   </v-contextmenu>
   <el-dialog
-    custom-class="shareDialogClass"
     v-model="visible"
     width="450px"
     :modal="false"
@@ -406,10 +405,10 @@ export default defineComponent({
 <style lang='less'>
 #menusList {
   width: 210px;
-  background-color: @greyColor;
+  background-color: var(--bgColor);
   min-height: 100%;
   box-sizing: border-box;
-  border-right: 2px solid #4c4c4c;
+  border-right: 2px solid var(--borderColor);
   .listContainer {
     padding: 15px 0;
     .menuTitle {
@@ -419,12 +418,12 @@ export default defineComponent({
     }
     .activeItem {
       font-weight: bold;
-      background-color: #ffffff1c;
-      color: #fff;
+      background-color: var(--hoverColor);
+      color: var(--textColor);
     }
     .menuItem {
       padding: 10px 18px;
-      color: #dcdcdc;
+      color: var(--textColor);
       cursor: pointer;
       font-size: 14px;
       margin-bottom: 3px;
@@ -441,7 +440,7 @@ export default defineComponent({
         white-space: nowrap;
       }
       &:hover {
-        background-color: #ffffff1c;
+        background-color: var(--hoverColor);
       }
     }
     .createSheet {
@@ -457,20 +456,22 @@ export default defineComponent({
 .createSheetDialog {
   .title {
     text-align: center;
-    color: #fff;
+    color: var(--textColor);
     font-size: 17px;
     font-weight: bold;
   }
   .inputContainer {
     margin-top: 15px;
     padding: 5px 10px;
-    background-color: #4f4f4f;
+    background-color: var(--bgColor);
+    box-sizing: border-box;
+    border: 1px solid var(--inputBorderColor);
     input {
       width: 98%;
       background-color: transparent;
       border: 0;
       outline: none;
-      color: #fff;
+      color: var(--textColor);
     }
   }
   .submit {
@@ -484,7 +485,7 @@ export default defineComponent({
       text-indent: 5px;
       border-radius: 30px;
       background-color: @themeColor;
-      color: #fff;
+      color: #FFF;
       cursor: pointer;
       &:hover {
         background-color: @hoverTColor;

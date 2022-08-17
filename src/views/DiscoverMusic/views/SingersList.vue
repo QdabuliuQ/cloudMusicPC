@@ -164,14 +164,14 @@ export default defineComponent({
     }
     .itemTitle {
       width: 7%;
-      color: #fff;
+      color: var(--textColor);
     }
     .itemContainer {
       width: 92%;
       display: flex;
       flex-wrap: wrap;
       span {
-        color: #fff;
+        color: var(--textColor);
         opacity: 0.5;
         cursor: pointer;
         margin-right: 30px;
@@ -187,7 +187,7 @@ export default defineComponent({
     grid-gap: 15px;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
     .singerItem {
-      color: #fff;
+      color: var(--textColor);
       font-size: 13.5px;
       cursor: pointer;
       margin-bottom: 15px;

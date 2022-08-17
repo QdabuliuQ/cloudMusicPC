@@ -18,13 +18,10 @@ export default defineComponent({
 
 <style lang="less">
 @import (css) "./assets/less/elementStyle.less";
+
 .el-select {
-  --el-select-border-color-hover: @themeColor !important;
   --el-select-font-size: 13px !important;
-  --el-select-input-focus-border-color: @themeColor !important;
   .el-input__wrapper {
-    background-color: #424242;
-    box-shadow: 0 0 0 0;
     .el-input__inner {
       font-size: 13px;
     }
@@ -34,7 +31,7 @@ html,
 body {
   margin: 0;
   padding: 0;
-  color: #dcdcdc;
+  color: var(--textColor);
   min-width: 1500px !important;
 }
 img {
@@ -58,55 +55,18 @@ img {
 .el-loading-spinner .el-loading-text {
   color: @themeColor !important;
 }
-.infoPopperClass {
-  border: 1px solid #414243 !important;
-}
-.infoPopperClass.is-light {
-  background-color: #424242 !important;
-  border: 1px solid #414243 !important;
-  font-size: 13px;
-  .el-popconfirm {
-    color: #fff;
-  }
-  .el-popper__arrow::before {
-    background-color: #424242 !important;
-  }
-  .el-button.is-text {
-    color: #fff;
-    &:hover {
-      background-color: @hoverColor;
-    }
-  }
-}
-.el-checkbox__input.is-checked .el-checkbox__inner {
-  background-color: @themeColor !important;
-  border: 1px solid @themeColor !important;
-}
-.el-checkbox__input.is-checked + .el-checkbox__label {
-  color: @themeColor !important;
-}
-.el-checkbox__input .el-checkbox__label {
-  font-size: 13px !important;
-}
-.el-checkbox .el-checkbox__inner:hover {
-  border: 1px solid @themeColor !important;
-}
-.el-checkbox .el-checkbox__inner {
-  background-color: #5f5f5f;
-  border: 1px solid #747474;
-}
 .darkNotice {
   background-color: rgb(30, 30, 30) !important;
   border: 1px solid #000 !important;
 
   .el-notification__content {
-    color: #fff !important;
+    color: var(--textColor) !important;
   }
 }
 .v-contextmenu {
-  background-color: #464646 !important;
-  border: 1px solid #464646 !important;
-  color: #fff !important;
+  background-color: var(--eventBgc) !important;
+  border: 1px solid var(--borderColor) !important;
+  color: var(--textColor) !important;
   .v-contextmenu-inner {
     padding: 10px 0;
   }
@@ -118,6 +78,7 @@ img {
   .contextItem {
     display: flex;
     align-items: center;
+    color: var(--textColor);
     .contextIcon {
       width: 20px;
       margin-right: 10px;
@@ -138,8 +99,50 @@ img {
     color: @fontColor !important;
   }
   .v-contextmenu-item--hover {
-    background-color: rgb(57, 57, 57) !important;
-    color: #fff !important;
+    background-color: var(--hoverColor) !important;
+    color: var(--textColor) !important;
   }
 }
+.emojiContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-gap: 5px;
+  text-align: center;
+  font-size: 16px;
+  .emojiItem {
+    cursor: pointer;
+    padding: 3px 3px 5px;
+    &:hover {
+      background-color: var(--hoverColor);
+    }
+  }
+}
+.userListContainer {
+    .userItem {
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      padding: 6px 0;
+      cursor: pointer;
+      &:hover {
+        background-color: var(--hoverColor);
+      }
+      .name {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+    .loadMore {
+      padding: 7px 0;
+      width: 100%;
+      text-align: center;
+      font-size: 12px;
+      margin-top: 5px;
+      cursor: pointer;
+      &:hover {
+        background-color: var(--hoverColor);
+      }
+    }
+  }
 </style>

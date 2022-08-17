@@ -234,7 +234,7 @@ export default defineComponent({
       position: absolute;
       bottom: -1px;
       right: -1px;
-      color: #fff;
+      color: var(--textColor);
       font-size: 12px;
       padding: 5px 12px;
       background-color: @themeColor;

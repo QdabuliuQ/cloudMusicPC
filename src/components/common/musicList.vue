@@ -342,7 +342,7 @@ export default defineComponent({
     width: 100%;
     font-size: 13px;
     .theadTr {
-      background-color: #2c2c2c;
+      background-color: var(--tableColor);
     }
     thead {
       color: @fontColor;
@@ -352,13 +352,13 @@ export default defineComponent({
     }
     tbody {
       .songItem:nth-child(even) {
-        background-color: #2c2c2c;
+        background-color: var(--tableColor);
       }
       tr {
         user-select: none;
         cursor: pointer;
         &:hover {
-          background-color: @hoverColor !important;
+          background-color: var(--hoverColor) !important;
         }
       }
       .iconBox {

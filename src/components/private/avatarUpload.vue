@@ -110,7 +110,7 @@ export default defineComponent({
     color: @fontColor;
     cursor: pointer;
     &:hover {
-      background: @hoverColor;
+      background: var(--hoverColor);
     }
   }
 }

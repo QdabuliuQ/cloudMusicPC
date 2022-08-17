@@ -99,7 +99,7 @@ export default defineComponent({
         width: 20px;
       }
       span {
-        color: @nameColor;
+        color: var(--nameColor);
         margin-right: 5px;
       }
     }

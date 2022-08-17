@@ -117,7 +117,6 @@ export default defineComponent({
     position: relative;
     .el-avatar {
       width: 100% !important;
-      height: 11vw;
     }
     .el-avatar--square {
       border-radius: 10px;
@@ -156,7 +155,7 @@ export default defineComponent({
   }
   .sheetTitle {
     margin-top: 2px;
-    color: #fff;
+    color: var(--textColor);
     text-overflow: -o-ellipsis-lastline;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -174,7 +173,7 @@ export default defineComponent({
     text-overflow: ellipsis;
     white-space: nowrap;
     &:hover {
-      color: #fff;
+      color: var(--textColor);
     }
   }
 }

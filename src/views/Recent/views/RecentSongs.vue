@@ -4,7 +4,7 @@
     <emptyContent v-else-if="total == 0"></emptyContent>
     <musicList v-else :data="songList" :columns="columns">
       <template v-slot:name="{ content }">
-        <div style="display: flex; align-items: center">
+        <div class="songName" style="display: flex; align-items: center">
           {{ content.name }}
           <targetList
             :mv="content.mv"
@@ -73,6 +73,9 @@ export default defineComponent({
   .tItem {
     color: @fontColor;
   }
+  .songName {
+    color: var(--textColor);
+  }
   .singerName {
     max-width: 240px;
     overflow: hidden;
@@ -81,7 +84,7 @@ export default defineComponent({
     span {
       color: @fontColor;
       &:hover {
-        color: #fff;
+        color: var(--textColor);
       }
     }
   }

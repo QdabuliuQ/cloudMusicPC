@@ -99,6 +99,7 @@ export default defineComponent({
     font-size: 19px;
     font-weight: bold;
     margin-bottom: 30px;
+    color: var(--textColor);
   }
   .userContainer {
     display: grid;
@@ -115,6 +116,9 @@ export default defineComponent({
       }
       .rightInfo {
         font-size: 14px;
+        .name {
+          color: var(--textColor);
+        }
         .signature {
           margin-top: 10px;
           font-size: 12px;

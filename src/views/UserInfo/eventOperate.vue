@@ -35,7 +35,6 @@
           title="是否确定删除该动态"
           confirm-button-text="确定"
           cancel-button-text="取消"
-          popper-class="infoPopperClass"
         >
           <template #reference>
             <div class="opeItem">
@@ -257,7 +256,7 @@ export default defineComponent({
   width: 100%;
   margin: 20px 0 0;
   padding-bottom: 20px;
-  border-bottom: 1px solid #4c4c4c;
+  border-bottom: 1px solid var(--borderColor);
   .eventOperate {
     display: flex;
     justify-content: flex-end;
@@ -286,10 +285,10 @@ export default defineComponent({
     margin-left: 60px;
     padding: 12px;
     border-radius: 8px;
-    background-color: @eventBgc;
+    background-color: var(--eventBgc);
     .textBox {
       padding: 8px;
-      background-color: #505050;
+      background-color: var(--eventCommentBgc);
       border-radius: 8px;
       textarea {
         resize: none;
@@ -297,7 +296,7 @@ export default defineComponent({
         width: 100%;
         height: 50px;
         border: 0;
-        color: #fff;
+        color: var(--textColor);
         outline: none;
       }
     }
@@ -306,17 +305,20 @@ export default defineComponent({
       padding: 8px 20px;
       font-size: 13.4px;
       border-radius: 8px;
-      border: 1px solid #6c6c6c;
+      border: 1px solid var(--borderColor);
       cursor: pointer;
       transition: 0.2s all linear;
+      color: var(--textColor);
       &:hover {
         background-color: @themeColor;
         border: 1px solid @themeColor;
+        color: #fff;
       }
     }
     .commentTitle {
       font-weight: bold;
       font-size: 14px;
+      color: var(--textColor);
     }
     .noComment {
       display: flex;

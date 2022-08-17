@@ -24,7 +24,7 @@
     <div v-if="artists" class="videoArtists">
       <!-- <label v-if="index != artists.length && index != 0"> / </label
         > -->
-      <span v-for="(item, index) in artists" :key="item.id ? item.id : item.userId"
+      <span @click.stop="router.push(item.id ? '/SingerDetail?id='+item.id : '/UserDetail?id='+item.userId )" v-for="(item, index) in artists" :key="item.id ? item.id : item.userId"
         >{{ item.name ? item.name : item.userName }}&nbsp;&nbsp;</span
       >
     </div>
@@ -64,6 +64,7 @@ export default defineComponent({
       }
     }
     return {
+      router,
       toPage
     };
   },
@@ -80,7 +81,7 @@ export default defineComponent({
     position: relative;
     overflow: hidden;
     border-radius: 8px;
-    background-color: #3e3e3e;
+    background-color: var(--tableColor);
     &:hover {
       .centerIcon {
         opacity: 1;
@@ -95,7 +96,7 @@ export default defineComponent({
       z-index: 5;
       position: absolute;
       font-size: 12px;
-      color: #Fff;
+      color: #fff;
       right: 10px;
       bottom: 8px;
     }
@@ -152,7 +153,7 @@ export default defineComponent({
   .videoTitle {
     padding: 4px 0;
     line-height: 20px;
-    color: #fff;
+    color: var(--textColor);
     text-overflow: -o-ellipsis-lastline;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -174,7 +175,7 @@ export default defineComponent({
     span {
       cursor: pointer;
       &:hover {
-        color: #fff;
+        color: var(--textColor);
       }
     }
   }
@@ -184,7 +185,7 @@ export default defineComponent({
     color: rgb(155, 155, 155);
     cursor: pointer;
       &:hover {
-        color: #fff;
+        color: var(--textColor);
       }
   }
 }

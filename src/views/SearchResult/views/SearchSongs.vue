@@ -161,7 +161,7 @@ export default defineComponent({
   }
   .clickItem {
     &:hover {
-      color: #fff;
+      color: var(--textColor);
     }
   }
 }

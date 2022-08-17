@@ -52,10 +52,10 @@ export default defineComponent({
       display: flex;
       align-items: center;
       border-radius: 30px;
-      border: 1px solid #5e5e5e;
+      border: 1px solid var(--hoverColor);
       .activeItem {
-        background-color: #5e5e5e;
-        color: #Fff !important;
+        background-color: var(--hoverColor);
+        color: var(--textColor) !important;
       }
       .btnItem {
         padding: 7px 30px;
@@ -64,7 +64,7 @@ export default defineComponent({
         cursor: pointer;
         border-radius: 30px;
         &:hover:not(.activeItem) {
-          background-color: #3e3e3e;
+          background-color: var(--hoverColor);
         }
       }
     }

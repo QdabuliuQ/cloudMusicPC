@@ -3,7 +3,6 @@
     <div v-if="cateList.length" class="cateBtnContainer">
       <el-popover
         ref="popoverRef"
-        :effect="'dark'"
         placement="bottom-start"
         :width="650"
         trigger="click"
@@ -131,7 +130,6 @@ export default defineComponent({
 <style lang='less'>
 .el-popover {
   padding: 20px !important;
-  background: rgb(72, 72, 72) !important;
   .cateList {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
@@ -154,9 +152,9 @@ export default defineComponent({
     }
   }
 }
-.el-popper.is-dark .el-popper__arrow::before {
-  background: rgb(72, 72, 72) !important;
-}
+// .el-popper.is-dark .el-popper__arrow::before {
+//   background: rgb(72, 72, 72) !important;
+// }
 #VideoList {
   .cateBtnContainer {
     display: flex;
@@ -167,9 +165,10 @@ export default defineComponent({
       border-radius: 36px;
       font-size: 13px;
       cursor: pointer;
-      border: 1px solid rgb(112, 112, 112);
+      border: 1px solid var(--borderColor);
       display: flex;
       align-items: center;
+      color: var(--textColor);
       img {
         width: 12px;
         margin-left: 2px;
@@ -177,7 +176,7 @@ export default defineComponent({
         top: 1px;
       }
       &:hover {
-        background-color: rgb(76, 76, 76);
+        background-color: var(--hoverColor);
       }
     }
   }

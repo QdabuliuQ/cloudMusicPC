@@ -185,7 +185,7 @@ export default defineComponent({
             flex: 1;
             margin-left: 7px;
             .name {
-              color: @nameColor;
+              color: var(--nameColor);
               font-size: 13px;
               cursor: pointer;
             }
@@ -207,7 +207,7 @@ export default defineComponent({
           .infoTitle {
             font-size: 13px;
             span {
-              color: @nameColor;
+              color: var(--nameColor);
             }
           }
           .infoContainer {

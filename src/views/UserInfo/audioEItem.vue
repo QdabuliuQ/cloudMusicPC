@@ -108,6 +108,7 @@ export default defineComponent({
 <style lang='less'>
 .audioEItem {
   .audioName {
+    color: var(--textColor);
     .audioCate {
       display: inline-block;
       color: @themeColor;
@@ -123,7 +124,7 @@ export default defineComponent({
     span {
       cursor: pointer;
       &:hover {
-        color: #fff;
+        color: var(--textColor);
       }
     }
   }

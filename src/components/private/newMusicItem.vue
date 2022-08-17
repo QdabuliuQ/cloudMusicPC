@@ -57,7 +57,7 @@ export default defineComponent({
   border-radius: 8px;
   cursor: pointer;
   &:hover {
-    background-color: #ffffff1b;
+    background-color: var(--hoverColor);
   }
   .leftImage {
     min-width: 55px;
@@ -84,7 +84,7 @@ export default defineComponent({
     .musicInfo {
       padding-left: 10px;
       font-size: 13px;
-      color: #fff;
+      color: var(--textColor);
       .musicSinger {
         min-width: 150px;
         max-width: 200px;
@@ -108,7 +108,7 @@ export default defineComponent({
         span {
           cursor: pointer;
           &:hover {
-            color: #fff;
+            color: var(--textColor);
           }
         }
       }

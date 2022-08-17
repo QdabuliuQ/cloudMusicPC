@@ -119,6 +119,7 @@ export default defineComponent({
 .songEItem {
   .eventContent {
     .songName {
+      color: var(--textColor);
       span {
         color: @fontColor;
       }
@@ -129,7 +130,7 @@ export default defineComponent({
       span {
         cursor: pointer;
         &:hover {
-          color: #fff;
+          color: var(--textColor);
         }
       }
     }

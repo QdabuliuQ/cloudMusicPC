@@ -15,7 +15,7 @@
                 <img :src="userInfo.identify.imageUrl" alt="" />
                 {{ userInfo.identify.imageDesc }}
               </div>
-              <div class="userLevel">Lv{{ userInfo.level }}</div>
+              <div class="userLevel">Lv. {{ userInfo.level }}</div>
               <img
                 class="genderIcon"
                 v-if="userInfo.profile.gender == 1"
@@ -276,13 +276,14 @@ export default defineComponent({
     .userName {
       font-weight: bold;
       font-size: 20px;
+      color: var(--textColor);
     }
     .userInfo {
       padding: 10px 0;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 2px solid #4f4f4f;
+      border-bottom: 1px solid var(--borderColor);
       .userIdetify {
         margin-right: 15px;
         display: flex;
@@ -299,8 +300,8 @@ export default defineComponent({
       .userLevel {
         padding: 5px 10px;
         font-size: 12px;
-        background-color: #dcdcdc;
-        color: #000;
+        background-color: @themeColor;
+        color: #Fff;
         font-weight: bold;
         border-radius: 20px;
         margin-right: 15px;
@@ -325,7 +326,7 @@ export default defineComponent({
             margin-right: 5px;
           }
           &:hover {
-            background: @hoverColor;
+            background: var(--hoverColor);
           }
         }
       }
@@ -338,9 +339,10 @@ export default defineComponent({
         padding: 0 30px;
         text-align: center;
         cursor: pointer;
+        color: var(--textColor);
         &:not(:last-child) {
           box-sizing: border-box;
-          border-right: 1px solid #5c655c;
+          border-right: 1px solid var(--borderColor);
         }
         .itemCount {
           font-weight: bold;
@@ -360,6 +362,7 @@ export default defineComponent({
         margin-bottom: 7px;
         .itemText {
           width: 80px;
+          color: var(--textColor);
         }
         .itemData {
           flex: 1;

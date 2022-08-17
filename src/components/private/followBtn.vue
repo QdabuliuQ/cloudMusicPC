@@ -46,7 +46,7 @@ export default defineComponent({
 .unFollowBtn {
   padding: 7px 18px;
   font-size: 12px;
-  color: #fff;
+  color: var(--textColor);
   background-color: @themeColor;
   border-radius: 25px;
   display: flex;

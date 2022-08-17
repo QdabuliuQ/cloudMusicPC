@@ -10,7 +10,6 @@
       :liked="ownComment.liked"
       :likedCount="ownComment.likedCount"
       :disOperation="true"
-      style="border-bottom: 1px solid rgb(85 85 85)"
     ></commentItem>
     <loading v-if="!commentList.length && total != 0"></loading>
     <emptyContent v-else-if="total == 0"></emptyContent>
@@ -111,11 +110,13 @@ export default defineComponent({
 #CommentDetail {
   padding: 30px;
   .replyContainer {
+    border-top: 1px solid var(--borderColor);
     padding: 15px 0;
     .title {
       font-weight: bold;
       font-size: 16px;
       margin-bottom: 5px;
+      color: var(--textColor);
       span {
         color: @themeColor;
       }

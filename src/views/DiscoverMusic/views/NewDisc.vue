@@ -86,7 +86,7 @@ export default defineComponent({
       opacity: 1 !important;
     }
     span {
-      color: #fff;
+      color: var(--textColor);
       opacity: 0.5;
       cursor: pointer;
       margin-right: 30px;

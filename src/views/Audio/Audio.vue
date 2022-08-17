@@ -173,8 +173,9 @@ export default defineComponent({
       font-size: 13px;
       border-radius: 8px;
       padding-bottom: 12px;
+      color: var(--textColor);
       &:hover {
-        background-color: @hoverColor;
+        background-color: var(--hoverColor);
       }
       img {
         width: 60px;
@@ -188,9 +189,9 @@ export default defineComponent({
       flex: 1;
       .listBox {
         border-top: 1px solid @themeColor;
-        border-left: 1px solid #5a5a5a;
-        border-right: 1px solid #5a5a5a;
-        border-bottom: 1px solid #5a5a5a;
+        border-left: 1px solid var(--borderColor);
+        border-right: 1px solid var(--borderColor);
+        border-bottom: 1px solid var(--borderColor);
       }
     }
   }
@@ -208,7 +209,7 @@ export default defineComponent({
         cursor: pointer;
         border-radius: 8px;
         &:hover {
-          background: @hoverColor;
+          background: var(--hoverColor);
         }
         .image {
           display: flex;
@@ -216,6 +217,9 @@ export default defineComponent({
         }
         .info {
           margin-left: 15px;
+          .name {
+            color: var(--textColor);
+          }
           .text {
             margin-top: 15px;
             font-size: 13px;

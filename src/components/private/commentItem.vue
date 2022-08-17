@@ -64,7 +64,6 @@
               title="是否确定删除该评论"
               confirm-button-text="确定"
               cancel-button-text="取消"
-              popper-class="infoPopperClass"
             >
               <template #reference>
                 <div @click.native.stop class="dataItem">
@@ -235,7 +234,7 @@ export default defineComponent({
   padding: 12px 12px;
   border-radius: 8px;
   &:hover {
-    background: @hoverColor;
+    background: var(--hoverColor);
   }
   .itemImage {
     margin-right: 10px;
@@ -253,32 +252,32 @@ export default defineComponent({
       display: flex;
       align-items: center;
       .infoName {
-        color: @nameColor;
+        color: var(--nameColor);
         cursor: pointer;
         line-height: 21px;
         word-break: break-all;
       }
       .infoContent {
-        color: @fontColor;
+        color: var(--textColor);
       }
     }
     .centerInfo {
       margin-top: 6px;
       padding: 10px 15px;
       font-size: 12px;
-      background-color: @eventBgc;
+      background-color: var(--chlidCommentBgc);
       border-radius: 8px;
-      color: @fontColor;
+      color: var(--textColor);
       cursor: pointer;
       span {
-        color: @nameColor;
+        color: var(--nameColor);
       }
     }
     .bottomInfo {
       width: 100%;
       margin-top: 10px;
       font-size: 12px;
-      color: @fontColor;
+      color: var(--textColor);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -294,6 +293,7 @@ export default defineComponent({
         display: flex;
         align-items: center;
         cursor: pointer;
+        color: var(--textColor);
         &:not(:last-child) {
           margin-right: 20px;
         }

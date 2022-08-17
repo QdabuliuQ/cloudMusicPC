@@ -81,7 +81,7 @@ export default defineComponent({
     .rightContainer {
       flex: 1;
       margin-left: 210px;
-      background-color: @greyColor;
+      background-color: var(--bgColor);
     }
   }
 }

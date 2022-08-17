@@ -83,7 +83,7 @@ export default defineComponent({
 <style lang='less'>
 #RankingList {
   .titleContent {
-    color: #fff;
+    color: var(--textColor);
     font-weight: bold;
     font-size: 23px;
     margin-bottom: 15px;
@@ -121,7 +121,7 @@ export default defineComponent({
       .rightMusic {
         width: 82%;
         .musicList {
-          background: rgb(58, 58, 58);
+          background: var(--tableColor);
           border-radius: 8px;
         }
         .musicItem {
@@ -139,7 +139,7 @@ export default defineComponent({
             display: flex;
             align-items: center;
             justify-content: space-between;
-            color: #fff;
+            color: var(--textColor);
             .infoArt {
               text-align: right;
               width: 50%;

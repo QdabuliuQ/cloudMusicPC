@@ -105,6 +105,7 @@ export default defineComponent({
 .sheetEItem {
   .eventContent {
     .sheetName {
+      color: var(--textColor);
       .sheetCate {
         display: inline-block;
         color: @themeColor;
@@ -122,7 +123,7 @@ export default defineComponent({
       span {
         cursor: pointer;
         &:hover {
-          color: #fff;
+          color: var(--textColor);
         }
       }
     }

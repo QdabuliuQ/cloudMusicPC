@@ -5,9 +5,9 @@
       <div class="centerSearch">
         <div class="searchContainer">
           <img src="~images/musicNavBar/search.png" alt="" />
+          <!-- popper-class="dialogPopperClass" -->
           <el-popover
             ref="searchPopoverRef"
-            popper-class="dialogPopperClass"
             placement="bottom"
             :offset="25"
             :width="400"
@@ -31,7 +31,7 @@
                   class="hotListContainer"
                 >
                   <div class="title">热搜榜</div>
-                  <div 
+                  <div
                     @click="clickSearch(item.searchWord)"
                     v-for="(item, index) in searchList"
                     :key="item.score"
@@ -102,7 +102,12 @@
                       />
                       {{ recommendType(item.type) }}
                     </div>
-                    <div @click="toDetail(i.id, item.type)" v-for="i in item.children" :key="i.id" class="item">
+                    <div
+                      @click="toDetail(i.id, item.type)"
+                      v-for="i in item.children"
+                      :key="i.id"
+                      class="item"
+                    >
                       {{ i.name }}
                     </div>
                   </div>
@@ -130,17 +135,19 @@
               :size="30"
               :src="userInfo.avatarUrl"
             />
+            <!-- popper-class="infoPopperClass" -->
             <el-popover
               ref="userInfoPopoverRef"
               placement="bottom-end"
-              popper-class="infoPopperClass"
-              effect="dark"
               :width="280"
               trigger="click"
               :hide-after="50"
             >
               <template #reference>
-                <span class="userName" style="display:flex;align-items:center">
+                <span
+                  class="userName"
+                  style="display: flex; align-items: center"
+                >
                   {{ userInfo.nickname }}
                   <el-icon style="margin-left: 5px"><CaretBottom /></el-icon>
                 </span>
@@ -148,19 +155,28 @@
               <div class="popperContainer">
                 <div class="topContainer">
                   <div class="item">
-                    <div @click="toDetailPage('/UserEvents?id='+userInfo.userId)" class="itemBox">
+                    <div
+                      @click="toDetailPage('/UserEvents?id=' + userInfo.userId)"
+                      class="itemBox"
+                    >
                       <div>{{ userDetail.eventCount }}</div>
                       <div class="itemText">动态</div>
                     </div>
                   </div>
                   <div class="item">
-                    <div @click="toDetailPage('/UserFollow?id='+userInfo.userId)" class="itemBox">
+                    <div
+                      @click="toDetailPage('/UserFollow?id=' + userInfo.userId)"
+                      class="itemBox"
+                    >
                       <div>{{ userDetail.follows }}</div>
                       <div class="itemText">关注</div>
                     </div>
                   </div>
                   <div class="item">
-                    <div @click="toDetailPage('/UserFans?id='+userInfo.userId)" class="itemBox">
+                    <div
+                      @click="toDetailPage('/UserFans?id=' + userInfo.userId)"
+                      class="itemBox"
+                    >
                       <div>{{ userDetail.followeds }}</div>
                       <div class="itemText">粉丝</div>
                     </div>
@@ -174,7 +190,12 @@
                       /></el-icon>
                       等级
                     </div>
-                    <div style="display:flex; align-items:center">{{ level }}<el-icon style="margin-left: 5px"><ArrowRight /></el-icon></div>
+                    <div style="display: flex; align-items: center">
+                      {{ level
+                      }}<el-icon style="margin-left: 5px"
+                        ><ArrowRight
+                      /></el-icon>
+                    </div>
                   </div>
                   <div class="item">
                     <div class="itemTitle">
@@ -210,9 +231,15 @@
             </el-popover>
           </div>
           <div @click="router.push('/Message')" class="dataBox">
-            <img style="width: 20px; margin-right: 5px" src="~images/common/message.png" alt="">
+            <img
+              style="width: 20px; margin-right: 5px"
+              src="~images/common/message.png"
+              alt=""
+            />
             <div>消息</div>
           </div>
+          <el-switch inline-prompt v-model="theme" @click="toggle()">
+          </el-switch>
         </div>
       </div>
     </div>
@@ -227,7 +254,7 @@ import {
   toRefs,
   getCurrentInstance,
   ref,
-  watch
+  watch,
 } from "vue";
 import bus from "vue3-eventbus";
 import { getUserDetail, loginOut } from "@/network/LoginDialog/loginDialog";
@@ -238,6 +265,7 @@ import {
   getSearchDefault,
   getSearchRecommend,
 } from "@/network/MusicNavBar/musicNavBar";
+import { useDark, useToggle } from '@vueuse/core'
 
 let timer: any;
 
@@ -260,32 +288,47 @@ export default defineComponent({
       searchText: "",
       searchList: <any>[],
       isSearch: false,
+      theme: false
     });
 
+    const isDark = useDark({
+      // 存储到localStorage/sessionStorage中的Key 根据自己的需求更改
+      storageKey: "useDarkKEY",
+      // 暗黑class名字
+      valueDark: "dark",
+      // 高亮class名字
+      valueLight: "light",
+    });
+    console.log(isDark);
+    
+    const toggle = useToggle(isDark);
+    console.log(toggle);
+    
+
     const toDetail = (e: any, t: string) => {
-      searchPopoverRef.value.hide()
-      switch(t) {
+      searchPopoverRef.value.hide();
+      switch (t) {
         case "songs":
           return "歌曲";
         case "artists":
-          return router.push('/SingerDetail?id='+e);
+          return router.push("/SingerDetail?id=" + e);
         case "albums":
           return "专辑";
         case "playlists":
-          return router.push('/SheetDetail?id='+e);;
+          return router.push("/SheetDetail?id=" + e);
       }
-    }
+    };
     const clickSearch = (key: string) => {
-      searchPopoverRef.value.hide()
-      data.searchText = key
-      router.push('/SearchResult?key='+key)
-    }
+      searchPopoverRef.value.hide();
+      data.searchText = key;
+      router.push("/SearchResult?key=" + key);
+    };
     const toSearch = () => {
-      if (data.searchText != '') {
-        searchPopoverRef.value.hide()
-        router.push('/SearchResult?key='+data.searchText.trim())
+      if (data.searchText != "") {
+        searchPopoverRef.value.hide();
+        router.push("/SearchResult?key=" + data.searchText.trim());
       }
-    }
+    };
 
     const recommendType = (e: string) => {
       switch (e) {
@@ -387,14 +430,17 @@ export default defineComponent({
             type: "success",
             customClass: "darkNotice",
           });
-          location.reload()
+          location.reload();
         }
       });
     };
 
-    watch(() => router.currentRoute.value.query.key, (n) => {
-      data.searchText = n as string
-    })
+    watch(
+      () => router.currentRoute.value.query.key,
+      (n) => {
+        data.searchText = n as string;
+      }
+    );
     onMounted(() => {
       bus.on("loginStatus", () => {
         getData();
@@ -412,6 +458,7 @@ export default defineComponent({
     });
     return {
       ...toRefs(data),
+      toggle,
       toSearch,
       clickSearch,
       loginOutEvent,
@@ -432,7 +479,7 @@ export default defineComponent({
 .searchInfoContainer {
   .title {
     font-weight: bold;
-    color: #fff;
+    color: var(--textColor);
     margin-bottom: 10px;
   }
   .hotListContainer {
@@ -442,7 +489,7 @@ export default defineComponent({
       align-items: center;
       cursor: pointer;
       &:hover {
-        background: @hoverColor;
+        background: var(--hoverColor);
       }
       .itemIndex {
         width: 30px;
@@ -453,7 +500,7 @@ export default defineComponent({
         display: flex;
         align-items: center;
         min-height: 40px;
-        color: #fff;
+        color: var(--textColor);
         font-size: 13px;
         font-weight: bold;
         .itemName {
@@ -512,39 +559,19 @@ export default defineComponent({
       }
       .item {
         padding: 8px 30px;
-        color: #fff;
+        color: var(--textColor);
         cursor: pointer;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
         &:hover {
-          background-color: @hoverColor;
+          background-color: var(--hoverColor);
         }
       }
     }
   }
 }
 
-.infoPopperClass.is-dark {
-  background-color: #292929 !important;
-  .el-popper__arrow::before {
-    border: 1px solid #292929 !important;
-  }
-}
-.infoPopperClass.is-light {
-  background-color: #292929 !important;
-}
-.infoPopperClass.is-light .el-popper__arrow::before {
-  border: 1px solid #292929 !important;
-}
-.el-popper.is-light .el-popper__arrow::before {
-  background: #292929 !important;
-  border: 1px solid #292929 !important;
-}
-.infoPopperClass.is-dark .el-popper__arrow::before {
-  background: #292929 !important;
-  border: 1px solid #292929 !important;
-}
 .popperContainer {
   .topContainer {
     display: flex;
@@ -558,7 +585,7 @@ export default defineComponent({
         font-size: 17px;
         cursor: pointer;
         &:hover {
-          background-color: @hoverColor;
+          background-color: var(--hoverColor);
         }
         .itemText {
           font-size: 13px;
@@ -576,7 +603,7 @@ export default defineComponent({
       font-weight: bold;
       cursor: pointer;
       &:hover {
-        background: @hoverColor;
+        background: var(--hoverColor);
       }
       .itemTitle {
         display: flex;
@@ -595,7 +622,7 @@ export default defineComponent({
   top: 0;
   left: 0;
   right: 0;
-  background-color: @color;
+  background-color: var(--topNavColor);
   box-sizing: border-box;
   border-bottom: 2px solid @themeColor;
   display: flex;
@@ -605,7 +632,7 @@ export default defineComponent({
     padding: 0 30px;
     display: flex;
     align-items: center;
-    color: #fff;
+    color: var(--textColor);
     .leftLogo {
       flex: 2;
       letter-spacing: 2px;
@@ -635,7 +662,7 @@ export default defineComponent({
           background: transparent;
           border: 0;
           outline: none;
-          color: #fff;
+          color: var(--textColor);
         }
       }
     }
@@ -668,14 +695,14 @@ export default defineComponent({
             margin-right: 25px;
           }
           &:hover {
-            color: #fff;
+            color: var(--textColor);
           }
           img {
             opacity: 0.6;
           }
           .userName {
             &:hover {
-              color: #fff;
+              color: var(--textColor);
             }
           }
         }

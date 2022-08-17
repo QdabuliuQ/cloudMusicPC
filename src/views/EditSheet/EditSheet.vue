@@ -352,7 +352,7 @@ export default defineComponent({
           display: flex;
           align-items: center;
           .targetItem {
-            color: #fff;
+            color: var(--textColor);
             margin-right: 10px;
             font-size: 12px;
             padding: 5px 14px;
@@ -360,7 +360,7 @@ export default defineComponent({
             background-color: @themeColor;
           }
           span {
-            color: @nameColor;
+            color: var(--nameColor);
             font-size: 13px;
             cursor: pointer;
           }
@@ -370,7 +370,7 @@ export default defineComponent({
             background: transparent;
             border: 0;
             outline: none;
-            color: #fff;
+            color: var(--textColor);
           }
           textarea {
             width: 100%;
@@ -380,7 +380,7 @@ export default defineComponent({
             outline: none;
             resize: none;
             height: 80px;
-            color: #fff;
+            color: var(--textColor);
           }
         }
       }
@@ -391,7 +391,7 @@ export default defineComponent({
         justify-content: center;
         .saveBtn {
           padding: 8px 20px;
-          color: #fff;
+          color: var(--textColor);
           background-color: @themeColor;
           letter-spacing: 7px;
           text-indent: 7px;

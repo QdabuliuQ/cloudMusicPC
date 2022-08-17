@@ -1,11 +1,12 @@
 <template>
   <div id="shareDialog">
+    <!-- custom-class="shareDialogClass" -->
     <el-dialog
-      custom-class="shareDialogClass"
       :width="'450px'"
       v-model="visible"
       :modal="false"
       draggable
+      custom-class="shareDialogClass"
     >
       <div class="diglogTitle">分享到云音乐动态</div>
       <div class="diglogTextBox">
@@ -16,7 +17,7 @@
             placement="bottom"
             :width="300"
             trigger="click"
-            popper-class="dialogPopperClass"
+            
             :hide-after="0"
           >
             <template #reference>
@@ -38,7 +39,6 @@
             placement="bottom"
             :width="150"
             trigger="click"
-            popper-class="dialogPopperClass"
             :hide-after="0"
           >
             <template #reference>
@@ -562,7 +562,6 @@ export default defineComponent({
             bus.emit("refreshData");
             data.comment = "";
             data.visible = false;
-            console.log(data.visible, '------------');
             
           } else {
             ElNotification({
@@ -604,45 +603,6 @@ export default defineComponent({
 
 <style lang='less'>
 .dialogPopperClass {
-  .emojiContainer {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    grid-gap: 5px;
-    text-align: center;
-    font-size: 16px;
-    .emojiItem {
-      cursor: pointer;
-      padding: 3px 3px 5px;
-      &:hover {
-        background-color: @hoverColor;
-      }
-    }
-  }
-  .userListContainer {
-    .userItem {
-      font-size: 12px;
-      display: flex;
-      align-items: center;
-      padding: 6px 0;
-      cursor: pointer;
-      .name {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-    }
-    .loadMore {
-      padding: 7px 0;
-      width: 100%;
-      text-align: center;
-      font-size: 12px;
-      margin-top: 5px;
-      cursor: pointer;
-      &:hover {
-        background-color: @hoverColor;
-      }
-    }
-  }
   .cateList {
     display: flex;
     align-items: center;
@@ -661,24 +621,15 @@ export default defineComponent({
     margin-top: 15px;
   }
 }
-
-.dialogPopperClass.is-light {
-  background-color: #292929 !important;
-  border: 1px solid #292929 !important;
-}
 .shareDialogClass {
-  background-color: #3f3f3f !important;
   .el-dialog__headerbtn .el-dialog__close {
     font-size: 24px;
   }
   .el-dialog__body {
     padding: 20px;
   }
-  .el-dialog__headerbtn:hover .el-dialog__close {
-    color: @themeColor;
-  }
   .diglogTitle {
-    color: #fff;
+    color: var(--textColor);
     font-weight: bold;
     font-size: 15px;
     text-align: center;
@@ -686,7 +637,7 @@ export default defineComponent({
   .diglogTextBox {
     margin-top: 10px;
     padding: 10px;
-    border: 1px solid #565555;
+    border: 1px solid var(--borderColor);
     textarea {
       width: 100%;
       height: 80px;
@@ -694,7 +645,7 @@ export default defineComponent({
       outline: none;
       resize: none;
       background-color: transparent;
-      color: #fff;
+      color: var(--textColor);
       font-size: 15px;
       &::-webkit-scrollbar {
         display: none;
@@ -714,9 +665,9 @@ export default defineComponent({
     padding: 7px 10px;
     display: flex;
     align-items: center;
-    border-left: 1px solid #565555;
-    border-right: 1px solid #565555;
-    border-bottom: 1px solid #565555;
+    border-left: 1px solid var(--borderColor);
+    border-right: 1px solid var(--borderColor);
+    border-bottom: 1px solid var(--borderColor);
     .name {
       font-size: 13px;
       width: 300px;
@@ -745,18 +696,21 @@ export default defineComponent({
       font-size: 12px;
       background-color: @themeColor;
       cursor: pointer;
+      &:hover {
+        background-color: @hoverTColor;
+      }
     }
   }
   .dialogInfoSearchBox {
     padding: 7px 14px;
-    border-left: 1px solid #565555;
-    border-right: 1px solid #565555;
-    border-bottom: 1px solid #565555;
+    border-left: 1px solid var(--borderColor);
+    border-right: 1px solid var(--borderColor);
+    border-bottom: 1px solid var(--borderColor);
     input {
       width: 100%;
       height: 28px;
       background: transparent;
-      color: #fff;
+      color: var(--textColor);
       border: 0;
       outline: none;
     }

@@ -121,7 +121,7 @@ export default defineComponent({
   }
   .audioCreator {
     &:hover {
-      color: #fff;
+      color: var(--textColor);
     }
   }
 }

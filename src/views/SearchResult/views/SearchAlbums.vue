@@ -121,7 +121,7 @@ export default defineComponent({
     span {
       margin-right: 5px;
       &:hover {
-        color: #fff;
+        color: var(--textColor);
       }
     }
   }

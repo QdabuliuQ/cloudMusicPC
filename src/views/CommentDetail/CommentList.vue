@@ -220,7 +220,7 @@ export default defineComponent({
           span {
             cursor: pointer;
             &:hover {
-              color: #fff;
+              color: var(--textColor);
             }
           }
         }

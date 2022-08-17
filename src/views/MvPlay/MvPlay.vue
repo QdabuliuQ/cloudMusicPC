@@ -413,7 +413,7 @@ export default defineComponent({
           cursor: pointer;
           &:hover {
             background-color: @themeColor;
-            color: #fff;
+            color: var(--textColor);
           }
         }
       }
@@ -436,7 +436,7 @@ export default defineComponent({
           align-items: center;
           cursor: pointer;
           &:hover {
-            background-color: @hoverColor;
+            background-color: var(--hoverColor);
           }
           img {
             width: 18px;
@@ -449,6 +449,7 @@ export default defineComponent({
           font-weight: bold;
           font-size: 23px;
           margin-bottom: 10px;
+          color: var(--textColor);
           span {
             font-weight: normal;
             font-size: 13px;
@@ -468,7 +469,7 @@ export default defineComponent({
             background-color: transparent;
             outline: none;
             border: 0;
-            color: #fff;
+            color: var(--textColor);
             font-size: 15px;
           }
         }
@@ -485,7 +486,7 @@ export default defineComponent({
             cursor: pointer;
             &:hover {
               background-color: @themeColor;
-              color: #fff;
+              color: var(--textColor);
             }
           }
         }

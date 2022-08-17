@@ -41,7 +41,6 @@
         <el-popover
           v-if="target == '歌单' && useLogin(false)"
           placement="bottom"
-          popper-class="dialogPopperClass"
           :width="170"
           trigger="click"
         >
@@ -240,11 +239,12 @@ export default defineComponent({
       .name {
         font-size: 20px;
         font-weight: bold;
+        color: var(--textColor);
       }
     }
     .infoCreator {
       font-size: 13px;
-      color: @nameColor;
+      color: var(--nameColor);
       display: flex;
       align-items: center;
       cursor: pointer;
@@ -270,8 +270,9 @@ export default defineComponent({
         border: 1px solid #5b5b5b;
         cursor: pointer;
         margin-right: 15px;
+        color: var(--textColor);
         &:hover {
-          background-color: #434343;
+          background-color: var(--hoverColor);
         }
         img {
           width: 20px;
@@ -303,20 +304,21 @@ export default defineComponent({
         margin-bottom: 8px;
 
         .infoTitle {
+          color: var(--textColor);
           span {
-            color: @fontColor;
+            color: var(--textColor);
             line-height: 20px;
             cursor: pointer;
           }
           .addDesc {
-            color: @nameColor;
+            color: var(--nameColor);
             cursor: pointer;
           }
         }
         .infoContent {
           span {
             margin-right: 10px;
-            color: @nameColor;
+            color: var(--nameColor);
             cursor: pointer;
           }
         }

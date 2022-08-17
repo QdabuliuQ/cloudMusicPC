@@ -1071,7 +1071,7 @@ export default defineComponent({
     padding: 0 0 20px;
   }
   .el-drawer__title {
-    color: #fff;
+    color: var(--textColor);
     font-weight: bold;
   }
   .el-drawer__close-btn:hover i {
@@ -1079,7 +1079,7 @@ export default defineComponent({
   }
 }
 .el-popper {
-  padding: 10px 12px !important;
+  // padding: 10px 12px !important;
   .el-slider__runway {
     height: 4px;
     background-color: #363639;
@@ -1102,9 +1102,9 @@ export default defineComponent({
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: @color;
+  background-color: var(--bottomNavColor);
   box-sizing: border-box;
-  border-top: 2px solid #4c4c4c;
+  border-top: 2px solid var(--borderColor);
   .progressContainer {
     padding: 8px 30px;
     display: flex;
@@ -1128,7 +1128,7 @@ export default defineComponent({
         }
       }
       .musicDetail {
-        color: #fff;
+        color: var(--textColor);
         font-size: 14px;
         margin-left: 10px;
         .musicName {
@@ -1328,11 +1328,11 @@ export default defineComponent({
         position: relative;
         cursor: pointer;
         &:hover {
-          color: #fff;
+          color: var(--textColor);
         }
       }
       .activeLyric {
-        color: #fff !important;
+        color: var(--textColor) !important;
         font-weight: bold;
         font-size: 15px;
       }
@@ -1357,7 +1357,7 @@ export default defineComponent({
             margin-bottom: 8px;
             cursor: pointer;
             &:hover {
-              background: @hoverColor;
+              background: var(--hoverColor);
             }
             .itemName {
               margin-left: 8px;

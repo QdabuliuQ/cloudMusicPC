@@ -1,6 +1,10 @@
 <template>
   <div id="MvList">
-    <splitLine :title="'最新MV'" :path="'/MvAllList?order=2'" :icon="true"></splitLine>
+    <splitLine
+      :title="'最新MV'"
+      :path="'/MvAllList?order=2'"
+      :icon="true"
+    ></splitLine>
     <loading v-if="!newMvList.length"></loading>
     <div v-else class="mvContainer">
       <videoItem
@@ -16,7 +20,11 @@
         :ratio="'2/1.2'"
       ></videoItem>
     </div>
-    <splitLine :title="'热播MV'" :path="'/MvAllList?order=1'" :icon="true"></splitLine>
+    <splitLine
+      :title="'热播MV'"
+      :path="'/MvAllList?order=1'"
+      :icon="true"
+    ></splitLine>
     <loading v-if="!hotMvList.length"></loading>
     <div v-else class="mvContainer">
       <videoItem
@@ -32,7 +40,11 @@
         :ratio="'2/1.2'"
       ></videoItem>
     </div>
-    <splitLine :title="'网易出品'" :path="'/MvAllList?type=4'" :icon="true"></splitLine>
+    <splitLine
+      :title="'网易出品'"
+      :path="'/MvAllList?type=4'"
+      :icon="true"
+    ></splitLine>
     <loading v-if="!wyMvList.length"></loading>
     <div v-else class="mvContainer">
       <videoItem
@@ -50,8 +62,13 @@
     </div>
     <splitLine :title="'MV排行榜'"></splitLine>
     <div class="cateList">
-      <span @click="toggleItem(index)" :class="[rantCateIndex==index?'activeItem':'']" v-for="item,index in rankCateList" :key="item">
-        {{item}}
+      <span
+        @click="toggleItem(index)"
+        :class="[rantCateIndex == index ? 'activeItem' : '']"
+        v-for="(item, index) in rankCateList"
+        :key="item"
+      >
+        {{ item }}
       </span>
     </div>
     <div class="mvRankContainer">
@@ -59,7 +76,7 @@
         class="mvRankItem"
         v-for="(item, index) in rankMvList"
         :key="item.id"
-        @click="router.push('/MvPlay?id='+item.id)"
+        @click="router.push('/MvPlay?id=' + item.id)"
       >
         <div class="itemIndex">
           <div>
@@ -87,13 +104,18 @@
             <img src="~images/mvList/fire.png" alt="" />
             {{ item.score }}
           </div>
-          <el-avatar shape="square" :fit="'cover'" :src="item.cover" />
+          <el-image
+            style="width: 100%; height: 100%"
+            shape="square"
+            :fit="'cover'"
+            :src="item.cover"
+          />
         </div>
         <div class="itemInfo">
           <div class="itemName">{{ item.name }}</div>
           <div class="itemArt">
-            <span v-for="art in item.artists" :key="art.id">
-              {{ art.name }}&nbsp;&nbsp;&nbsp;&nbsp;
+            <span @click.stop="router.push('/SingerDetail?id='+art.id)" v-for="art in item.artists" :key="art.id">
+              {{ art.name }}&nbsp;&nbsp;
             </span>
           </div>
         </div>
@@ -119,23 +141,24 @@ export default defineComponent({
     loading,
   },
   setup() {
-    const router = useRouter()
+    const router = useRouter();
     const data = reactive(new InitData());
     // 切换排行榜
     const toggleItem = (e: number) => {
-      data.rantCateIndex = e
-      getRankData()
-    }
+      data.rantCateIndex = e;
+      getRankData();
+    };
     // 获取排行榜数据
     const getRankData = () => {
       getMvRank({
         limit: 10,
-        area: data.rantCateIndex==0?'':data.rankCateList[data.rantCateIndex],
+        area:
+          data.rantCateIndex == 0 ? "" : data.rankCateList[data.rantCateIndex],
         offset: 0,
       }).then((res: any) => {
         data.rankMvList = res.data.data;
       });
-    }
+    };
 
     onMounted(() => {
       getNewMv({
@@ -164,12 +187,12 @@ export default defineComponent({
         data.wyMvList = res.data.data;
       });
 
-      getRankData()
+      getRankData();
     });
     return {
       router,
       ...toRefs(data),
-      toggleItem
+      toggleItem,
     };
   },
 });
@@ -189,6 +212,7 @@ export default defineComponent({
     margin-top: 20px;
     margin-bottom: 20px;
     .activeItem {
+      font-weight: bold;
       color: @themeColor !important;
     }
     span {
@@ -197,7 +221,7 @@ export default defineComponent({
       color: @fontColor;
       cursor: pointer;
       &:hover {
-        color: #Fff;
+        color: var(--textColor);
       }
     }
   }
@@ -232,6 +256,7 @@ export default defineComponent({
         position: relative;
         border-radius: 10px;
         overflow: hidden;
+        aspect-ratio: 2/1;
         .mask {
           width: 100%;
           height: 40px;
@@ -266,15 +291,22 @@ export default defineComponent({
           top: 0;
           left: 15px;
           font-size: 13.5px;
+          color: var(--textColor);
         }
         .itemArt {
           color: @fontColor;
           font-size: 12.5px;
           padding-left: 15px;
           cursor: pointer;
+          width: 250px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
           span {
             &:hover {
-              color: #fff;
+              color: var(--textColor);
             }
           }
         }

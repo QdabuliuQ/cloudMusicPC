@@ -82,10 +82,11 @@ export default defineComponent({
   .eventNoData {
     margin-left: 60px;
     padding: 8px 12px;
-    background: #393939;
+    background: var(--eventBgc);
     border-radius: 8px;
     text-align: center;
     font-size: 12px !important;
+    color: var(--textColor);
   }
 }
 </style>

@@ -47,7 +47,7 @@ export default defineComponent({
       color: @fontColor;
       cursor: pointer;
       .nameSpan {
-        color: @nameColor;
+        color: var(--nameColor);
         margin-right: 10px;
         cursor: pointer;
       }
@@ -60,8 +60,9 @@ export default defineComponent({
     .msg {
       margin-top: 8px;
       font-size: 14.5px;
+      color: var(--textColor);
       span {
-        color: @nameColor;
+        color: var(--nameColor);
         margin-right: 5px;
         cursor: pointer;
       }

@@ -72,7 +72,7 @@ export default defineComponent({
     display: flex;
     align-items: center;
     .infoContainer {
-      color: #Fff;
+      color: var(--textColor);
       .infoName {
         font-size: 14px;
         margin-bottom: 5px;
@@ -84,7 +84,7 @@ export default defineComponent({
           font-size: 12px;
           cursor: pointer;
           &:hover {
-            color: #fff;
+            color: var(--textColor);
           }
         }
       }

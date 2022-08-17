@@ -21,7 +21,7 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, reactive, onMounted, toRefs, watch } from "vue";
+import { defineComponent, reactive, toRefs, watch } from "vue";
 export default defineComponent({
   name: "userItem",
   props: [
@@ -70,6 +70,7 @@ export default defineComponent({
     .name {
       display: flex;
       align-items: center;
+      color: var(--textColor);
       img {
         width: 20px;
         margin-left: 5px;

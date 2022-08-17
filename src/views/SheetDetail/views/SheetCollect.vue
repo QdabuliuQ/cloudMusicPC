@@ -95,7 +95,7 @@ export default defineComponent({
       padding: 8px 0;
       border-radius: 8px;
       &:hover {
-        background-color: @hoverColor;
+        background-color: var(--hoverColor);
       }
       .itemInfo {
         margin-left: 10px;
@@ -105,6 +105,7 @@ export default defineComponent({
           overflow: hidden;
           white-space: nowrap; //内容超出不换行
           text-overflow: ellipsis;
+          color: var(--textColor);
         }
         .itemSignature {
           width: 15vw;

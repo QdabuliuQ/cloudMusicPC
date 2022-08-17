@@ -59,7 +59,6 @@
           title="是否确定删除该音乐"
           confirm-button-text="确定"
           cancel-button-text="取消"
-          popper-class="infoPopperClass"
           icon-color="#ec4141"
           confirm-button-type="danger"
         >
@@ -240,9 +239,6 @@ export default defineComponent({
 </script>
 
 <style lang='less'>
-// .infoPopperClass {
-//   border: 1px solid #414243 !important;
-// }
 #CloudDick {
   padding: 30px;
   .detailBox {
@@ -266,7 +262,7 @@ export default defineComponent({
           margin: 0 8px;
           width: 100px;
           height: 8px;
-          background-color: #555;
+          background-color: var(--tableColor);
           border-radius: 5px;
           overflow: hidden;
           position: relative;
@@ -275,14 +271,14 @@ export default defineComponent({
             left: 0;
             position: absolute;
             height: 100%;
-            background-color: #bdbdbd;
+            background-color: @themeColor;
           }
         }
       }
     }
     .upLoadBtn {
       font-size: 13px;
-      color: #fff;
+      color: var(--textColor);
       span {
         display: inline-block;
         padding: 7px 20px;
@@ -290,7 +286,7 @@ export default defineComponent({
         border-radius: 20px;
         cursor: pointer;
         &:hover {
-          background-color: @hoverColor;
+          background-color: var(--hoverColor);
         }
       }
     }
@@ -304,7 +300,7 @@ export default defineComponent({
     text-overflow: ellipsis; //溢出用省略号显示
     white-space: nowrap;
     &:hover {
-      color: #fff;
+      color: var(--textColor);
     }
   }
   .albumItem {
@@ -316,7 +312,7 @@ export default defineComponent({
     color: @fontColor;
     cursor: pointer;
     &:hover {
-      color: #fff;
+      color: var(--textColor);
     }
     img {
       width: 17px;

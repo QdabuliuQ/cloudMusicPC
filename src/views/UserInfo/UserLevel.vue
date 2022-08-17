@@ -116,7 +116,7 @@ export default defineComponent({
       content: "";
       width: 25px;
       aspect-ratio: 1/1;
-      background-color: #fff;
+      background-color: var(--bgColor);
       transform: translate(-50%, -50%);
       top: 50%;
       left: 50%;
@@ -131,6 +131,7 @@ export default defineComponent({
   .levelInfo {
     display: flex;
     align-items: center;
+    color: var(--textColor);
     .span1 {
       margin-left: 5px;
       font-size: 25px;
@@ -157,7 +158,7 @@ export default defineComponent({
     }
     .levelItem {
       height: 100%;
-      background-color: #4a4a4a;
+      background-color: var(--borderColor);
       position: relative;
       .levelContainer {
         position: absolute;
@@ -166,7 +167,7 @@ export default defineComponent({
         top: 0;
       }
       .activeTarget {
-        color: #fff !important;
+        color: var(--textColor) !important;
         background-color: @themeColor;
         border-radius: 50%;
       }
@@ -194,6 +195,7 @@ export default defineComponent({
     span {
       font-size: 20px;
       font-weight: bold;
+      color: var(--textColor);
     }
     .powerItem {
       margin-top: 10px;
@@ -219,6 +221,7 @@ export default defineComponent({
     .detailTitle {
       font-weight: bold;
       font-size: 20px;
+      color: var(--textColor);
       em {
         color: @themeColor;
       }
@@ -230,13 +233,11 @@ export default defineComponent({
       .itemTitle {
         margin-right: 10px;
         font-size: 13px;
+        color: #979797;
       }
       .itemProgress {
         .el-progress-bar {
           width: 220px;
-          .el-progress-bar__outer {
-            background-color: #4a4a4a;
-          }
           
         }
         .el-progress__text {
@@ -250,6 +251,7 @@ export default defineComponent({
     .listTitle {
       font-weight: bold;
       font-size: 20px;
+      color: var(--textColor);
     }
     .tableList {
       .tableItem {
@@ -258,7 +260,7 @@ export default defineComponent({
         padding: 15px 0;
         &:not(:last-child) {
           box-sizing: border-box;
-          border-bottom: 1px solid #5b5656;
+          border-bottom: 1px solid var(--borderColor);
         }
         .level {
           width: 80px;

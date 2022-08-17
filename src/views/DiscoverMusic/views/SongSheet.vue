@@ -152,7 +152,7 @@ export default defineComponent({
       span {
         font-size: 14px;
         margin-left: 8px;
-        color: #fff;
+        color: var(--textColor);
       }
       img {
         width: 22px;
@@ -162,7 +162,7 @@ export default defineComponent({
       flex: 9.3;
       display: flex;
       flex-wrap: wrap;
-      color: #fff;
+      color: var(--textColor);
       .activeItem {
         color: @themeColor;
       }

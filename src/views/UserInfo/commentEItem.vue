@@ -9,7 +9,7 @@
       :target="target"
     ></eventHead>
     <div v-if="resourceInfo" class="eventContent">
-      <div style="display: flex; align-items: center; padding: 5px 0 7px; border-bottom: 1px solid rgb(83 83 83)">
+      <div class="topContent" style="display: flex; align-items: center; padding: 5px 0 7px">
         <img class="icon" src="~images/common/char.png" alt="" />
         <div style="display: flex; align-items: center">
           <span class="username">{{ info.resource.user.nickname }}</span
@@ -97,19 +97,24 @@ export default defineComponent({
   .eventNoData {
     margin-left: 60px;
     padding: 8px 12px;
-    background: #393939;
+    background: var(--eventBgc);
     border-radius: 8px;
     text-align: center;
     font-size: 12px !important;
+    color: var(--textColor);
   }
   .eventContent {
     position: relative;
     font-size: 14px !important;
+    .topContent {
+      border-bottom: 1px solid var(--borderColor);
+      color: var(--textColor);
+    }
     .icon {
       margin-right: 7px;
     }
     .username {
-      color: @nameColor;
+      color: var(--nameColor);
       cursor: pointer;
     }
     .resourse {

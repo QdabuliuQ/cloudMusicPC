@@ -177,7 +177,7 @@ export default defineComponent({
       span {
         font-size: 12px;
         padding: 4px 10px;
-        color: #fff;
+        color: var(--textColor);
         background-color: @themeColor;
         border-radius: 30px;
         margin: 0 7px;
@@ -200,7 +200,7 @@ export default defineComponent({
         cursor: pointer;
         margin-right: 10px;
         &:hover {
-          background-color: @hoverColor;
+          background-color: var(--hoverColor);
         }
         img {
           margin-right: 3px;

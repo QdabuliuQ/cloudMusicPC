@@ -4,6 +4,8 @@ import router from './router'
 import store from './store'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
+import 'element-plus/theme-chalk/dark/css-vars.css'
+import '@/assets/less/element-variarbles.less'
 import eventBus from 'vue3-eventbus'
 import loginDialog from "@/components/loginDialog"
 import shareDialog from "@/components/shareDialog"

@@ -101,6 +101,7 @@ export default defineComponent({
 .programEItem {
   .eventContent {
     .programName {
+      color: var(--textColor);
       span {
         color: @fontColor;
       }

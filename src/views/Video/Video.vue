@@ -52,7 +52,7 @@ export default defineComponent({
     align-items: center;
     margin-bottom: 8px;
     padding: 15px 30px;
-    background-color: @greyColor;
+    background-color: var(--bgColor);
     .activeMenuItem {
       position: relative;
       font-weight: bold;
@@ -70,7 +70,7 @@ export default defineComponent({
       }
     }
     .menuItem {
-      color: #fff;
+      color: var(--textColor);
       padding: 10px 0;
       margin-right: 40px;
       cursor: pointer;

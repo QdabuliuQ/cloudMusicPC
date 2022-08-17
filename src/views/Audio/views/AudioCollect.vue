@@ -81,7 +81,7 @@ export default defineComponent({
       padding: 8px 0;
       border-radius: 8px;
       &:hover {
-        background-color: @hoverColor;
+        background-color: var(--hoverColor);
       }
       .itemInfo {
         margin-left: 10px;

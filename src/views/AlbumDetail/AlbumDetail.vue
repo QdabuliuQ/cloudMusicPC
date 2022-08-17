@@ -297,7 +297,7 @@ export default defineComponent({
     display: flex;
     margin-bottom: 10px;
     span {
-      color: @nameColor;
+      color: var(--nameColor);
       cursor: pointer;
     }
   }

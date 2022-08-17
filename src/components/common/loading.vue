@@ -38,7 +38,7 @@ export default defineComponent({
   margin: 10px 0;
   border-radius: 16px;
   overflow: hidden;
-  background-color: #292929;
+  background-color: var(--loadColor);
   .el-loading-mask {
     z-index: 1;
     .el-loading-spinner .path {

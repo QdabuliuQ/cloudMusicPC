@@ -26,8 +26,6 @@ export default defineComponent({
 
     const itemToggle = (e: number) => {
       data.activeIndex = e;
-      console.log(props);
-      
       router.replace(props.list[e].path);
       content.emit("itemClick", e);
     };
@@ -46,8 +44,6 @@ export default defineComponent({
       data.activeIndex = router.currentRoute.value.meta[
         props.routerKey
       ] as number;
-
-      // itemToggle(0)
     });
     return {
       ...toRefs(data),
@@ -65,12 +61,12 @@ export default defineComponent({
   .activeItem {
     font-weight: bold;
     font-size: 17px !important;
-    color: #fff !important;
+    color: var(--textColor) !important;
     position: relative;
     span {
       font-weight: bold !important;
       font-size: 18px !important;
-      color: #fff !important;
+      color: var(--textColor) !important;
     }
     &::after {
       position: absolute;
@@ -85,7 +81,7 @@ export default defineComponent({
     }
   }
   .navItem {
-    color: #c2c2c2;
+    color: var(--textColor);
     margin-right: 30px;
     font-size: 14px;
     cursor: pointer;

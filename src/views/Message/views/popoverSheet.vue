@@ -125,7 +125,7 @@ export default defineComponent({
           font-size: 12px;
           cursor: pointer;
           &:hover {
-            color: #fff;
+            color: var(--textColor);
           }
         }
       }

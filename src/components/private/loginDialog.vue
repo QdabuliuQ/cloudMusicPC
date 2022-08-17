@@ -360,7 +360,7 @@ export default defineComponent({
       .unvalidMask {
         background-color: rgba(0, 0, 0, 0.61);
         .maskTip {
-          color: #fff;
+          color: var(--textColor);
           .refreshBtn {
             margin-top: 10px;
             padding: 7px 14px;
@@ -395,7 +395,7 @@ export default defineComponent({
     }
     div {
       span {
-        color: @nameColor;
+        color: var(--nameColor);
       }
     }
   }
@@ -431,7 +431,7 @@ export default defineComponent({
       height: 40px;
       text-align: center;
       line-height: 40px;
-      color: #fff;
+      color: var(--textColor);
       margin-top: 30px;
       font-size: 14px;
       border-radius: 7px;

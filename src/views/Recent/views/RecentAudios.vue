@@ -76,7 +76,7 @@ export default defineComponent({
       align-items: center;
       cursor: pointer;
       &:hover {
-        background-color: @hoverColor;
+        background-color: var(--hoverColor);
       }
       .el-image__placeholder {
         background-color: #4a4a4a !important;
@@ -87,6 +87,7 @@ export default defineComponent({
         .name {
           font-size: 14px;
           font-weight: bold;
+          color: var(--textColor);
         }
         .detail {
           margin-top: 12px;
@@ -97,7 +98,7 @@ export default defineComponent({
           span {
             cursor: pointer;
             &:hover {
-              color: #fff;
+              color: var(--textColor);
             }
           }
         }

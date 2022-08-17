@@ -28,16 +28,16 @@
         <div class="itemInfo">
           <div class="itemTitle">生日：</div>
           <div style="margin-left: 15px" class="">
+                
+            <!-- popper-class="calendarPopoverClass" -->
             <el-config-provider :locale="local">
               <el-date-picker
                 :editable="false"
                 :local="local"
-                :effect="'dark'"
                 v-model="tempInfo.birthday"
                 type="date"
                 placeholder="选择日期"
                 format="YYYY-MM-DD"
-                popper-class="calendarPopoverClass"
               />
             </el-config-provider>
           </div>
@@ -45,9 +45,8 @@
         <div class="itemInfo">
           <div class="itemTitle">地区：</div>
           <div style="margin-left: 15px" class="">
+            <!-- popper-class="selectPopoverClass" -->
             <el-select
-              :effect="'dark'"
-              popper-class="selectPopoverClass"
               v-model="tempInfo.province"
               placeholder="选择省/直辖市"
             >
@@ -59,10 +58,9 @@
                 @click.native="optionClick('province', item, index)"
               />
             </el-select>
+            <!-- popper-class="selectPopoverClass" -->
             <el-select
               style="margin-left: 25px"
-              :effect="'dark'"
-              popper-class="selectPopoverClass"
               v-model="tempInfo.city"
               placeholder="选择区/县"
             >
@@ -273,7 +271,7 @@ export default defineComponent({
     background-color: #404040;
   }
   .el-select-dropdown__item {
-    color: #fff;
+    color: var(--textColor);
   }
   .el-select-dropdown__empty {
     background-color: #404040;
@@ -324,6 +322,7 @@ export default defineComponent({
   .title {
     font-weight: bold;
     font-size: 18px;
+    color: var(--textColor);
   }
   .userData {
     display: flex;
@@ -339,22 +338,25 @@ export default defineComponent({
           font-size: 13px;
           margin-top: 6px;
           font-weight: bold;
+          color: var(--textColor);
         }
         .itemInput {
           border-radius: 6px;
           margin-left: 15px;
           flex: 1;
           padding: 7px 15px;
-          background-color: #484848;
+          background-color: var(--el-fill-color-blank);
           display: flex;
           align-items: center;
+          box-sizing: border-box;
+          border: 1px solid var(--inputBorderColor);
           input {
             width: 100%;
             padding: 0;
             background: transparent;
             border: 0;
             outline: none;
-            color: #fff;
+            color: var(--el-text-color-regular);
           }
           textarea {
             width: 100%;
@@ -364,34 +366,34 @@ export default defineComponent({
             outline: none;
             resize: none;
             height: 80px;
-            color: #fff;
+            color: var(--el-text-color-regular);
           }
         }
-        .el-select .el-input__wrapper.is-focus {
-          box-shadow: 0 0 0 1px @themeColor inset !important;
-        }
-        .el-select .el-input.is-focus .el-input__wrapper {
-          box-shadow: 0 0 0 1px @themeColor inset !important;
-        }
+        // .el-select .el-input__wrapper.is-focus {
+        //   box-shadow: 0 0 0 1px @themeColor inset !important;
+        // }
+        // .el-select .el-input.is-focus .el-input__wrapper {
+        //   box-shadow: 0 0 0 1px @themeColor inset !important;
+        // }
         .el-input__wrapper {
-          background: #484848;
-          box-shadow: 0 0 0 0 transparent;
+          // background: #484848;
+          // box-shadow: 0 0 0 0 transparent;
           font-size: 13px !important;
         }
         .el-input__inner {
-          color: #fff;
+          // color: var(--textColor);
         }
         .el-radio__inner {
-          background-color: transparent;
-          border: 1px solid #717171 !important;
+          // background-color: transparent;
+          // border: 1px solid #717171 !important;
         }
         .el-radio__input.is-checked + .el-radio__label {
-          color: @themeColor !important;
+          // color: @themeColor !important;
         }
         /* 选中后小圆点的颜色 */
         .el-radio__input.is-checked .el-radio__inner {
-          background: @themeColor !important;
-          border-color: @themeColor !important;
+          // background: @themeColor !important;
+          // border-color: @themeColor !important;
         }
       }
       .saveContainer {

@@ -470,7 +470,7 @@ export default defineComponent({
     height: 100%;
     // background-color: #373737;
     .activeObjectItem {
-      background-color: @hoverColor !important;
+      background-color: var(--hoverColor) !important;
     }
     .objectItem {
       padding: 13px 15px;
@@ -480,7 +480,7 @@ export default defineComponent({
       position: relative;
       transition: 0.2s all linear;
       &:hover {
-        background-color: @hoverColor;
+        background-color: var(--hoverColor);
       }
       .el-badge {
         display: flex;
@@ -509,7 +509,7 @@ export default defineComponent({
   .rightMessageInfo {
     flex: 1;
     height: 100%;
-    background-color: @hoverColor;
+    background-color: var(--hoverColor);
     display: flex;
     .chatContainer {
       flex: 1;
@@ -543,7 +543,7 @@ export default defineComponent({
           .popoverInfoContainer {
             padding: 0 14px;
             font-size: 13px;
-            color: #fff;
+            color: var(--textColor);
             .msgContainer {
               word-break: break-all;
               max-width: 500px;
@@ -586,7 +586,7 @@ export default defineComponent({
             border: 0;
             outline: none;
             resize: none;
-            color: #fff;
+            color: var(--textColor);
             font-size: 14px;
           }
         }
@@ -605,7 +605,7 @@ export default defineComponent({
             justify-content: center;
             padding: 0 15px;
             font-size: 12px;
-            color: #fff;
+            color: var(--textColor);
             cursor: pointer;
             border-radius: 6px;
             background-color: @themeColor;

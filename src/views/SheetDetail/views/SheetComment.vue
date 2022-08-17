@@ -164,6 +164,7 @@ export default defineComponent({
     margin-bottom: 10px;
     font-size: 14px;
     font-weight: bold;
+    color: var(--textColor);
   }
 }
 </style>

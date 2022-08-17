@@ -172,7 +172,7 @@ export default defineComponent({
     color: @fontColor;
     cursor: pointer;
     &:hover {
-      color: #fff;
+      color: var(--textColor);
     }
   }
 }

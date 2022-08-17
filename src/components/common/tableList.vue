@@ -69,12 +69,12 @@ export default defineComponent({
     border-spacing:0 10px;
     tbody {
       .item:nth-child(even) {
-        background-color: #2c2c2c;
+        background-color: var(--tableColor);
       }
       tr {
         cursor: pointer;
         &:hover {
-          background-color: @hoverColor !important;
+          background-color: var(--hoverColor) !important;
         }
       }
     }

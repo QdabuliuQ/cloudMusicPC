@@ -84,7 +84,7 @@ export default defineComponent({
       align-items: center;
       cursor: pointer;
       &:hover {
-        background-color: @hoverColor;
+        background-color: var(--hoverColor);
       }
       .imgContainer {
         width: 80px;
@@ -99,9 +99,10 @@ export default defineComponent({
         .name {
           font-size: 14px;
           font-weight: bold;
+          color: var(--textColor);
         }
         .detail {
-          margin-top: 12px;
+          margin-top: 3px;
           display: flex;
           align-items: center;
           div {

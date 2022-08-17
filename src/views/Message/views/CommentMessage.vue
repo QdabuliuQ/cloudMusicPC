@@ -118,7 +118,7 @@ export default defineComponent({
           font-size: 12px;
           color: @fontColor;
           span {
-            color: @nameColor;
+            color: var(--nameColor);
           }
         }
         .contentInfo {

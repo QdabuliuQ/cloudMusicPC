@@ -147,7 +147,7 @@ export default defineComponent({
   .pageTitle {
     font-size: 22px;
     font-weight: bold;
-    color: @fontColor;
+    color: var(--textColor);
   }
   .cateBox {
     margin: 25px 0;
@@ -163,15 +163,15 @@ export default defineComponent({
     }
     .itemTitle {
       width: 5%;
-      color: #fff;
+      color: var(--textColor);
     }
     .itemContainer {
       width: 94%;
       display: flex;
       flex-wrap: wrap;
       span {
-        color: #fff;
-        opacity: 0.5;
+        color: var(--textColor);
+        opacity: 0.7;
         cursor: pointer;
         margin-right: 30px;
         margin-bottom: 10px;

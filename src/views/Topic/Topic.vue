@@ -78,7 +78,7 @@ export default defineComponent({
       align-items: center;
       cursor: pointer;
       &:hover {
-        background-color: @hoverColor;
+        background-color: var(--hoverColor);
       }
       .info {
         width: 10vw;

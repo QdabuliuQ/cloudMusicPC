@@ -87,6 +87,7 @@ export default defineComponent({
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+        color: var(--textColor);
       }
     }
     .category {

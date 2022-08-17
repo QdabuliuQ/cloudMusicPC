@@ -292,7 +292,7 @@ export default defineComponent({
       cursor: pointer;
       padding: 3px 3px 5px;
       &:hover {
-        background-color: @hoverColor;
+        background-color: var(--hoverColor);
       }
     }
   }
@@ -317,7 +317,7 @@ export default defineComponent({
       margin-top: 5px;
       cursor: pointer;
       &:hover {
-        background-color: @hoverColor;
+        background-color: var(--hoverColor);
       }
     }
   }
@@ -340,104 +340,4 @@ export default defineComponent({
   }
 }
 
-.dialogPopperClass.is-light {
-  background-color: #292929 !important;
-  border: 1px solid #292929 !important;
-}
-.shareDialogClass {
-  background-color: #3f3f3f !important;
-  .el-dialog__headerbtn .el-dialog__close {
-    font-size: 24px;
-  }
-  .el-dialog__body {
-    padding: 20px;
-  }
-  .el-dialog__headerbtn:hover .el-dialog__close {
-    color: @themeColor;
-  }
-  .diglogTitle {
-    color: #fff;
-    font-weight: bold;
-    font-size: 15px;
-    text-align: center;
-  }
-  .diglogTextBox {
-    margin-top: 10px;
-    padding: 10px;
-    border: 1px solid #565555;
-    textarea {
-      width: 100%;
-      height: 80px;
-      border: 0;
-      outline: none;
-      resize: none;
-      background-color: transparent;
-      color: #fff;
-      font-size: 15px;
-      &::-webkit-scrollbar {
-        display: none;
-      }
-    }
-    .functionList {
-      display: flex;
-      align-items: center;
-      img {
-        width: 30px;
-        cursor: pointer;
-        margin-right: 6px;
-      }
-    }
-  }
-  .dialogInfoBox {
-    padding: 7px 10px;
-    display: flex;
-    align-items: center;
-    border-left: 1px solid #565555;
-    border-right: 1px solid #565555;
-    border-bottom: 1px solid #565555;
-    .name {
-      font-size: 13px;
-      width: 300px;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-    }
-
-    .target {
-      font-size: 12px;
-      color: @themeColor;
-      border: 1px solid @themeColor;
-      padding: 4px 8px;
-      transform: scale(0.8);
-      margin-left: 6px;
-    }
-  }
-  .dialogBtnBox {
-    margin-top: 10px;
-    display: flex;
-    justify-content: flex-end;
-    .shareBtn {
-      padding: 7px 20px;
-      color: #fff;
-      border-radius: 30px;
-      font-size: 12px;
-      background-color: @themeColor;
-      cursor: pointer;
-    }
-  }
-  .dialogInfoSearchBox {
-    padding: 7px 14px;
-    border-left: 1px solid #565555;
-    border-right: 1px solid #565555;
-    border-bottom: 1px solid #565555;
-    input {
-      width: 100%;
-      height: 28px;
-      background: transparent;
-      color: #fff;
-      border: 0;
-      outline: none;
-    }
-  }
-}
 </style>

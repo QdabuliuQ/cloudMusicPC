@@ -10,7 +10,6 @@
           placement="bottom-start"
           :width="300"
           trigger="click"
-          popper-class="dialogPopperClass"
           :hide-after="0"
         >
           <template #reference>
@@ -37,7 +36,6 @@
           placement="bottom"
           :width="150"
           trigger="click"
-          popper-class="dialogPopperClass"
           :hide-after="0"
         >
           <template #reference>
@@ -182,7 +180,7 @@ export default defineComponent({
   .commentBox {
     padding: 10px 12px;
     border-radius: 8px;
-    background-color: @eventBgc;
+    background-color: var(--eventBgc);
     margin-bottom: 8px;
     textarea {
       resize: none;
@@ -191,7 +189,7 @@ export default defineComponent({
       background-color: transparent;
       outline: none;
       border: 0;
-      color: #fff;
+      color: var(--textColor);
       font-size: 15px;
     }
   }
@@ -209,10 +207,11 @@ export default defineComponent({
     .sendBtn {
       font-size: 13px;
       padding: 10px 24px;
-      background-color: @eventBgc;
+      background-color: var(--eventBgc);
       border-radius: 10px;
       transition: 0.2s all linear;
       cursor: pointer;
+      color: var(--textColor);
       &:hover {
         background-color: @themeColor;
         color: #fff;

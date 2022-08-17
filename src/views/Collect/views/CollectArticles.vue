@@ -63,10 +63,10 @@ export default defineComponent({
     font-size: 14px;
     cursor: pointer;
     &:nth-child(even) {
-      background-color: #2c2c2c;
+      background-color: var(--tableColor);
     }
     &:hover {
-      background-color: @hoverColor;
+      background-color: var(--hoverColor);
     }
     .name {
       flex: 4;
@@ -80,7 +80,7 @@ export default defineComponent({
       span {
         cursor: pointer;
         &:hover {
-          color: #fff;
+          color: var(--textColor);
         }
       }
     }
