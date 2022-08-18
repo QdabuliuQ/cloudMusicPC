@@ -18,7 +18,6 @@
           </div>
           <div v-if="singerInfo.user" class="btnList">
             <div @click="followEvent" class="follow btnItem">
-              <!-- singerInfo.user.followed -->
               <img
                 style="width: 15px"
                 v-if="singerInfo.user.followed"
@@ -177,7 +176,7 @@ export default defineComponent({
       span {
         font-size: 12px;
         padding: 4px 10px;
-        color: var(--textColor);
+        color: #fff;
         background-color: @themeColor;
         border-radius: 30px;
         margin: 0 7px;
@@ -194,7 +193,7 @@ export default defineComponent({
         align-items: center;
         padding: 7px 16px;
         font-size: 13px;
-        border: 1px solid #767676;
+        border: 1px solid var(--borderColor);
         color: @fontColor;
         border-radius: 20px;
         cursor: pointer;

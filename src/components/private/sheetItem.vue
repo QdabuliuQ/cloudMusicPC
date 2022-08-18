@@ -99,6 +99,7 @@ export default defineComponent({
         transform: translate(-50%, -50%);
         font-weight: bold;
         font-size: 35px;
+        color: #Fff;
       }
     }
     .bgImage {

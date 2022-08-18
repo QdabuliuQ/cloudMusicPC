@@ -29,7 +29,7 @@ export default defineComponent({
   padding: 7px 15px;
   font-size: 12px;
   color: @fontColor;
-  background-color: #424242;
+  background-color: var(--chlidCommentBgc);
   border-radius: 25px;
   display: flex;
   align-items: center;

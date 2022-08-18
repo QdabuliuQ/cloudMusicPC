@@ -70,7 +70,7 @@
                 }}
               </div>
               <div @click="router.push('/UserInfoEdit')" v-else class="btnItem">
-                <img src="~images/common/edit.png" alt="" />
+                <img src="~images/common/editGrey.png" alt="" />
                 编辑个人信息
               </div>
             </div>
@@ -315,7 +315,7 @@ export default defineComponent({
         .btnItem {
           font-size: 13px;
           padding: 7px 15px 8px;
-          border: 1px solid #7f7f7f;
+          border: 1px solid var(--borderColor);
           border-radius: 30px;
           margin-right: 15px;
           cursor: pointer;

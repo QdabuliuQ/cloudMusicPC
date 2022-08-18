@@ -49,6 +49,7 @@ export default defineComponent({
         limit: 999,
         offset: (data.offset - 1) * 999,
       }).then((res: any) => {
+        data.total = res.data.count
         data.mvList = res.data.data;
       });
     };

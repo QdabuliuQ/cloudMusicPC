@@ -149,7 +149,7 @@
                 :userId="item.user.userId"
                 :beReplied="item.beReplied"
                 :liked="item.liked"
-                :id="musicInfo.id"
+                :id="musicList[activeIndex].id"
                 :cid="item.commentId"
                 :type="0"
               ></commentItem>
@@ -231,7 +231,7 @@
             <div class="btnContainer">
               <img
                 @click="toggleMusic('last', --activeIndex)"
-                style="width: 30px"
+                style="width: 27px"
                 src="~images/common/last.png"
                 alt=""
               />
@@ -255,7 +255,7 @@
             <div class="btnContainer">
               <img
                 @click="toggleMusic('next', ++activeIndex)"
-                style="width: 30px"
+                style="width: 27px"
                 src="~images/common/next.png"
                 alt=""
               />
@@ -263,7 +263,7 @@
             <div class="btnContainer">
               <img
                 @click="lyricDialog = !lyricDialog"
-                style="width: 17px"
+                style="width: 21px"
                 title="打开歌词"
                 v-show="!lyricDialog"
                 src="~images/songDetail/lyric.png"
@@ -271,7 +271,7 @@
               />
               <img
                 @click="lyricDialog = !lyricDialog"
-                style="width: 17px"
+                style="width: 21px"
                 title="关闭歌词"
                 v-show="lyricDialog"
                 src="~images/songDetail/lyricActive.png"
@@ -295,20 +295,17 @@
         </div>
       </div>
       <div v-if="musicList.length" class="rightMusicSetting">
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          placement="top"
-          :show-tooltip="false"
-        >
+        <el-tooltip placement="top" :show-tooltip="false">
           <img src="~images/common/shout.png" alt="" />
           <template #content>
-            <el-slider
-              v-model="volume"
-              :show-tooltip="false"
-              vertical
-              height="100px"
-            />
+            <div style="padding-top: 10px">
+              <el-slider
+                v-model="volume"
+                :show-tooltip="false"
+                vertical
+                height="100px"
+              />
+            </div>
           </template>
         </el-tooltip>
         <img
@@ -860,6 +857,8 @@ export default defineComponent({
 
       toStopMusic(e: boolean) {
         data.isPlay = e;
+        console.log(data.isPlay, e);
+        
         cleanInterval();
         if (data.musicList.length) {
           audioRef.value.pause();
@@ -923,23 +922,24 @@ export default defineComponent({
 
     bus.on("playMusic", (e: any) => {
       if (e.data.length) {
-        let newData = JSON.parse(JSON.stringify(e.data))
+        let newData = JSON.parse(JSON.stringify(e.data));
         for (const item of newData) {
           if (item.album) {
-            item.al = item.album
-            delete item.album
+            item.al = item.album;
+            delete item.album;
           }
           if (item.artists) {
-            item.ar = item.artists
-            delete item.artists
+            item.ar = item.artists;
+            delete item.artists;
           }
-          if(item.duration) {
-            item.dt = item.duration
-            delete item.duration
+          if (item.duration) {
+            item.dt = item.duration;
+            delete item.duration;
           }
         }
+        console.log(newData[e.index]);
         
-        
+
         checkSong(newData, e.index).then((res: any) => {
           if (res) {
             data.musicList = newData;
@@ -1032,7 +1032,6 @@ export default defineComponent({
 }
 .el-drawer {
   width: 400px !important;
-  background-color: #292929;
   table {
     border-spacing: 0 6px;
   }
@@ -1049,6 +1048,7 @@ export default defineComponent({
   .songName {
     display: flex;
     align-items: center;
+    color: var(--textColor);
     .name {
       max-width: 80px;
       overflow: hidden;
@@ -1067,33 +1067,6 @@ export default defineComponent({
     text-align: right;
     color: @fontColor;
   }
-  .el-drawer__body {
-    padding: 0 0 20px;
-  }
-  .el-drawer__title {
-    color: var(--textColor);
-    font-weight: bold;
-  }
-  .el-drawer__close-btn:hover i {
-    color: @themeColor;
-  }
-}
-.el-popper {
-  // padding: 10px 12px !important;
-  .el-slider__runway {
-    height: 4px;
-    background-color: #363639;
-    margin: 0 7px !important;
-  }
-  .el-slider__bar {
-    height: 4px;
-    background-color: @themeColor;
-  }
-  .el-slider__button {
-    height: 12px;
-    width: 12px;
-    border: solid 2px @themeColor;
-  }
 }
 .bottomProgressContainer {
   height: 70px;
@@ -1111,7 +1084,6 @@ export default defineComponent({
     align-items: center;
     .leftMusicInfo {
       flex: 2;
-
       .musicInfo {
         display: flex;
         align-items: center;
@@ -1121,6 +1093,9 @@ export default defineComponent({
         height: 50px;
         border-radius: 6px;
         object-fit: contain;
+        text-align: center;
+        margin-right: 10px;
+        background-color: var(--chlidCommentBgc);
         img {
           cursor: pointer;
           width: 100%;
@@ -1183,18 +1158,9 @@ export default defineComponent({
           .el-slider__button-wrapper {
             top: -16px;
           }
-          .el-slider__runway {
-            height: 4px;
-            background-color: #363639;
-          }
-          .el-slider__bar {
-            height: 4px;
-            background-color: @themeColor;
-          }
           .el-slider__button {
-            height: 12px;
-            width: 12px;
-            border: solid 2px @themeColor;
+            width: 15px;
+            height: 15px;
           }
         }
       }
@@ -1216,7 +1182,7 @@ export default defineComponent({
   position: fixed;
   left: 0;
   top: 100%;
-  background-color: #2b2b2b;
+  background-color: var(--bgColor);
   z-index: 101;
   height: calc(100vh - 55px - 69px);
   transition: 0.3s top linear;

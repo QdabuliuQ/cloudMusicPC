@@ -56,9 +56,6 @@ img {
   color: @themeColor !important;
 }
 .darkNotice {
-  background-color: rgb(30, 30, 30) !important;
-  border: 1px solid #000 !important;
-
   .el-notification__content {
     color: var(--textColor) !important;
   }

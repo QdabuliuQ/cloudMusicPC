@@ -343,7 +343,7 @@ export default defineComponent({
 
 <style lang='less'>
 #VideoPlay {
-  background-color: @greyColor;
+  background-color: var(--bgColor);
   padding: 30px 15vw;
   display: flex;
   justify-content: space-between;
@@ -399,14 +399,14 @@ export default defineComponent({
           margin-right: 20px;
           margin-bottom: 7px;
           font-size: 12px;
-          padding: 6px 15px 8px;
-          background-color: @eventBgc;
+          padding: 6px 15px 6px;
+          background-color: var(--chlidCommentBgc);
           border-radius: 10px;
           transition: 0.2s all linear;
           cursor: pointer;
           &:hover {
             background-color: @themeColor;
-            color: var(--textColor);
+            color: #fff;
           }
         }
       }
@@ -424,7 +424,7 @@ export default defineComponent({
           font-size: 13px;
           color: @fontColor;
           border-radius: 35px;
-          border: 1px solid #6b6b6b;
+          border: 1px solid var(--borderColor);
           display: flex;
           align-items: center;
           cursor: pointer;
@@ -450,43 +450,10 @@ export default defineComponent({
             margin-left: 5px;
           }
         }
-        .commentBox {
-          padding: 10px 12px;
-          border-radius: 8px;
-          background-color: @eventBgc;
-          margin-bottom: 8px;
-          textarea {
-            resize: none;
-            width: 100%;
-            height: 80px;
-            background-color: transparent;
-            outline: none;
-            border: 0;
-            color: var(--textColor);
-            font-size: 15px;
-          }
-        }
-        .btnContainer {
-          display: flex;
-          justify-content: flex-end;
-          margin-bottom: 40px;
-          .sendBtn {
-            font-size: 13px;
-            padding: 10px 24px;
-            background-color: @eventBgc;
-            border-radius: 10px;
-            transition: 0.2s all linear;
-            cursor: pointer;
-            &:hover {
-              background-color: @themeColor;
-              color: var(--textColor);
-            }
-          }
-        }
         .commentList {
           .comItem:not(:last-child) {
             box-sizing: border-box;
-            border-bottom: 1px solid #3f3f3f;
+            border-bottom: 1px solid var(--borderColor);
           }
         }
       }

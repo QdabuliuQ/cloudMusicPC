@@ -257,7 +257,7 @@ export default defineComponent({
         color: @themeColor !important;
       }
       .disableBtn {
-        background-color: #4a4a4a;
+        background-color: var(--disableColor);
         color: @fontColor;
         cursor: not-allowed !important;
       }
@@ -267,7 +267,7 @@ export default defineComponent({
         display: flex;
         align-items: center;
         border-radius: 30px;
-        border: 1px solid #5b5b5b;
+        border: 1px solid var(--borderColor);
         cursor: pointer;
         margin-right: 15px;
         color: var(--textColor);

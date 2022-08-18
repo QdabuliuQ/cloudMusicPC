@@ -87,7 +87,7 @@ export default defineComponent({
         area,
         initial,
         offset: data.offset * 18,
-        limit: 18,
+        limit: 60,
       }).then((res: any) => {
         if (res.data.artists.length) {
           data.singerList = [...data.singerList, ...res.data.artists];

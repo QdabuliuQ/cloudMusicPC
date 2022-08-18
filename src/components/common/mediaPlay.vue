@@ -399,7 +399,6 @@ export default defineComponent({
   video::-webkit-media-controls-enclosure {
     display: none;
   }
-
   .miniModel {
     position: fixed;
     width: 400px !important;
@@ -445,6 +444,7 @@ export default defineComponent({
     height: 45px;
     background-color: #000;
     transition: 0.2s all linear;
+    color: #fff;
     .fullscreenMask {
       width: 100%;
       height: 45px;
@@ -575,6 +575,7 @@ export default defineComponent({
       text-align: center;
       font-size: 14px;
       cursor: pointer;
+      color: #fff;
       img {
         width: 40%;
         margin-bottom: 7px;

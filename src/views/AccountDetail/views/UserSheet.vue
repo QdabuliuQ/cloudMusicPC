@@ -14,7 +14,7 @@
       </div>
       <div class="mask">
         <span>
-          <img src="~images/recommend/playLine.png" alt="" />
+          <img src="~images/recommend/playLine_white.png" alt="" />
           {{ $countFormat(item.playCount) }}
         </span>
       </div>
@@ -155,6 +155,7 @@ export default defineComponent({
       width: 100%;
       height: 30px;
       background-image: linear-gradient(#00000057, transparent);
+      color: #fff;
       img {
         width: 15px;
         margin-right: 3px;

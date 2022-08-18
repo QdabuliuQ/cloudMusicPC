@@ -129,7 +129,7 @@ export default defineComponent({
 
 <style lang='less'>
 .el-popover {
-  padding: 20px !important;
+  // padding: 20px !important;
   .cateList {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;

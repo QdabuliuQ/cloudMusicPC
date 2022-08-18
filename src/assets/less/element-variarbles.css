@@ -15,6 +15,8 @@
   --replyContentBgc: #e6e6e6;
   --eventCommentBgc: #fff;
   --inputBorderColor: #dcdfe6;
+  --disableColor: #dfdfdf;
+  --titleColor: #fff;
 }
 html.dark {
   color-scheme: dark;
@@ -34,4 +36,6 @@ html.dark {
   --replyContentBgc: #333333;
   --eventCommentBgc: #505050;
   --inputBorderColor: transparent;
+  --disableColor: #4a4a4a;
+  --titleColor: #ec4141;
 }

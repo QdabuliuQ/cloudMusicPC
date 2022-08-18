@@ -70,9 +70,7 @@ export default defineComponent({
         limit: data.limit,
         offset: (data.offset - 1) * data.limit,
       }).then((res: any) => {
-        if (res.data.count) {
-          data.total = res.data.count;
-        }
+        data.total = res.data.count;
         data.albumList = res.data.data;
       });
     };

@@ -5,7 +5,6 @@
       <div class="centerSearch">
         <div class="searchContainer">
           <img src="~images/musicNavBar/search.png" alt="" />
-          <!-- popper-class="dialogPopperClass" -->
           <el-popover
             ref="searchPopoverRef"
             placement="bottom"
@@ -236,7 +235,7 @@
               src="~images/common/message.png"
               alt=""
             />
-            <div>消息</div>
+            <div style="color: #Fff">消息</div>
           </div>
           <el-switch inline-prompt v-model="theme" @click="toggle()">
           </el-switch>
@@ -638,6 +637,7 @@ export default defineComponent({
       letter-spacing: 2px;
       font-size: 22px;
       font-weight: bold;
+      color: #fff;
     }
     .centerSearch {
       flex: 5;
@@ -645,8 +645,8 @@ export default defineComponent({
       .searchContainer {
         display: flex;
         align-items: center;
-        padding: 5px 15px;
-        background-color: @greyColor;
+        padding: 7px 15px 5px;
+        background-color: var(--eventBgc);
         border-radius: 20px;
         position: relative;
 
@@ -701,6 +701,7 @@ export default defineComponent({
             opacity: 0.6;
           }
           .userName {
+            color: #Fff;
             &:hover {
               color: var(--textColor);
             }
