@@ -65,9 +65,9 @@ export default defineComponent({
   }
   .targetIcon {
     cursor: pointer;
-    border: 1px solid @themeColor;
+    border: 1px solid var(--el-color-primary);
     padding: 3px 10px;
-    color: @themeColor;
+    color: var(--el-color-primary);
     font-size: 13px;
     font-weight: bold;
     opacity: 0.6;

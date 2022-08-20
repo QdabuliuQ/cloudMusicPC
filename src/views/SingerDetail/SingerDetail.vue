@@ -177,7 +177,7 @@ export default defineComponent({
         font-size: 12px;
         padding: 4px 10px;
         color: #fff;
-        background-color: @themeColor;
+        background-color: var(--el-color-primary);
         border-radius: 30px;
         margin: 0 7px;
         position: relative;

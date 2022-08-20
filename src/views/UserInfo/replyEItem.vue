@@ -143,6 +143,7 @@
     </div>
     <eventPics :pics="pics"></eventPics>
     <eventOperate
+      v-if="disableOpe"
       :liked="liked"
       :uid="uid"
       :likedCount="likedCount"
@@ -202,6 +203,7 @@ export default defineComponent({
     "shareCount",
     "pics",
     "uid",
+    "disableOpe"
   ],
   setup(props) {
     const data = reactive({

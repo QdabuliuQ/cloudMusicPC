@@ -113,7 +113,7 @@ export default defineComponent({
       cursor: pointer;
     }
     .langActiveItem {
-      color: @themeColor !important;
+      color: var(--el-color-primary) !important;
       font-weight: bold;
     }
   }

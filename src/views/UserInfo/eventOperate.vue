@@ -277,7 +277,7 @@ export default defineComponent({
       }
     }
     .likeItem {
-      color: @themeColor !important;
+      color: var(--el-color-primary) !important;
     }
   }
   .commentContainer {
@@ -310,8 +310,8 @@ export default defineComponent({
       transition: 0.2s all linear;
       color: var(--textColor);
       &:hover {
-        background-color: @themeColor;
-        border: 1px solid @themeColor;
+        background-color: var(--el-color-primary);
+        border: 1px solid var(--el-color-primary);
         color: #fff;
       }
     }

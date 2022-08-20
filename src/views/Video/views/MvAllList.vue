@@ -158,7 +158,7 @@ export default defineComponent({
     margin-bottom: 10px;
     font-size: 13.5px;
     .activeItem {
-      color: @themeColor !important;
+      color: var(--el-color-primary) !important;
       opacity: 1 !important;
     }
     .itemTitle {

@@ -26,7 +26,7 @@
         <div class="voiceContainer">
           <img v-if="!statue" class="controlIcon" src="~images/message/play.png" alt="" />
           <img v-else class="controlIcon" src="~images/message/pause.png" alt="" />
-          <img src="~images/message/voice.png" alt="" />
+          <img class="voiceIcon" src="~images/message/voice.png" alt="" />
           <span>{{ msg.voiceVO.duration }}<em>''</em></span>
         </div>
       </div>
@@ -86,6 +86,7 @@ export default defineComponent({
     padding-top: 2px;
     display: flex;
     align-items: center;
+    color: #fff;
     .controlIcon {
       width: 20px;
     }

@@ -171,7 +171,7 @@ export default defineComponent({
       width: 24.2%;
       margin-bottom: 12px;
       box-sizing: border-box;
-      background-color: #434343;
+      background-color: var(--hoverColor);
       border-radius: 8px;
       .itemContainer {
         padding: 10px 14px;
@@ -201,7 +201,7 @@ export default defineComponent({
         }
         .noticeInfo {
           padding: 10px;
-          background-color: #393939;
+          background-color: var(--messageColor);
           margin-top: 10px;
           border-radius: 10px;
           .infoTitle {

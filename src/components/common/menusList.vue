@@ -484,7 +484,7 @@ export default defineComponent({
       letter-spacing: 5px;
       text-indent: 5px;
       border-radius: 30px;
-      background-color: @themeColor;
+      background-color: var(--el-color-primary);
       color: #FFF;
       cursor: pointer;
       &:hover {

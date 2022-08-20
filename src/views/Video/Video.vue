@@ -62,7 +62,7 @@ export default defineComponent({
         content: "";
         width: 85%;
         height: 4px;
-        background-color: @themeColor;
+        background-color: var(--el-color-primary);
         bottom: 0;
         left: 50%;
         transform: translateX(-50%);

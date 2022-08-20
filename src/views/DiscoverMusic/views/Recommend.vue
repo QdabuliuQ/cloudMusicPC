@@ -234,10 +234,10 @@ export default defineComponent({
       position: absolute;
       bottom: -1px;
       right: -1px;
-      color: var(--textColor);
+      color: #fff;
       font-size: 12px;
       padding: 5px 12px;
-      background-color: @themeColor;
+      background-color: var(--el-color-primary);
       border-top-left-radius: 8px;
     }
   }

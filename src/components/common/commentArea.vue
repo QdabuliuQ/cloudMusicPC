@@ -213,7 +213,7 @@ export default defineComponent({
       cursor: pointer;
       color: var(--textColor);
       &:hover {
-        background-color: @themeColor;
+        background-color: var(--el-color-primary);
         color: #fff;
       }
     }

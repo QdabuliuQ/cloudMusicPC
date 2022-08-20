@@ -108,7 +108,7 @@ export default defineComponent({
 .popoverAlbum {
   .albumInfo {
     padding: 6px 10px;
-    background-color: #3d3d3d;
+    background-color: var(--eventBgc);
     margin-bottom: 10px;
     border-radius: 10px;
     display: flex;
@@ -126,8 +126,8 @@ export default defineComponent({
         .target {
           font-size: 12px;
           padding: 3px 6px;
-          color: @themeColor;
-          border: 1px solid @themeColor;
+          color: var(--el-color-primary);
+          border: 1px solid var(--el-color-primary);
           border-radius: 5px;
           zoom: .8;
           margin-right: 6px;

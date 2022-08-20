@@ -278,8 +278,8 @@ export default defineComponent({
     margin-bottom: 10px;
     .target {
       padding: 3px 10px;
-      color: @themeColor;
-      border: 1px solid @themeColor;
+      color: var(--el-color-primary);
+      border: 1px solid var(--el-color-primary);
       font-size: 14px;
       zoom: 0.8;
       margin-right: 7px;

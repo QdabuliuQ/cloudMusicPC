@@ -2,7 +2,7 @@
   <div class="videoItemPrivate">
     <div class="leftInfo">
       <div class="count">
-        <img src="~images/recommend/playLine.png" alt="">
+        <img src="~images/recommend/playLine_white.png" alt="">
         {{$countFormat(playTime)}}
       </div>
       <div class="duration">
@@ -63,6 +63,7 @@ export default defineComponent({
       right: 6px;
       display: flex;
       align-items: center;
+      color: #fff;
       img {
         width: 12px;
         margin-right: 4px;

@@ -17,10 +17,16 @@
   --inputBorderColor: #dcdfe6;
   --disableColor: #dfdfdf;
   --titleColor: #fff;
+  --popoColor: #5493d3;
+  --unpopoColor: #e5e5e5;
+  --chatBgc: #fafafa;
+  --messageColor: #fff;
+  --menuDisableColor: #e2e2e2;
+  --menuBgc: #fff;
 }
 html.dark {
   color-scheme: dark;
-  --el-color-primary: #ec4141 !important;
+  --el-color-primary: #ec4141;
   --el-fill-color-blank: #484848;
   --bgColor: #313134;
   --topNavColor: #202023;
@@ -38,4 +44,10 @@ html.dark {
   --inputBorderColor: transparent;
   --disableColor: #4a4a4a;
   --titleColor: #ec4141;
+  --popoColor: #495b6d;
+  --unpopoColor: #545454;
+  --chatBgc: #ffffff15;
+  --messageColor: #ffffff15;
+  --menuDisableColor: #353434;
+  --menuBgc: #141414;
 }

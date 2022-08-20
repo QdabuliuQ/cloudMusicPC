@@ -286,7 +286,7 @@ export default defineComponent({
         align-items: center;
       }
       .likeItem {
-        color: @themeColor;
+        color: var(--el-color-primary);
       }
       .dataItem {
         font-size: 12px;
@@ -298,7 +298,7 @@ export default defineComponent({
           margin-right: 20px;
         }
         &:hover {
-          color: @themeColor;
+          color: var(--el-color-primary);
         }
         img {
           width: 15px;

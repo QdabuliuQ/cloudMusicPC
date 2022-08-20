@@ -131,7 +131,7 @@ export default defineComponent({
 
           .itemIndex {
             width: 3%;
-            color: @themeColor;
+            color: var(--el-color-primary);
             font-weight: bold;
           }
           .itemInfo {

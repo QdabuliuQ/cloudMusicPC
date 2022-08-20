@@ -328,7 +328,7 @@ export default defineComponent({
     padding: 20px;
   }
   .el-dialog__headerbtn:hover .el-dialog__close {
-    color: @themeColor;
+    color: var(--el-color-primary);
   }
   .topNavBar {
     display: flex;
@@ -343,7 +343,7 @@ export default defineComponent({
         content: "";
         width: 80%;
         height: 4px;
-        background-color: @themeColor;
+        background-color: var(--el-color-primary);
         border-radius: 5px;
         bottom: -5px;
         left: 50%;
@@ -396,7 +396,7 @@ export default defineComponent({
       }
       .confirmMask {
         background-color: rgba(255, 255, 255, 0.863);
-        color: @themeColor;
+        color: var(--el-color-primary);
         font-weight: bold;
       }
       .successMask {
@@ -443,7 +443,7 @@ export default defineComponent({
         font-size: 13px;
       }
       .el-input__wrapper.is-focus {
-        box-shadow: 0 0 0 1px @themeColor inset;
+        box-shadow: 0 0 0 1px var(--el-color-primary) inset;
       }
     }
     .btnBox {
@@ -455,7 +455,7 @@ export default defineComponent({
       margin-top: 30px;
       font-size: 14px;
       border-radius: 7px;
-      background: @themeColor;
+      background: var(--el-color-primary);
       cursor: pointer;
       &:hover {
         background-color: #d93d3d;

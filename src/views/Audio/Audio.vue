@@ -188,7 +188,7 @@ export default defineComponent({
     .listItem {
       flex: 1;
       .listBox {
-        border-top: 1px solid @themeColor;
+        border-top: 1px solid var(--el-color-primary);
         border-left: 1px solid var(--borderColor);
         border-right: 1px solid var(--borderColor);
         border-bottom: 1px solid var(--borderColor);
@@ -198,7 +198,7 @@ export default defineComponent({
   .recommendItem {
     margin-bottom: 30px;
     .audioList {
-      border-top: 2px solid @themeColor;
+      border-top: 2px solid var(--el-color-primary);
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
       grid-gap: 20px;

@@ -23,7 +23,6 @@
       >
         <div style="width: 100%" class="itemContainer">
           <div class="boxContainer">
-            <img class="decoImage" src="~images/common/decorate.png" alt="" />
             <el-avatar :size="30" :src="item.user.avatarUrl" />
             <div class="userInfo">
               <div class="nameInfo">
@@ -96,7 +95,7 @@ export default defineComponent({
       margin-bottom: 12px;
       box-sizing: border-box;
       .boxContainer {
-        background: #434343;
+        background: var(--hoverColor);
         padding: 14px 10px;
         border-radius: 8px;
         display: flex;
@@ -129,7 +128,7 @@ export default defineComponent({
         .myCommentInfo {
           margin-top: 7px;
           padding: 8px 10px 10px;
-          background-color: #373737;
+          background-color: var(--messageColor);
           font-size: 13px;
           line-height: 20px;
           border-radius: 8px;

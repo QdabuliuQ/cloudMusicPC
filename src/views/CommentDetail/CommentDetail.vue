@@ -118,7 +118,7 @@ export default defineComponent({
       margin-bottom: 5px;
       color: var(--textColor);
       span {
-        color: @themeColor;
+        color: var(--el-color-primary);
       }
     }
     .commentBox {

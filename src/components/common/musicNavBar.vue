@@ -134,7 +134,6 @@
               :size="30"
               :src="userInfo.avatarUrl"
             />
-            <!-- popper-class="infoPopperClass" -->
             <el-popover
               ref="userInfoPopoverRef"
               placement="bottom-end"
@@ -237,8 +236,26 @@
             />
             <div style="color: #Fff">消息</div>
           </div>
-          <el-switch inline-prompt v-model="theme" @click="toggle()">
-          </el-switch>
+          <div class="dataBox">
+            <img
+              style="width: 20px; margin-right: 5px"
+              src="~images/common/subject.png"
+              alt=""
+            />
+            <el-popover
+              @after-enter='popoShow = true'
+              ref="userInfoPopoverRef"
+              placement="bottom-end"
+              :width="280"
+              trigger="click"
+              :hide-after="50"
+            >
+              <template #reference>
+                <div style="color: #Fff">主题</div>
+              </template>
+              <toggleSubject :popoShow='popoShow'/>
+            </el-popover>
+          </div>
         </div>
       </div>
     </div>
@@ -264,12 +281,14 @@ import {
   getSearchDefault,
   getSearchRecommend,
 } from "@/network/MusicNavBar/musicNavBar";
-import { useDark, useToggle } from '@vueuse/core'
-
+import toggleSubject from "@/components/private/toggleSubject.vue";
 let timer: any;
 
 export default defineComponent({
-  name: "",
+  name: "musicNavBar",
+  components: {
+    toggleSubject
+  },
   setup() {
     const _this: any = getCurrentInstance();
     const router = useRouter();
@@ -287,22 +306,8 @@ export default defineComponent({
       searchText: "",
       searchList: <any>[],
       isSearch: false,
-      theme: false
+      popoShow: false
     });
-
-    const isDark = useDark({
-      // 存储到localStorage/sessionStorage中的Key 根据自己的需求更改
-      storageKey: "useDarkKEY",
-      // 暗黑class名字
-      valueDark: "dark",
-      // 高亮class名字
-      valueLight: "light",
-    });
-    console.log(isDark);
-    
-    const toggle = useToggle(isDark);
-    console.log(toggle);
-    
 
     const toDetail = (e: any, t: string) => {
       searchPopoverRef.value.hide();
@@ -457,7 +462,6 @@ export default defineComponent({
     });
     return {
       ...toRefs(data),
-      toggle,
       toSearch,
       clickSearch,
       loginOutEvent,
@@ -612,6 +616,8 @@ export default defineComponent({
       }
     }
   }
+  
+  
 }
 
 #musicNavBar {
@@ -623,7 +629,7 @@ export default defineComponent({
   right: 0;
   background-color: var(--topNavColor);
   box-sizing: border-box;
-  border-bottom: 2px solid @themeColor;
+  border-bottom: 2px solid var(--el-color-primary);
   display: flex;
 
   .navbarContainer {
@@ -667,7 +673,7 @@ export default defineComponent({
       }
     }
     .rightInfo {
-      flex: 3;
+      flex: 5;
       display: flex;
       justify-content: flex-end;
       .userInfo {
@@ -702,9 +708,6 @@ export default defineComponent({
           }
           .userName {
             color: #Fff;
-            &:hover {
-              color: var(--textColor);
-            }
           }
         }
       }

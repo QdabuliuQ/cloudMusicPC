@@ -90,8 +90,8 @@ export default defineComponent({
         display: inline-block;
         padding: 5px 10px;
         font-size: 12px;
-        color: @themeColor;
-        border: 1px solid @themeColor;
+        color: var(--el-color-primary);
+        border: 1px solid var(--el-color-primary);
         transform: scale(0.7);
       }
     }

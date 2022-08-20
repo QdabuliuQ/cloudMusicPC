@@ -14,8 +14,6 @@
       切换日期：
       <el-select
         @change='selectChange'
-        popper-class="selectPopperClass"
-        :effect="'dark'"
         v-model="date"
         placeholder="选择日期"
       >
@@ -143,26 +141,6 @@ export default defineComponent({
 </script>
 
 <style lang='less'>
-.selectPopperClass {
-  padding: 3px 0 !important;
-  background-color: #292929 !important;
-  .el-select-dropdown__wrap {
-    .selected, .hover {
-      color: @themeColor;
-    }
-  }
-  
-  .el-select-dropdown__item.hover,
-  .el-select-dropdown__item:hover {
-    background-color: transparent;
-    &:hover {
-      background-color: var(--hoverColor);
-    }
-  }
-  .el-popper__arrow::before {
-    border-bottom-color: #292929 !important;
-  }
-}
 #RecommendSongs {
   padding: 30px;
   .topContainer {
@@ -179,7 +157,7 @@ export default defineComponent({
         transform: translate(-50%, -50%);
         font-weight: bold;
         font-size: 27px;
-        color: @themeColor;
+        color: var(--el-color-primary);
       }
       img {
         width: 120px;

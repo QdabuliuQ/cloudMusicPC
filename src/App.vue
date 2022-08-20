@@ -17,8 +17,6 @@ export default defineComponent({
 </script>
 
 <style lang="less">
-@import (css) "./assets/less/elementStyle.less";
-
 .el-select {
   --el-select-font-size: 13px !important;
   .el-input__wrapper {
@@ -50,10 +48,10 @@ img {
   word-break: break-all;
 }
 .el-loading-spinner .path {
-  stroke: @themeColor !important;
+  stroke: var(--el-color-primary) !important;
 }
 .el-loading-spinner .el-loading-text {
-  color: @themeColor !important;
+  color: var(--el-color-primary) !important;
 }
 .darkNotice {
   .el-notification__content {
@@ -61,7 +59,7 @@ img {
   }
 }
 .v-contextmenu {
-  background-color: var(--eventBgc) !important;
+  background-color: var(--menuBgc) !important;
   border: 1px solid var(--borderColor) !important;
   color: var(--textColor) !important;
   .v-contextmenu-inner {
@@ -92,7 +90,7 @@ img {
     }
   }
   .v-contextmenu-item--disabled {
-    background-color: #505050 !important;
+    background-color: var(--menuDisableColor) !important;
     color: @fontColor !important;
   }
   .v-contextmenu-item--hover {
@@ -115,31 +113,31 @@ img {
   }
 }
 .userListContainer {
-    .userItem {
-      font-size: 12px;
-      display: flex;
-      align-items: center;
-      padding: 6px 0;
-      cursor: pointer;
-      &:hover {
-        background-color: var(--hoverColor);
-      }
-      .name {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
+  .userItem {
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    padding: 6px 0;
+    cursor: pointer;
+    &:hover {
+      background-color: var(--hoverColor);
     }
-    .loadMore {
-      padding: 7px 0;
-      width: 100%;
-      text-align: center;
-      font-size: 12px;
-      margin-top: 5px;
-      cursor: pointer;
-      &:hover {
-        background-color: var(--hoverColor);
-      }
+    .name {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
+  .loadMore {
+    padding: 7px 0;
+    width: 100%;
+    text-align: center;
+    font-size: 12px;
+    margin-top: 5px;
+    cursor: pointer;
+    &:hover {
+      background-color: var(--hoverColor);
+    }
+  }
+}
 </style>

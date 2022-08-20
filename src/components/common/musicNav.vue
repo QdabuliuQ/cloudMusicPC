@@ -1024,7 +1024,7 @@ export default defineComponent({
     .lyricContent {
       text-align: center;
       width: 100%;
-      background-image: linear-gradient(white, @themeColor);
+      background-image: linear-gradient(white, var(--el-color-primary));
       -webkit-background-clip: text;
       color: transparent;
     }
@@ -1279,7 +1279,7 @@ export default defineComponent({
         span {
           cursor: pointer;
           &:hover {
-            color: @themeColor;
+            color: var(--el-color-primary);
           }
         }
       }

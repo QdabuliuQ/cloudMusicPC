@@ -417,13 +417,13 @@ export default defineComponent({
     }
     .el-slider__bar {
       height: 4px;
-      background-color: @themeColor;
+      background-color: var(--el-color-primary);
       border-radius: 0;
     }
     .el-slider__button {
       height: 15px;
       width: 15px;
-      border: solid 2px @themeColor;
+      border: solid 2px var(--el-color-primary);
     }
   }
   #mediaContainer {

@@ -77,7 +77,7 @@ export default defineComponent({
       border-radius: 4px;
       transform: translateX(-50%);
       height: 4px;
-      background-color: @themeColor;
+      background-color: var(--el-color-primary);
     }
   }
   .navItem {

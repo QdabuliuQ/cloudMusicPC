@@ -82,7 +82,7 @@ export default defineComponent({
     align-items: center;
     margin: 20px 0 10px;
     .activeItem {
-      color: @themeColor !important;
+      color: var(--el-color-primary) !important;
       opacity: 1 !important;
     }
     span {

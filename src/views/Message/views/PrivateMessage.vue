@@ -39,7 +39,6 @@
     </div>
     <div
       v-if="objectList.length"
-      element-loading-background="#000000a8"
       v-loading="loading"
       class="rightMessageInfo"
     >
@@ -470,7 +469,7 @@ export default defineComponent({
     height: 100%;
     // background-color: #373737;
     .activeObjectItem {
-      background-color: var(--hoverColor) !important;
+      background-color: var(--chatBgc) !important;
     }
     .objectItem {
       padding: 13px 15px;
@@ -480,7 +479,7 @@ export default defineComponent({
       position: relative;
       transition: 0.2s all linear;
       &:hover {
-        background-color: var(--hoverColor);
+        background-color: var(--chatBgc);
       }
       .el-badge {
         display: flex;
@@ -509,7 +508,7 @@ export default defineComponent({
   .rightMessageInfo {
     flex: 1;
     height: 100%;
-    background-color: var(--hoverColor);
+    background-color: var(--chatBgc);
     display: flex;
     .chatContainer {
       flex: 1;
@@ -552,13 +551,13 @@ export default defineComponent({
             }
           }
           .selfPopover {
-            background-color: rgb(73, 91, 109);
+            background-color: var(--popoColor);
             border-top-left-radius: 10px;
             border-bottom-left-radius: 10px;
             border-bottom-right-radius: 10px;
           }
           .unselfPopover {
-            background-color: #545454;
+            background-color: var(--unpopoColor);
             border-top-right-radius: 10px;
             border-bottom-left-radius: 10px;
             border-bottom-right-radius: 10px;
@@ -576,7 +575,7 @@ export default defineComponent({
         width: 100%;
         height: 32%;
         box-sizing: border-box;
-        border-top: 1px solid #535252;
+        border-top: 1px solid var(--borderColor);
         .inputContainer {
           padding: 10px;
           textarea {
@@ -605,10 +604,10 @@ export default defineComponent({
             justify-content: center;
             padding: 0 15px;
             font-size: 12px;
-            color: var(--textColor);
+            color: #fff;
             cursor: pointer;
             border-radius: 6px;
-            background-color: @themeColor;
+            background-color: var(--el-color-primary);
           }
         }
       }
@@ -617,7 +616,7 @@ export default defineComponent({
       width: 200px;
       height: 100%;
       box-sizing: border-box;
-      border-left: 1px solid #535252;
+      border-left: 1px solid var(--borderColor);
       display: flex;
       .userInfoBox {
         margin: auto;

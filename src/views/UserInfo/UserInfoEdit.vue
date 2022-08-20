@@ -292,28 +292,28 @@ export default defineComponent({
       border-bottom: 1px solid #5f5f5f !important;
     }
     .el-date-table td.today .el-date-table-cell__text {
-      color: @themeColor !important;
+      color: var(--el-color-primary) !important;
     }
     .el-date-table td.available:hover {
-      color: @themeColor !important;
+      color: var(--el-color-primary) !important;
     }
     .el-date-table td.current:not(.disabled) .el-date-table-cell__text {
-      background: @themeColor !important;
+      background: var(--el-color-primary) !important;
     }
     .el-date-picker__header-label:hover {
-      color: @themeColor !important;
+      color: var(--el-color-primary) !important;
     }
     .el-year-table td .cell:hover {
-      color: @themeColor !important;
+      color: var(--el-color-primary) !important;
     }
     .el-year-table td.today .cell {
-      color: @themeColor !important;
+      color: var(--el-color-primary) !important;
     }
     .el-month-table td .cell:hover {
-      color: @themeColor !important;
+      color: var(--el-color-primary) !important;
     }
     .el-month-table td.current:not(.disabled) .cell {
-      color: @themeColor !important;
+      color: var(--el-color-primary) !important;
     }
   }
 }
@@ -370,10 +370,10 @@ export default defineComponent({
           }
         }
         // .el-select .el-input__wrapper.is-focus {
-        //   box-shadow: 0 0 0 1px @themeColor inset !important;
+        //   box-shadow: 0 0 0 1px var(--el-color-primary) inset !important;
         // }
         // .el-select .el-input.is-focus .el-input__wrapper {
-        //   box-shadow: 0 0 0 1px @themeColor inset !important;
+        //   box-shadow: 0 0 0 1px var(--el-color-primary) inset !important;
         // }
         .el-input__wrapper {
           // background: #484848;
@@ -388,12 +388,12 @@ export default defineComponent({
           // border: 1px solid #717171 !important;
         }
         .el-radio__input.is-checked + .el-radio__label {
-          // color: @themeColor !important;
+          // color: var(--el-color-primary) !important;
         }
         /* 选中后小圆点的颜色 */
         .el-radio__input.is-checked .el-radio__inner {
-          // background: @themeColor !important;
-          // border-color: @themeColor !important;
+          // background: var(--el-color-primary) !important;
+          // border-color: var(--el-color-primary) !important;
         }
       }
       .saveContainer {
@@ -407,7 +407,7 @@ export default defineComponent({
           font-weight: bold;
           padding: 8px 10px;
           color: #fff;
-          background-color: @themeColor;
+          background-color: var(--el-color-primary);
           border-radius: 30px;
           font-size: 14px;
           cursor: pointer;

@@ -138,7 +138,7 @@ export default defineComponent({
     text-align: center;
     .activeCateItem {
       background-color: #ec414127;
-      color: @themeColor;
+      color: var(--el-color-primary);
     }
     .cateItem {
       margin-bottom: 5px;
@@ -147,7 +147,7 @@ export default defineComponent({
       padding: 7px 0;
       &:hover {
         background-color: #ec414127;
-        color: @themeColor;
+        color: var(--el-color-primary);
       }
     }
   }

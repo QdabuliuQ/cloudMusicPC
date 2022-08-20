@@ -98,8 +98,8 @@ export default defineComponent({
         transform: scale(0.8);
         font-size: 12px;
         padding: 7px 14px;
-        color: @themeColor;
-        border: 1px solid @themeColor;
+        color: var(--el-color-primary);
+        border: 1px solid var(--el-color-primary);
         border-radius: 8px;
       }
     }
@@ -108,7 +108,7 @@ export default defineComponent({
       align-items: center;
       font-size: 12px;
       font-weight: bold;
-      color: @themeColor;
+      color: var(--el-color-primary);
       img {
         width: 15px;
         margin-right: 4px;

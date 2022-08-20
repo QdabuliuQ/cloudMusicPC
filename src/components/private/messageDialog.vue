@@ -326,7 +326,7 @@ export default defineComponent({
     align-items: center;
     padding-bottom: 10px;
     .activeCateItem {
-      color: @themeColor;
+      color: var(--el-color-primary);
       font-weight: bold;
     }
     .cateItem {

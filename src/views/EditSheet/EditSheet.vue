@@ -12,7 +12,7 @@
         <div style="display: flex; align-items: center" class="itemInfo">
           <div style="margin-top: 0" class="itemTitle">标签：</div>
           <div
-            style="background: transparent; padding: 7px 0"
+            style="background: transparent; padding: 7px 0; border: 0"
             class="itemInput"
           >
             <span
@@ -28,7 +28,6 @@
               placement="bottom-start"
               :width="400"
               trigger="click"
-              effect="dark"
               :hide-after="50"
               popper-class="infoPopperClass"
             >
@@ -273,7 +272,7 @@ export default defineComponent({
       color: @fontColor;
       padding-bottom: 15px;
       strong {
-        color: @themeColor;
+        color: var(--el-color-primary);
       }
     }
     .cateItem {
@@ -294,11 +293,12 @@ export default defineComponent({
           font-size: 12px;
           padding: 5px 14px;
           border-radius: 25px;
-          background-color: #434343;
+          background-color: var(--eventBgc);
           cursor: pointer;
         }
         .activeItem {
-          background-color: @themeColor !important;
+          background-color: var(--el-color-primary) !important;
+          color: #fff;
         }
       }
     }
@@ -311,9 +311,10 @@ export default defineComponent({
     .finishBtn {
       padding: 6px 20px;
       font-size: 12px;
-      background-color: @themeColor;
+      background-color: var(--el-color-primary);
       border-radius: 25px;
       cursor: pointer;
+      color: #Fff;
       &:hover {
         background-color: @hoverTColor;
       }
@@ -348,7 +349,8 @@ export default defineComponent({
           margin-left: 15px;
           flex: 1;
           padding: 7px 15px;
-          background-color: #484848;
+          background-color: var(--el-fill-color-blank);;
+          border: 1px solid var(--inputBorderColor);
           display: flex;
           align-items: center;
           .targetItem {
@@ -357,7 +359,7 @@ export default defineComponent({
             font-size: 12px;
             padding: 5px 14px;
             border-radius: 25px;
-            background-color: @themeColor;
+            background-color: var(--el-color-primary);
           }
           span {
             color: var(--nameColor);
@@ -391,8 +393,8 @@ export default defineComponent({
         justify-content: center;
         .saveBtn {
           padding: 8px 20px;
-          color: var(--textColor);
-          background-color: @themeColor;
+          color: #fff;
+          background-color: var(--el-color-primary);
           letter-spacing: 7px;
           text-indent: 7px;
           border-radius: 30px;

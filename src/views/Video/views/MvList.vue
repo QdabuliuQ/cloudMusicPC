@@ -213,7 +213,7 @@ export default defineComponent({
     margin-bottom: 20px;
     .activeItem {
       font-weight: bold;
-      color: @themeColor !important;
+      color: var(--el-color-primary) !important;
     }
     span {
       margin-right: 30px;

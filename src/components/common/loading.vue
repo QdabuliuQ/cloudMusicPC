@@ -42,10 +42,10 @@ export default defineComponent({
   .el-loading-mask {
     z-index: 1;
     .el-loading-spinner .path {
-      stroke: @themeColor;
+      stroke: var(--el-color-primary);
     }
     .el-loading-text {
-      color: @themeColor;
+      color: var(--el-color-primary);
     }
   }
   .loadFail {

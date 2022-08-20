@@ -164,7 +164,7 @@ export default defineComponent({
       flex-wrap: wrap;
       color: var(--textColor);
       .activeItem {
-        color: @themeColor;
+        color: var(--el-color-primary);
       }
       .cateItem {
         margin-right: 25px;
@@ -172,7 +172,7 @@ export default defineComponent({
         cursor: pointer;
         font-size: 14px;
         &:hover {
-          color: @themeColor;
+          color: var(--el-color-primary);
         }
       }
     }

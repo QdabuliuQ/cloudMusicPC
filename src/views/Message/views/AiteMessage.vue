@@ -320,15 +320,23 @@ export default defineComponent({
       .eventContent {
         margin-left: 50px;
         padding: 8px 12px;
-        background: @eventBgc;
+        background: var(--messageColor);
         border-radius: 8px;
         font-size: 13px;
         cursor: pointer;
       }
+      .replyEventContent {
+        background: var(--messageColor);
+      }
       .item {
         border-radius: 10px;
         padding: 10px;
-        background-color: #434343;
+        background-color: var(--hoverColor);
+        .eventItem {
+          .eventPics {
+            zoom: 0.72;
+          }
+        }
       }
     }
   }

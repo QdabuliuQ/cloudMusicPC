@@ -225,8 +225,8 @@ export default defineComponent({
       display: inline-block;
       font-size: 14px;
       padding: 3px 10px 3px;
-      color: @themeColor;
-      border: 1px solid @themeColor;
+      color: var(--el-color-primary);
+      border: 1px solid var(--el-color-primary);
       zoom: 0.8;
       margin-right: 7px;
     }
@@ -253,8 +253,8 @@ export default defineComponent({
       display: flex;
       align-items: center;
       .collectBtn {
-        border: 1px solid @themeColor !important;
-        color: @themeColor !important;
+        border: 1px solid var(--el-color-primary) !important;
+        color: var(--el-color-primary) !important;
       }
       .disableBtn {
         background-color: var(--disableColor);

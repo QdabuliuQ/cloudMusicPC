@@ -4,7 +4,7 @@
     <span> 已关注 </span>
   </div>
   <div v-else class="unFollowBtn">
-    <img src="~images/common/unfollow.png" alt="" />
+    <img src="~images/common/unfollow_white.png" alt="" />
     <span> 关注 </span>
   </div>
 </template>
@@ -46,8 +46,8 @@ export default defineComponent({
 .unFollowBtn {
   padding: 7px 18px;
   font-size: 12px;
-  color: var(--textColor);
-  background-color: @themeColor;
+  color: #fff;
+  background-color: var(--el-color-primary);
   border-radius: 25px;
   display: flex;
   align-items: center;

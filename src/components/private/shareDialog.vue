@@ -608,7 +608,7 @@ export default defineComponent({
     align-items: center;
     padding-bottom: 10px;
     .activeCateItem {
-      color: @themeColor;
+      color: var(--el-color-primary);
       font-weight: bold;
     }
     .cateItem {
@@ -678,8 +678,8 @@ export default defineComponent({
 
     .target {
       font-size: 12px;
-      color: @themeColor;
-      border: 1px solid @themeColor;
+      color: var(--el-color-primary);
+      border: 1px solid var(--el-color-primary);
       padding: 4px 8px;
       transform: scale(0.8);
       margin-left: 6px;
@@ -694,7 +694,7 @@ export default defineComponent({
       color: #fff;
       border-radius: 30px;
       font-size: 12px;
-      background-color: @themeColor;
+      background-color: var(--el-color-primary);
       cursor: pointer;
       &:hover {
         background-color: @hoverTColor;

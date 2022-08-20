@@ -135,7 +135,7 @@ export default defineComponent({
     .span1 {
       margin-left: 5px;
       font-size: 25px;
-      color: @themeColor;
+      color: var(--el-color-primary);
       font-weight: bold;
     }
     .span2 {
@@ -154,7 +154,7 @@ export default defineComponent({
     border-radius: 10px;
     margin-top: 50px;
     .levelActive {
-      background-color: @themeColor !important;
+      background-color: var(--el-color-primary) !important;
     }
     .levelItem {
       height: 100%;
@@ -168,7 +168,7 @@ export default defineComponent({
       }
       .activeTarget {
         color: var(--textColor) !important;
-        background-color: @themeColor;
+        background-color: var(--el-color-primary);
         border-radius: 50%;
       }
       span {
@@ -208,7 +208,7 @@ export default defineComponent({
         content: "";
         width: 6px;
         height: 6px;
-        background-color: @themeColor;
+        background-color: var(--el-color-primary);
         border-radius: 50%;
         left: 5px;
         top: 50%;
@@ -223,7 +223,7 @@ export default defineComponent({
       font-size: 20px;
       color: var(--textColor);
       em {
-        color: @themeColor;
+        color: var(--el-color-primary);
       }
     }
     .progressItem {
@@ -264,7 +264,7 @@ export default defineComponent({
         }
         .level {
           width: 80px;
-          color: @themeColor;
+          color: var(--el-color-primary);
           font-weight: bold;
           font-size: 18px;
         }

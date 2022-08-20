@@ -78,7 +78,7 @@ export default defineComponent({
 .popoverComment {
   .commentInfo {
     padding: 6px 10px;
-    background-color: #3d3d3d;
+    background-color: var(--eventBgc);
     margin-bottom: 10px;
     border-radius: 10px;
     cursor: pointer;

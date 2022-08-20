@@ -412,7 +412,7 @@ export default defineComponent({
           transition: 0.2s all linear;
           cursor: pointer;
           &:hover {
-            background-color: @themeColor;
+            background-color: var(--el-color-primary);
             color: var(--textColor);
           }
         }
@@ -422,8 +422,8 @@ export default defineComponent({
         align-items: center;
         margin-bottom: 40px;
         .likeItem {
-          color: @themeColor !important;
-          border: 1px solid @themeColor !important;
+          color: var(--el-color-primary) !important;
+          border: 1px solid var(--el-color-primary) !important;
         }
         .dataItem {
           margin-right: 20px;

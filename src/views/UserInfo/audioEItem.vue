@@ -111,10 +111,10 @@ export default defineComponent({
     color: var(--textColor);
     .audioCate {
       display: inline-block;
-      color: @themeColor;
+      color: var(--el-color-primary);
       padding: 3px 8px 4px;
       font-size: 12px;
-      border: 1px solid @themeColor;
+      border: 1px solid var(--el-color-primary);
       transform: scale(0.75);
     }
   }

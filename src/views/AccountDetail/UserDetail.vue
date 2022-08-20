@@ -300,7 +300,7 @@ export default defineComponent({
       .userLevel {
         padding: 5px 10px;
         font-size: 12px;
-        background-color: @themeColor;
+        background-color: var(--el-color-primary);
         color: #Fff;
         font-weight: bold;
         border-radius: 20px;

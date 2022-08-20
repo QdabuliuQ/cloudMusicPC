@@ -46,8 +46,9 @@ export default defineComponent({
 
 <style lang='less'>
 .eventPics {
+  margin-top: 15px;
   width: 100%;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   .picContainer {
     display: grid;
     grid-gap: 10px;

@@ -119,7 +119,7 @@ export default defineComponent({
         margin-bottom: 8px;
       }
       li::marker {
-        color: @themeColor;
+        color: var(--el-color-primary);
       }
     }
   }

@@ -271,7 +271,7 @@ export default defineComponent({
             left: 0;
             position: absolute;
             height: 100%;
-            background-color: @themeColor;
+            background-color: var(--el-color-primary);
           }
         }
       }

@@ -141,7 +141,7 @@ export default defineComponent({
         font-size: 12px;
         margin-left: 15px;
         padding: 7px 17px 7px 15px;
-        background-color: @themeColor;
+        background-color: var(--el-color-primary);
         border-radius: 25px;
         cursor: pointer;
         display: flex;

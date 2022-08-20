@@ -145,7 +145,7 @@ export default defineComponent({
     align-items: center;
     margin-bottom: 10px;
     .active {
-      color: @themeColor !important;
+      color: var(--el-color-primary) !important;
       font-weight: bold;
     }
     span {
