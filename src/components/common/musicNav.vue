@@ -261,22 +261,11 @@
               />
             </div>
             <div class="btnContainer">
-              <img
+              <i
+                class="iconfont icon_lyric"
                 @click="lyricDialog = !lyricDialog"
-                style="width: 21px"
-                title="打开歌词"
-                v-show="!lyricDialog"
-                src="~images/songDetail/lyric.png"
-                alt=""
-              />
-              <img
-                @click="lyricDialog = !lyricDialog"
-                style="width: 21px"
-                title="关闭歌词"
-                v-show="lyricDialog"
-                src="~images/songDetail/lyricActive.png"
-                alt=""
-              />
+                :title="lyricDialog ? '关闭歌词' : '打开歌词'"
+              ></i>
             </div>
           </div>
           <div v-if="musicList.length" class="bottomProgress">
@@ -858,7 +847,7 @@ export default defineComponent({
       toStopMusic(e: boolean) {
         data.isPlay = e;
         console.log(data.isPlay, e);
-        
+
         cleanInterval();
         if (data.musicList.length) {
           audioRef.value.pause();
@@ -938,7 +927,6 @@ export default defineComponent({
           }
         }
         console.log(newData[e.index]);
-        
 
         checkSong(newData, e.index).then((res: any) => {
           if (res) {
@@ -1137,6 +1125,9 @@ export default defineComponent({
           margin: 0 20px;
           display: flex;
           align-items: center;
+          .icon_lyric {
+            font-size: 21px;
+          }
           img {
             cursor: pointer;
           }

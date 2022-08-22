@@ -364,7 +364,7 @@ export default defineComponent({
     // 获取聊天列表
     const getData = (loadList: boolean) => {
       getPrivateMessageList({
-        offset: data.offset * 10,
+        offset: data.offset * 30,
         limit: 30,
       }).then((res: any) => {
         data.more = res.data.more;
@@ -527,7 +527,8 @@ export default defineComponent({
             font-size: 12px;
             padding: 5px 15px 7px 17px;
             border-radius: 8px;
-            background-color: #585858;
+            background-color: var(--eventBgc);
+            color: var(--textColor);
             cursor: pointer;
           }
         }
@@ -555,6 +556,9 @@ export default defineComponent({
             border-top-left-radius: 10px;
             border-bottom-left-radius: 10px;
             border-bottom-right-radius: 10px;
+            .msgContainer {
+              color: #Fff;
+            }
           }
           .unselfPopover {
             background-color: var(--unpopoColor);

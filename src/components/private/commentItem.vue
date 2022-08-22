@@ -41,8 +41,9 @@
               @click.stop="praiseResource"
               :class="[isLike ? 'likeItem' : '', 'dataItem']"
             >
-              <img v-if="!isLike" src="~images/common/unpraise.png" alt="" />
-              <img v-else src="~images/common/praise.png" alt="" />
+              <i :class="[isLike ? 'iconActive' : '', 'iconfont','icon_praise']"></i>
+              <!-- <img v-if="!isLike" src="~images/common/unpraise.png" alt="" />
+              <img v-else src="~images/common/praise.png" alt="" /> -->
               {{ count }}
             </div>
             <div
@@ -230,6 +231,9 @@ export default defineComponent({
 
 <style lang='less'>
 .commentItem {
+  .icon_praise {
+    margin-right: 4px;
+  }
   display: flex;
   padding: 12px 12px;
   border-radius: 8px;
@@ -298,7 +302,7 @@ export default defineComponent({
           margin-right: 20px;
         }
         &:hover {
-          color: var(--el-color-primary);
+          color: var(--el-color-primary) !important;
         }
         img {
           width: 15px;

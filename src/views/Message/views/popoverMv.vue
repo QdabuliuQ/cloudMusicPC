@@ -117,6 +117,7 @@ export default defineComponent({
       display: flex;
       align-items: center;
       background-image: linear-gradient(rgba(0, 0, 0, 0.651), transparent);
+      color: #fff;
       .title {
         margin-left: 10px;
         span {
@@ -136,6 +137,7 @@ export default defineComponent({
       align-items: center;
       justify-content: space-between;
       background-image: linear-gradient(transparent, rgba(0, 0, 0, 0.651));
+      color: #fff;
     }
     .cover {
       width: 100%;

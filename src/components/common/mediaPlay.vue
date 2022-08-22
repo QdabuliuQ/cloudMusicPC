@@ -120,6 +120,8 @@ import {
   watch,
   onUnmounted,
 } from "vue";
+import bus from "vue3-eventbus";
+
 export default defineComponent({
   name: "mediaPlay",
   props: ["src", "miniModel"],
@@ -149,6 +151,15 @@ export default defineComponent({
     let maxOffset: number = 0;
     let offset: number = 0;
     let moveTimer: any = null;
+    let resizeTime: any = null;
+
+    window.addEventListener('resize', () => {
+      if (resizeTime) clearTimeout(resizeTime)
+      resizeTime = setTimeout(() => {
+        console.log('调整');
+        computedDom()
+      }, 500);
+    })
 
     // 鼠标移入播放器事件
     const moveEvent = () => {

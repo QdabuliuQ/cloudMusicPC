@@ -431,7 +431,7 @@ export default defineComponent({
           font-size: 13px;
           color: @fontColor;
           border-radius: 35px;
-          border: 1px solid #6b6b6b;
+          border: 1px solid var(--borderColor);
           display: flex;
           align-items: center;
           cursor: pointer;

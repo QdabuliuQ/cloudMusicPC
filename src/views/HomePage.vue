@@ -36,6 +36,8 @@ export default defineComponent({
     const getWindowInfo = () => {
       data.menuListHeight = window.innerHeight - 55 - 70.2 + "px";
       bus.emit("windowResize");
+      console.log(7777);
+      
     };
     const debounce = (fn: any, delay: number) => {
       let timer: any;

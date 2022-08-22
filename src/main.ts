@@ -15,6 +15,7 @@ import vue3PreviewImage from 'vue3-preview-image'
 import contextmenu from "v-contextmenu";
 import "v-contextmenu/dist/themes/default.css";
 import { VueMasonryPlugin } from 'vue-masonry'
+import "@/assets/iconfont/icon.css"
 
 const app = createApp(App)
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {

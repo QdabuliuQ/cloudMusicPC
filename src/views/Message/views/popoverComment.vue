@@ -87,7 +87,7 @@ export default defineComponent({
       max-width: 500px;
       box-sizing: border-box;
       padding: 5px 0;
-      border-bottom: 1px solid #525252;
+      border-bottom: 1px solid var(--borderColor);
       .icon {
         margin-right: 5px;
       }

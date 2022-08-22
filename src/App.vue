@@ -140,4 +140,14 @@ img {
     }
   }
 }
+.iconfont {
+  cursor: pointer;
+  color: #b1b1b1;
+  &:hover {
+    color: var(--el-color-primary);
+  }
+}
+.iconActive {
+  color: var(--el-color-primary);
+}
 </style>

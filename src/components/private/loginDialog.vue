@@ -451,7 +451,7 @@ export default defineComponent({
       height: 40px;
       text-align: center;
       line-height: 40px;
-      color: var(--textColor);
+      color: #fff;
       margin-top: 30px;
       font-size: 14px;
       border-radius: 7px;
