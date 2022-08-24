@@ -144,7 +144,7 @@ img {
   cursor: pointer;
   color: #b1b1b1;
   &:hover {
-    color: var(--el-color-primary);
+    color: var(--el-color-primary) !important;
   }
 }
 .iconActive {

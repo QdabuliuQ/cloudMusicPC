@@ -203,62 +203,44 @@
         <div class="progressBox">
           <div class="topBtnList">
             <div class="btnContainer">
-              <img
+              <i
                 @click="mode = 2"
-                style="width: 28px"
                 title="列表循环"
                 v-show="mode == 1"
-                src="~images/songDetail/list_recycle.png"
-                alt=""
-              />
-              <img
+                class="modeIcon iconfont icon_list_recycle"
+              ></i>
+              <i
                 @click="mode = 3"
-                style="width: 28px"
                 title="单曲循环"
                 v-show="mode == 2"
-                src="~images/songDetail/one_recycle.png"
-                alt=""
-              />
-              <img
+                class="modeIcon iconfont icon_one_recycle"
+              ></i>
+              <i
                 @click="mode = 1"
-                style="width: 28px"
-                title="随机循环"
+                title="随机播放"
                 v-show="mode == 3"
-                src="~images/songDetail/random.png"
-                alt=""
-              />
+                class="modeIcon iconfont icon_random"
+              ></i>
             </div>
             <div class="btnContainer">
-              <img
-                @click="toggleMusic('last', --activeIndex)"
-                style="width: 27px"
-                src="~images/common/last.png"
-                alt=""
-              />
+              <i style="font-size: 26px" @click="toggleMusic('last', --activeIndex)" title="上一首" class="iconfont icon_last"></i>
             </div>
             <div class="btnContainer">
-              <img
-                v-if="!isPlay"
+              <i
+                style="font-size: 35px"
                 @click="toPlayMusic(true)"
-                style="width: 30px"
-                src="~images/common/play.png"
-                alt=""
-              />
-              <img
-                v-else
+                v-show="!isPlay"
+                class="iconfont icon_play"
+              ></i>
+              <i
+                style="font-size: 35px"
                 @click="toStopMusic(false)"
-                style="width: 30px"
-                src="~images/common/stop.png"
-                alt=""
-              />
+                v-show="isPlay"
+                class="iconfont icon_stop"
+              ></i>
             </div>
             <div class="btnContainer">
-              <img
-                @click="toggleMusic('next', ++activeIndex)"
-                style="width: 27px"
-                src="~images/common/next.png"
-                alt=""
-              />
+              <i style="font-size: 26px" @click="toggleMusic('next', ++activeIndex)" title="下一首" class="iconfont icon_next"></i>
             </div>
             <div class="btnContainer">
               <i
@@ -297,12 +279,13 @@
             </div>
           </template>
         </el-tooltip>
-        <img
+        <i style="font-size: 26px" @click="showDrawer = true" class="iconfont icon_list"></i>
+        <!-- <img
           @click="showDrawer = true"
           style="width: 20px; height: 20px"
           src="~images/common/list.png"
           alt=""
-        />
+        /> -->
       </div>
     </div>
   </div>
@@ -1126,10 +1109,10 @@ export default defineComponent({
           display: flex;
           align-items: center;
           .icon_lyric {
-            font-size: 21px;
+            font-size: 22px;
           }
-          img {
-            cursor: pointer;
+          .modeIcon {
+            font-size: 26px;
           }
         }
         .bottomProgress {

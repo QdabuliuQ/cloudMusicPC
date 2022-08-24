@@ -13,11 +13,7 @@
           :hide-after="0"
         >
           <template #reference>
-            <img
-              style="width: 29px"
-              src="~images/shareDialog/emoji.png"
-              alt=""
-            />
+            <i style="font-size: 26px" class="iconfont icon_emoji"></i>
           </template>
           <div class="emojiContainer">
             <div
@@ -39,11 +35,7 @@
           :hide-after="0"
         >
           <template #reference>
-            <img
-              style="width: 29px"
-              src="~images/shareDialog/aite.png"
-              alt=""
-            />
+            <i style="font-size: 26px" class="iconfont icon_aite"></i>
           </template>
           <div class="userListContainer">
             <el-scrollbar height="150px">
@@ -199,9 +191,9 @@ export default defineComponent({
     justify-content: space-between;
     margin-bottom: 40px;
     .btnList {
-      img {
-        cursor: pointer;
+      .iconfont {
         margin-right: 10px;
+        color: #979797;
       }
     }
     .sendBtn {

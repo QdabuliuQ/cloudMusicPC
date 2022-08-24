@@ -156,7 +156,6 @@ export default defineComponent({
     window.addEventListener('resize', () => {
       if (resizeTime) clearTimeout(resizeTime)
       resizeTime = setTimeout(() => {
-        console.log('调整');
         computedDom()
       }, 500);
     })
