@@ -1,7 +1,7 @@
 <template>
   <div id="SheetCollect">
     <loading v-if="userList.length == 0 && total != 0"></loading>
-    <emptyContent v-else-if="total == 0"></emptyContent>
+    <emptyContent v-else-if="userList.length == 0 && total == 0"></emptyContent>
     <div
       v-else
       :infinite-scroll-immediate="false"

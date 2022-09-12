@@ -30,8 +30,9 @@
             'btnItem',
           ]"
         >
-          <img v-if="isCollect" src="~images/common/collect.png" alt="" />
-          <img v-else src="~images/common/uncollect.png" alt="" />
+          <i style="font-size: 22px; margin-right: 5px" :class="[isCollect ? 'iconActive' : '', 'iconfont', 'icon_collect']"></i>
+          <!-- <img v-if="isCollect" src="~images/common/collect.png" alt="" />
+          <img v-else src="~images/common/uncollect.png" alt="" /> -->
           {{ isCollect ? "已收藏" : "收藏" }}({{ subCount }})
         </div>
         <div @click="shareResource" class="btnItem">

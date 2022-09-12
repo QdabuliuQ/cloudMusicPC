@@ -290,7 +290,7 @@ export default defineComponent({
         align-items: center;
         font-size: 12px;
         padding: 5px 15px;
-        background-color: #5d5d5d;
+        background-color: var(--chlidCommentBgc);
         border-radius: 20px;
         img {
           width: 16px;

@@ -42,8 +42,6 @@
               :class="[isLike ? 'likeItem' : '', 'dataItem']"
             >
               <i :class="[isLike ? 'iconActive' : '', 'iconfont','icon_praise']"></i>
-              <!-- <img v-if="!isLike" src="~images/common/unpraise.png" alt="" />
-              <img v-else src="~images/common/praise.png" alt="" /> -->
               {{ count }}
             </div>
             <div

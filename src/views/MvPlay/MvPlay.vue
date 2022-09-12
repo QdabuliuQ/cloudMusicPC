@@ -40,8 +40,9 @@
             @click="likeEvent"
             :class="[liked ? 'likeItem' : '', 'dataItem']"
           >
-            <img v-if="!liked" src="~images/common/unpraise.png" alt="" />
-            <img v-else src="~images/common/praise.png" alt="" />
+            <i :class="[liked ? 'iconActive' : '', 'iconfont', 'icon_praise']"></i>
+            <!-- <img v-if="!liked" src="~images/common/unpraise.png" alt="" />
+            <img v-else src="~images/common/praise.png" alt="" /> -->
             {{ likedCount }}
           </div>
           <div
@@ -407,13 +408,13 @@ export default defineComponent({
           margin-bottom: 7px;
           font-size: 12px;
           padding: 6px 15px 8px;
-          background-color: @eventBgc;
+          background-color: var(--chlidCommentBgc);
           border-radius: 10px;
           transition: 0.2s all linear;
           cursor: pointer;
           &:hover {
             background-color: var(--el-color-primary);
-            color: var(--textColor);
+            color: #fff;
           }
         }
       }
@@ -437,6 +438,12 @@ export default defineComponent({
           cursor: pointer;
           &:hover {
             background-color: var(--hoverColor);
+          }
+          .iconActive {
+            color: var(--el-color-primary);
+          }
+          .icon_praise {
+            font-size: 20px;
           }
           img {
             width: 18px;

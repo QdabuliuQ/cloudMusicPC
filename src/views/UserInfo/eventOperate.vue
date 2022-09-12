@@ -7,8 +7,9 @@
           style="margin-right: 30px"
           :class="[isLike ? 'likeItem' : '', 'opeItem']"
         >
-          <img v-if="!isLike" src="~images/common/unpraise.png" alt="" />
-          <img v-else src="~images/common/praise.png" alt="" />
+          <i :class="[isLike ? 'iconActive' : '', 'iconfont', 'icon_praise']"></i>
+          <!-- <img v-if="!isLike" src="~images/common/unpraise.png" alt="" />
+          <img v-else src="~images/common/praise.png" alt="" /> -->
           {{ likeSum }}
         </div>
         <div @click="eventComment" style="margin-right: 30px" class="opeItem">
@@ -271,6 +272,10 @@ export default defineComponent({
       align-items: center;
       font-size: 12.5px;
       color: @fontColor;
+      .icon_praise {
+        font-size: 18px;
+        margin-right: 4px;
+      }
       img {
         width: 18px;
         margin-right: 4px;

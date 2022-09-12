@@ -2,7 +2,8 @@
   <div id="RecommendSongs">
     <div class="topContainer">
       <div class="leftIcon">
-        <img src="~images/recommend/calendar_red.png" alt="" />
+        <i class="iconfont icon_calendar"></i>
+        <!-- <img src="~images/recommend/calendar_red.png" alt="" /> -->
         <span>{{ day }}</span>
       </div>
       <div class="rightInfo">
@@ -152,15 +153,16 @@ export default defineComponent({
       position: relative;
       span {
         position: absolute;
-        top: 61%;
+        top: 64%;
         left: 50%;
         transform: translate(-50%, -50%);
         font-weight: bold;
         font-size: 27px;
         color: var(--el-color-primary);
       }
-      img {
-        width: 120px;
+      .icon_calendar {
+        color: var(--el-color-primary);
+        font-size: 120px;
       }
     }
     .topInfo {
